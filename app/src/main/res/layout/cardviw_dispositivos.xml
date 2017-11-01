@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="50dp"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="11dp"
+    android:focusable="true"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    cardview:cardCornerRadius="@dimen/cornerRadius">
+
+    <FrameLayout
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="@color/backgroundCardView"
+        >
+
+        <ImageView
+            android:id="@+id/imageDispositivo"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:paddingLeft="@dimen/cardViewPaddingLeft"
+            >
+
+            <TextView
+                android:id="@+id/nombreDispositivo"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/editTextColor"
+                android:text="Hi"
+                android:textSize="@dimen/textSizeParameterPh"
+                android:fontFamily="serif-monospace"
+                />
+
+            <TextView
+                android:id="@+id/locationDispositivo"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:textColor="@color/editTextColor"
+                android:textSize="@dimen/textSizeParameterPh"
+                android:gravity="right"
+                android:fontFamily="serif-monospace"
+                />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Water Quality</string>
+    <string name="email">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="no_account_yet_create_one">Forgot your password? get it again</string>
+    <string name="title_activity_reference">ReferenceActivity</string>
+    <string name="toolbar_title_dispositivo">Ver dispositivos</string>
+    <string name="ph">PH</string>
+    <string name="homeToolbar">Home</string>
+    <string name="title_activity_menu">menuActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
+
