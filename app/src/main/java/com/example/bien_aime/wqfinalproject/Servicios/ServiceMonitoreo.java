@@ -78,7 +78,7 @@ public class ServiceMonitoreo extends Service {
                 //sendRequest(intent);
                 requestValor(intent);
             }
-        }, 0, 50000);//5 Seconds
+        }, 0, 10000);//5 Seconds
 
         return START_STICKY;
     }
@@ -105,7 +105,7 @@ public class ServiceMonitoreo extends Service {
                     Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
 
                     for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
-                        if(muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("NOPOTABLE")){
+                        if(muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable")){
                             if(!muestra.getMuestra().getListaNotificaciones().get(i).getStatusEnviada()){
                                 System.out.println("Nooooooooooooooooooooooooooooooooooooooooooooooo");
 
@@ -113,7 +113,7 @@ public class ServiceMonitoreo extends Service {
                                         new NotificationCompat.Builder(ServiceMonitoreo.this)
                                                 .setSmallIcon(R.drawable.profile_icon)
                                                 .setContentTitle("Agua No potable")
-                                                .setContentText("This is a test notification");
+                                                .setContentText("Se considera que ese agua es no potable5");
 
 
                                 Intent notificationIntent = new Intent(ServiceMonitoreo.this, LoginActivity.class);

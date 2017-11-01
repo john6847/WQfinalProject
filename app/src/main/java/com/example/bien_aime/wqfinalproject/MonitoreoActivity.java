@@ -102,7 +102,7 @@ public class MonitoreoActivity extends AppCompatActivity {
                 });
 
             }
-        }, 0, 50009); // updates each 10 secs
+        }, 0, 10009);
     }
 
     private void updateHTML() {
@@ -111,7 +111,7 @@ public class MonitoreoActivity extends AppCompatActivity {
         int sizeMuestra=getSizeMuestra();
         System.out.println("::::::::::::::::::::::::::::: "+sizeMuestra);//Buscar porque esta llegando null
 
-        Cursor cursor = resolver.query(CONTENT_URL, projection, null,null," id DESC"+" LIMIT 2",null);
+        Cursor cursor = resolver.query(CONTENT_URL, projection, null,null," id DESC"+" LIMIT 1",null);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
