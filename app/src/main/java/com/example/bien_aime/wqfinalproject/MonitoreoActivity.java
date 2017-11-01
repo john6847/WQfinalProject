@@ -109,12 +109,9 @@ public class MonitoreoActivity extends AppCompatActivity {
         resolver=getContentResolver();
         String[] projection = new String[]{"id", "nombreParametro","valor","fecha","dispositivo"};
         int sizeMuestra=getSizeMuestra();
-        System.out.println(":::::::::::::::::::::::::::::"+sizeMuestra);//Buscar porque esta llegando null
+        System.out.println("::::::::::::::::::::::::::::: "+sizeMuestra);//Buscar porque esta llegando null
 
         Cursor cursor = resolver.query(CONTENT_URL, projection, null,null," id DESC"+" LIMIT 2",null);
-
-
-
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -134,7 +131,6 @@ public class MonitoreoActivity extends AppCompatActivity {
         if (cursor != null) {
             cursor.close();
         }
-
 
         System.out.println("Otro ladoooooooooooooooooooooooooooooooooooooooooooooo"+muestras.size());
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pictureRecycler);
@@ -178,12 +174,9 @@ public class MonitoreoActivity extends AppCompatActivity {
                         cont++;
                     }
                 }
-
             }
-
             @Override
             public void onFailure(Call<List<Muestra>> call, Throwable t) {
-
             }
         });
         return  cont;
@@ -196,8 +189,6 @@ public class MonitoreoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(titulo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(upBoton);
     }
-
-
 }
 
 

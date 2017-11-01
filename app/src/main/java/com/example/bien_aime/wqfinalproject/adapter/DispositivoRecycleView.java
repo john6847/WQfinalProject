@@ -60,6 +60,7 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
     public void onBindViewHolder(ParameterViewHolder holder, int position) {
         final Dispositivo dispositivo = dispositivos.get(position);
         holder.textView.setText(dispositivo.getNombreDispositivo());
+        System.out.println("Nombre Dispositivo "+dispositivo.getNombreDispositivo());
         holder.textView1.setText(String.valueOf(dispositivo.getId()));
         //holder.imageView.setImageResource(Integer.parseInt(muestra.getPicture()));
 

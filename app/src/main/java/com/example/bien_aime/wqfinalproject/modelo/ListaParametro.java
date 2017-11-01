@@ -15,7 +15,7 @@ public class ListaParametro implements Serializable {
     private Integer id;
     @SerializedName("nivelMinimo")
     @Expose
-    private Integer nivelMinimo;
+    private Double nivelMinimo;
     @SerializedName("modificadoPor")
     @Expose
     private String modificadoPor;
@@ -30,7 +30,7 @@ public class ListaParametro implements Serializable {
     private String lastUpdated;
     @SerializedName("nivelMaximo")
     @Expose
-    private Integer nivelMaximo;
+    private Double nivelMaximo;
     @SerializedName("parametro")
     @Expose
     private Parametro parametro;
@@ -46,11 +46,11 @@ public class ListaParametro implements Serializable {
         this.id = id;
     }
 
-    public Integer getNivelMinimo() {
+    public Double getNivelMinimo() {
         return nivelMinimo;
     }
 
-    public void setNivelMinimo(Integer nivelMinimo) {
+    public void setNivelMinimo(Double nivelMinimo) {
         this.nivelMinimo = nivelMinimo;
     }
 
@@ -86,11 +86,11 @@ public class ListaParametro implements Serializable {
         this.lastUpdated = lastUpdated;
     }
 
-    public Integer getNivelMaximo() {
+    public Double getNivelMaximo() {
         return nivelMaximo;
     }
 
-    public void setNivelMaximo(Integer nivelMaximo) {
+    public void setNivelMaximo(Double nivelMaximo) {
         this.nivelMaximo = nivelMaximo;
     }
 

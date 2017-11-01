@@ -4,11 +4,12 @@ package com.example.bien_aime.wqfinalproject.modelo;
  * Created by Bien-aime on 9/6/2017.
  */
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Parametro_ {
+public class Parametro_  implements Serializable {
 
     @SerializedName("id")
     @Expose

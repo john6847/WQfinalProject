@@ -87,7 +87,6 @@ public class ServiceMonitoreo extends Service {
         final String nombreDispositivo=intent.getStringExtra("dispositivo");
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
 
-
         final retrofit2.Call<List<Muestra>> call= apiService.getValores();
         call.enqueue(new Callback<List<Muestra>>() {
             @Override
@@ -105,9 +104,9 @@ public class ServiceMonitoreo extends Service {
                     }
                     Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
 
-                    for(int i=0;i<muestra.getMuestra().getNotificaciones().size();i++){
-                        if(muestra.getMuestra().getNotificaciones().get(i).getNombre().equalsIgnoreCase("NOPOTABLE")){
-                            if(!muestra.getMuestra().getNotificaciones().get(i).getStatusEnviada()){
+                    for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
+                        if(muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("NOPOTABLE")){
+                            if(!muestra.getMuestra().getListaNotificaciones().get(i).getStatusEnviada()){
                                 System.out.println("Nooooooooooooooooooooooooooooooooooooooooooooooo");
 
                                 NotificationCompat.Builder builder =
@@ -143,8 +142,8 @@ public class ServiceMonitoreo extends Service {
                                             //Your code goes here
                                             HttpClient httpClient=new DefaultHttpClient();
                                             HttpPost httpPost=new HttpPost("http://waterqualityjohn.herokuapp.com/API/ActivateNotification/");
-//Hay que pensar en cambiar esto porque podria haber mas de una notificacion
-                                            String json="{"+"id:"+muestra.getMuestra().getNotificaciones().get(0).getId() +",statusEnviada:"+"true"+"}";
+                                            //Hay que pensar en cambiar esto porque podria haber mas de una notificacion
+                                            String json="{"+"id:"+muestra.getMuestra().getListaNotificaciones().get(0).getId() +",statusEnviada:"+"true"+"}";
 
                                             StringEntity entity = null;
                                             try {

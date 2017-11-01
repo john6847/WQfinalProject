@@ -1,14 +1,14 @@
 package com.example.bien_aime.wqfinalproject.modelo;
 
 /**
- * Created by Bien-aime on 9/6/2017.
+ * Created by Bien-aime on 10/31/2017.
  */
+
 import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Normativa implements Serializable
+public class ListaNotificacione implements Serializable
 {
 
     @SerializedName("id")
@@ -20,25 +20,28 @@ public class Normativa implements Serializable
     @SerializedName("habilitado")
     @Expose
     private Boolean habilitado;
+    @SerializedName("statusEnviada")
+    @Expose
+    private Boolean statusEnviada;
     @SerializedName("dateCreated")
     @Expose
     private String dateCreated;
     @SerializedName("lastUpdated")
     @Expose
     private String lastUpdated;
-    @SerializedName("listaParametros")
+    @SerializedName("descripcion")
     @Expose
-    private List<ListaParametro> listaParametros = null;
-    @SerializedName("nombreNormativa")
+    private String descripcion;
+    @SerializedName("quiereRecibirNotificacion")
     @Expose
-    private String nombreNormativa;
+    private Boolean quiereRecibirNotificacion;
     @SerializedName("creadoPor")
     @Expose
     private String creadoPor;
-    @SerializedName("fechaCreacion")
+    @SerializedName("nombre")
     @Expose
-    private String fechaCreacion;
-    private final static long serialVersionUID = 5559912117779652009L;
+    private String nombre;
+    private final static long serialVersionUID = -7524851850437805546L;
 
     public Integer getId() {
         return id;
@@ -64,6 +67,14 @@ public class Normativa implements Serializable
         this.habilitado = habilitado;
     }
 
+    public Boolean getStatusEnviada() {
+        return statusEnviada;
+    }
+
+    public void setStatusEnviada(Boolean statusEnviada) {
+        this.statusEnviada = statusEnviada;
+    }
+
     public String getDateCreated() {
         return dateCreated;
     }
@@ -80,20 +91,20 @@ public class Normativa implements Serializable
         this.lastUpdated = lastUpdated;
     }
 
-    public List<ListaParametro> getListaParametros() {
-        return listaParametros;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setListaParametros(List<ListaParametro> listaParametros) {
-        this.listaParametros = listaParametros;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public String getNombreNormativa() {
-        return nombreNormativa;
+    public Boolean getQuiereRecibirNotificacion() {
+        return quiereRecibirNotificacion;
     }
 
-    public void setNombreNormativa(String nombreNormativa) {
-        this.nombreNormativa = nombreNormativa;
+    public void setQuiereRecibirNotificacion(Boolean quiereRecibirNotificacion) {
+        this.quiereRecibirNotificacion = quiereRecibirNotificacion;
     }
 
     public String getCreadoPor() {
@@ -104,12 +115,12 @@ public class Normativa implements Serializable
         this.creadoPor = creadoPor;
     }
 
-    public String getFechaCreacion() {
-        return fechaCreacion;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 }

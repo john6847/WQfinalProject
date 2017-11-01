@@ -4,11 +4,12 @@ package com.example.bien_aime.wqfinalproject.modelo;
  * Created by Bien-aime on 10/31/2017.
  */
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NormativaAsignada {
+public class NormativaAsignada implements Serializable {
 
     @SerializedName("id")
     @Expose

@@ -3,12 +3,14 @@ package com.example.bien_aime.wqfinalproject.modelo;
 /**
  * Created by Bien-aime on 10/31/2017.
  */
+
+import java.io.Serializable;
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class Pais implements Serializable {
+public class Parametro__ implements Serializable
+{
 
     @SerializedName("id")
     @Expose
@@ -22,15 +24,22 @@ public class Pais implements Serializable {
     @SerializedName("dateCreated")
     @Expose
     private String dateCreated;
-    @SerializedName("nombrePais")
-    @Expose
-    private String nombrePais;
     @SerializedName("lastUpdated")
     @Expose
     private String lastUpdated;
+    @SerializedName("unidadMedida")
+    @Expose
+    private Object unidadMedida;
+    @SerializedName("nombreParametro")
+    @Expose
+    private String nombreParametro;
+    @SerializedName("listaSensores")
+    @Expose
+    private List<Object> listaSensores = null;
     @SerializedName("creadoPor")
     @Expose
     private String creadoPor;
+    private final static long serialVersionUID = 8501923769289302891L;
 
     public Integer getId() {
         return id;
@@ -64,20 +73,36 @@ public class Pais implements Serializable {
         this.dateCreated = dateCreated;
     }
 
-    public String getNombrePais() {
-        return nombrePais;
-    }
-
-    public void setNombrePais(String nombrePais) {
-        this.nombrePais = nombrePais;
-    }
-
     public String getLastUpdated() {
         return lastUpdated;
     }
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Object getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(Object unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public String getNombreParametro() {
+        return nombreParametro;
+    }
+
+    public void setNombreParametro(String nombreParametro) {
+        this.nombreParametro = nombreParametro;
+    }
+
+    public List<Object> getListaSensores() {
+        return listaSensores;
+    }
+
+    public void setListaSensores(List<Object> listaSensores) {
+        this.listaSensores = listaSensores;
     }
 
     public String getCreadoPor() {
@@ -87,4 +112,5 @@ public class Pais implements Serializable {
     public void setCreadoPor(String creadoPor) {
         this.creadoPor = creadoPor;
     }
+
 }

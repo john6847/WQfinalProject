@@ -3,12 +3,13 @@ package com.example.bien_aime.wqfinalproject.modelo;
 /**
  * Created by Bien-aime on 10/31/2017.
  */
+
+import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class Pais implements Serializable {
+public class EstadoMuestra implements Serializable
+{
 
     @SerializedName("id")
     @Expose
@@ -22,15 +23,19 @@ public class Pais implements Serializable {
     @SerializedName("dateCreated")
     @Expose
     private String dateCreated;
-    @SerializedName("nombrePais")
-    @Expose
-    private String nombrePais;
     @SerializedName("lastUpdated")
     @Expose
     private String lastUpdated;
+    @SerializedName("codigo")
+    @Expose
+    private Integer codigo;
     @SerializedName("creadoPor")
     @Expose
     private String creadoPor;
+    @SerializedName("nombre")
+    @Expose
+    private String nombre;
+    private final static long serialVersionUID = 3929459081268411597L;
 
     public Integer getId() {
         return id;
@@ -64,20 +69,20 @@ public class Pais implements Serializable {
         this.dateCreated = dateCreated;
     }
 
-    public String getNombrePais() {
-        return nombrePais;
-    }
-
-    public void setNombrePais(String nombrePais) {
-        this.nombrePais = nombrePais;
-    }
-
     public String getLastUpdated() {
         return lastUpdated;
     }
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
     public String getCreadoPor() {
@@ -87,4 +92,13 @@ public class Pais implements Serializable {
     public void setCreadoPor(String creadoPor) {
         this.creadoPor = creadoPor;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
 }

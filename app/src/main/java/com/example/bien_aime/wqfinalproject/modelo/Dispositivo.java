@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Dispositivo implements Serializable {
+public class Dispositivo implements Serializable{
 
     @SerializedName("id")
     @Expose
@@ -27,7 +27,7 @@ public class Dispositivo implements Serializable {
     private String lastUpdated;
     @SerializedName("localizacion")
     @Expose
-    private Object localizacion;
+    private Localizacion localizacion;
     @SerializedName("descripcion")
     @Expose
     private String descripcion;
@@ -88,7 +88,7 @@ public class Dispositivo implements Serializable {
         return localizacion;
     }
 
-    public void setLocalizacion(Object localizacion) {
+    public void setLocalizacion(Localizacion localizacion) {
         this.localizacion = localizacion;
     }
 
@@ -132,4 +132,9 @@ public class Dispositivo implements Serializable {
         this.direccion = direccion;
     }
 
+    public Dispositivo(Integer id, String nombreDispositivo, String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.nombreDispositivo = nombreDispositivo;
+    }
 }

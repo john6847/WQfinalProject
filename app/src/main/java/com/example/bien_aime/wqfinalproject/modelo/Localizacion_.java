@@ -6,7 +6,9 @@ package com.example.bien_aime.wqfinalproject.modelo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Localizacion_ {
+import java.io.Serializable;
+
+public class Localizacion_ implements Serializable {
 
     @SerializedName("id")
     @Expose

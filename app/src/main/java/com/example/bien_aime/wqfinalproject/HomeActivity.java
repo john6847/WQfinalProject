@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,39 +71,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         ApiService apiService= ApiService.retrofit.create(ApiService.class);
 
-        final retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
+        retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
 
         call.enqueue(new Callback<List<Usuario>>() {
             @Override
             public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                Log.d("OnResponse ", response.body().toString());
+                Log.d("OnResponse ", response.body().toString());
+
+                System.out.println("Bueno "+response.body());
+
                 usuarios = response.body();
                 System.out.println("Usuariossssssssssssssss "+usuarios.get(0).getUsername());
 
-                for (Usuario usuario: usuarios){
-                    if (usuario.getUsername().equals("manueltm24")) {
-//                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getDispositivos().get(0).getDispositivo());
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getDispositivos());
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + usuario.getDispositivos().get(0));
+/*                for (Usuario usuario: usuarios){
+                    if (usuario.getUsername().equals("admin")) {
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getListaDispositivos().get(0).getDispositivo().getNombreDispositivo());
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getDispositivos());
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+//                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getListaDispositivos().get(0).getDispositivo().getNombreDispositivo());
+
+//                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + usuario.getDispositivos().get(0));
                         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + usuario.getUsername());
                     }
-                }
+                }*/
 
-               /* for (Usuario usuario: usuarios){
+                for (Usuario usuario: usuarios){
                     if (usuario.getUsername().equals(usuarioLlegando)){
-                        for (int j=0;j<usuario.getDispositivos().size();j++){
+                        for (int j=0;j<usuario.getListaDispositivos().size();j++){
                             System.out.println("-------------------------------- Anndan la");
-                            System.out.println("============================"+usuario.getDispositivos().get(j).getNombreDispositivo());
-                            dispositivos.add(new Dispositivo(usuario.getDispositivos().get(j).getId(),usuario.getDispositivos().get(j).getNombreDispositivo(), usuario.getDispositivos().get(j).getDescripcion(),usuario.getDispositivos().get(j).getLocalizacion()));
-
+                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion()));
                         }
                         System.out.println("--------------"+dispositivos.size());;
-
-
-
                     }
                 }
 
-                //System.out.println("---------------------"+dispositivos.get(0).getNombreDispositivo());
                 System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+dispositivos.size());
                 RecyclerView recyclerView=(RecyclerView) findViewById(R.id.dispositivoRecycler);
                 recyclerView.setHasFixedSize(true);
@@ -111,13 +114,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 DispositivoRecycleView dispositivoRecycleView=new DispositivoRecycleView(dispositivos,HomeActivity.this);
                 recyclerView.setAdapter(dispositivoRecycleView);
-                recyclerView.setLayoutManager(linearLayoutManager);*/
+                recyclerView.setLayoutManager(linearLayoutManager);
             }
 
             @Override
             public void onFailure(Call<List<Usuario>> call, Throwable t) {
-                System.out.println("Calll "+call);
-                System.out.println("Failureeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                Log.e("failure", String.valueOf(t.getMessage()));
             }
         });
 
