@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
-    List<Dispositivo> dispositivos=new ArrayList<>();
+//    List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
     String usuarioLlegando;
    // ArrayList<Dispositivo> dispositivos = new ArrayList<>();
@@ -33,28 +33,31 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
        // show_toolbar("",false);
 
-
         Intent i = getIntent();
-        dispositivos= (List<Dispositivo>) i.getSerializableExtra("dispositivos");
+//        dispositivos= (List<Dispositivo>) i.getSerializableExtra("dispositivos");
         usuarios= (List<Usuario>) i.getSerializableExtra("data");
         usuarioLlegando=i.getStringExtra("usuario");
 
         final TextView nombre= (TextView) findViewById(R.id.tvNumber1);
         final TextView sexo= (TextView) findViewById(R.id.tvNumber2);
         final TextView telefono= (TextView) findViewById(R.id.tvTelefono);
+        final TextView ciudad= (TextView) findViewById(R.id.tvCiudad);
+        final TextView sector= (TextView) findViewById(R.id.tvSector);
+        final TextView pais= (TextView) findViewById(R.id.tvPais);
         final TextView direccion= (TextView) findViewById(R.id.tvdireccion);
 
         final CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
-
-        System.out.println("====================================@@@@@"+dispositivos.size());
+//        System.out.println("====================================@@@@@"+dispositivos.size());
         for (Usuario usuario: usuarios){
             if(usuario.getUsername().equals(usuarioLlegando)){
                 nombre.setText(usuario.getNombre()+" "+usuario.getApellido());
-                //Falto poner el sexo
-//                sexo.setText(usuario.getSexo().toString());
-                telefono.setText(usuario.getTelefono().toString());
+
+                telefono.setText(usuario.getTelefono());
                 direccion.setText(usuario.getDireccion().toString());
+                sector.setText(usuario.getDireccion().getSector().getNombreSector());
+                ciudad.setText(usuario.getDireccion().getSector().getCiudad().getNombreCiudad());
+                pais.setText(usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
                 collapsingToolbarLayout.setTitle(usuario.getUsername());
             }
         }
@@ -76,15 +79,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-        RecyclerView recyclerView=(RecyclerView) findViewById(R.id.dispositivoProfileRecycler);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        DispositivosUsuarioRecyclerView dispositivosUsuarioRecyclerView=new DispositivosUsuarioRecyclerView(dispositivos,ProfileActivity.this);
-        recyclerView.setAdapter(dispositivosUsuarioRecyclerView);
-        recyclerView.setLayoutManager(linearLayoutManager);
+//        RecyclerView recyclerView=(RecyclerView) findViewById(R.id.dispositivoProfileRecycler);
+//        recyclerView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//        DispositivosUsuarioRecyclerView dispositivosUsuarioRecyclerView=new DispositivosUsuarioRecyclerView(dispositivos,ProfileActivity.this);
+//        recyclerView.setAdapter(dispositivosUsuarioRecyclerView);
+//        recyclerView.setLayoutManager(linearLayoutManager);
 
     }
 

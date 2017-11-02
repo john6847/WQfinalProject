@@ -133,12 +133,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(this);
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -165,7 +162,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //            intent.putExtra("dispositivos", usuarioLlegando);
 //            startActivity(intent);
 
-        } else if (id == R.id.nav_mensaje) {
+        } else if (id == R.id.nav_gallery) {
+
+            Intent intent = new Intent(HomeActivity.this, ManejarDispositivos.class);
+
+            intent.putExtra("dispositivos", (Serializable)dispositivos);
+            intent.putExtra("usuario",usuarioLlegando);
+            intent.putExtra("data", (Serializable) usuarios);
+
+            startActivity(intent);
+
 //            Intent seachIntent = new Intent(MainActivity.this, ChatMessages.class);
 //            startActivity(seachIntent);
         } else if (id == R.id.nav_map) {

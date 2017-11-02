@@ -171,14 +171,8 @@ public class ServiceMonitoreo extends Service {
                             }
                         }
                     }
-
-
-
                 }
                 System.out.println("**************************************"+muestras.size());
-
-
-
             }
 
             @Override
@@ -186,8 +180,6 @@ public class ServiceMonitoreo extends Service {
 
             }
         });
-
-
     }
 
    /* public void sendRequest(Intent intent){

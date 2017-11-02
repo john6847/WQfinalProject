@@ -84,7 +84,7 @@ public class Dispositivo implements Serializable{
         this.lastUpdated = lastUpdated;
     }
 
-    public Object getLocalizacion() {
+    public Localizacion getLocalizacion() {
         return localizacion;
     }
 

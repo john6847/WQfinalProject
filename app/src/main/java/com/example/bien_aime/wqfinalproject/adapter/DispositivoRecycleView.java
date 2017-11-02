@@ -102,7 +102,7 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
 //                map.setMyLocationEnabled(true);
 //            }
 
-            imageView=(ImageView) itemView.findViewById(R.id.imageDispositivo);
+//            imageView=(ImageView) itemView.findViewById(R.id.imageDispositivo);
             textView=(TextView) itemView.findViewById(R.id.nombreDispositivo);
             textView1=(TextView) itemView.findViewById(R.id.locationDispositivo);
         }

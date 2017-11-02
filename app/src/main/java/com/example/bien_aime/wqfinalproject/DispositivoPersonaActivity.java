@@ -33,6 +33,7 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
 
         Intent i = getIntent();
         dispositivoName = i.getStringExtra("dispositivo");
+
         //final TextView textView=(TextView) findViewById(R.id.tvDispositivoPersonal);
         final TextView nameAfterProfileCollapse=(TextView) findViewById(R.id.usernameProfileAfter);
         final TextView descripcionDispo=(TextView) findViewById(R.id.descripcionDispositivo);

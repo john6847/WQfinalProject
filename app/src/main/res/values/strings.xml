@@ -6,6 +6,7 @@
     <string name="no_account_yet_create_one">Forgot your password? get it again</string>
     <string name="title_activity_reference">ReferenceActivity</string>
     <string name="toolbar_title_dispositivo">Ver dispositivos</string>
+    <string name="toolbar_title_ListaDispositivo">Ver Lista dispositivos</string>
     <string name="ph">PH</string>
     <string name="homeToolbar">Home</string>
     <string name="title_activity_menu">menuActivity</string>
@@ -14,5 +15,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_manejar_dispositivos">ManejarDispositivos</string>
+    <string name="info">Informacion</string>
+    <string name="default1">Default</string>
+    <string name="localizacion">Localizacion</string>
 </resources>
 

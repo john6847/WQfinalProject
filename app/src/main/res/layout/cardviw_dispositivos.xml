@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="50dp"
+    android:layout_height="@dimen/heightcard_view"
     android:layout_width="match_parent"
     android:layout_marginBottom="11dp"
     android:focusable="true"
@@ -8,17 +8,11 @@
     cardview:cardCornerRadius="@dimen/cornerRadius">
 
     <FrameLayout
-        android:layout_height="50dp"
+        android:layout_height="@dimen/heightcard_view"
         android:layout_width="match_parent"
         android:background="@color/backgroundCardView"
         >
 
-        <ImageView
-            android:id="@+id/imageDispositivo"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            />
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -37,6 +31,7 @@
                 android:textSize="@dimen/textSizeParameterPh"
                 android:fontFamily="serif-monospace"
                 />
+
 
             <TextView
                 android:id="@+id/locationDispositivo"
