@@ -8,16 +8,17 @@
             android:title="Perfil Usuario" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_manage"
             android:title="Manejar Dispositivos" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout" />
+
         <!--<item-->
             <!--android:id="@+id/nav_manage"-->
-            <!--android:icon="@drawable/ic_menu_manage"-->
-            <!--android:title="Tools" />-->
+            <!--android:icon="@drawable/ic_menu_send"-->
+            <!--android:title="Silenciar Notifificaciones" />-->
     </group>
 
     <!--<item android:title="Communicate">-->

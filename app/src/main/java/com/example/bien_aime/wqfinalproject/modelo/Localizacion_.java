@@ -20,6 +20,7 @@ public class Localizacion_ implements Serializable {
     @Expose
     private Double longitud;
 
+
     public Integer getId() {
         return id;
     }

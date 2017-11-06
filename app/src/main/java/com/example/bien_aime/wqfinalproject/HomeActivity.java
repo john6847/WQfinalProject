@@ -1,7 +1,10 @@
 package com.example.bien_aime.wqfinalproject;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -25,12 +28,24 @@ import android.widget.Toast;
 import android.support.annotation.NonNull;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
+import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
 import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
 import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
 
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     String usuarioLlegando;
     List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
+    Usuario usuarioFinal=new Usuario();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,29 +100,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 usuarios = response.body();
                 System.out.println("Usuariossssssssssssssss "+usuarios.get(0).getUsername());
 
-/*                for (Usuario usuario: usuarios){
-                    if (usuario.getUsername().equals("admin")) {
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getListaDispositivos().get(0).getDispositivo().getNombreDispositivo());
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getDispositivos());
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-//                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+usuario.getListaDispositivos().get(0).getDispositivo().getNombreDispositivo());
-
-//                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + usuario.getDispositivos().get(0));
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + usuario.getUsername());
-                    }
-                }*/
-
                 for (Usuario usuario: usuarios){
                     if (usuario.getUsername().equals(usuarioLlegando)){
+                        usuarioFinal=usuario;
                         for (int j=0;j<usuario.getListaDispositivos().size();j++){
                             System.out.println("-------------------------------- Anndan la");
-                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion()));
+                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(),usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
                         }
-                        System.out.println("--------------"+dispositivos.size());;
                     }
                 }
 
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+dispositivos.size());
                 RecyclerView recyclerView=(RecyclerView) findViewById(R.id.dispositivoRecycler);
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
@@ -122,9 +125,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Log.e("failure", String.valueOf(t.getMessage()));
             }
         });
-
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -154,34 +156,103 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
 
-            intent.putExtra("dispositivos", (Serializable)dispositivos);
-            intent.putExtra("usuario",usuarioLlegando);
+            intent.putExtra("dispositivos", (Serializable) dispositivos);
+            intent.putExtra("usuario", usuarioLlegando);
             intent.putExtra("data", (Serializable) usuarios);
 
             startActivity(intent);
-//            intent.putExtra("dispositivos", usuarioLlegando);
-//            startActivity(intent);
+
 
         } else if (id == R.id.nav_gallery) {
 
             Intent intent = new Intent(HomeActivity.this, ManejarDispositivos.class);
 
-            intent.putExtra("dispositivos", (Serializable)dispositivos);
-            intent.putExtra("usuario",usuarioLlegando);
+            intent.putExtra("dispositivos", (Serializable) dispositivos);
+            intent.putExtra("usuario", usuarioLlegando);
             intent.putExtra("data", (Serializable) usuarios);
 
             startActivity(intent);
 
-//            Intent seachIntent = new Intent(MainActivity.this, ChatMessages.class);
-//            startActivity(seachIntent);
-        } else if (id == R.id.nav_map) {
-//            Intent seachIntent = new Intent(MainActivity.this, MapsActivity.class);
-//            startActivity(seachIntent);
+//        } else if (id == R.id.nav_manage) {
+//            System.out.println("Id del usuario 2: "+usuarioFinal.getId());
+//
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("Advertencia").setIcon(R.drawable.silenciar);
+//
+//            builder.setMessage("Si presiona Ok, no le va a llegar ninguna notificacion de esa aplicacion!!!")
+//                    .setCancelable(false)
+//                    .setPositiveButton("Silenciar", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            //do things
+//                            Thread thread = new Thread(new Runnable() {
+//
+//                                @Override
+//                                public void run() {
+//                                    try  {
+//                                        HttpClient httpClient=new DefaultHttpClient();
+//                                        HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/silenciarNotificacion");
+//                                        String json="{"+"id:"+usuarioFinal.getId()+",silenciarNotificacion:"+"true"+"}";
+//
+//                                        StringEntity entity = null;
+//                                        try {
+//                                            entity = new StringEntity(json);
+//                                        } catch (UnsupportedEncodingException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                        httpPost.setEntity(entity);
+//                                        httpPost.setHeader("Accept", "application/json");
+//                                        httpPost.setHeader("Content-type", "application/json");
+//
+//                                        try {
+//                                            HttpResponse response=httpClient.execute(httpPost);
+//                                            System.out.println("Responseee "+response.getStatusLine().getStatusCode());
+//
+//                                        } catch (IOException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            });
+//                            thread.start();
+//                        }
+//                    });
+//
+//            final AlertDialog alert = builder.create();
+//            alert.setOnShowListener( new DialogInterface.OnShowListener() {
+//                                          @Override
+//                                          public void onShow(DialogInterface arg0) {
+//                                              alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+//                                          }
+//                                      });
+//            alert.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//            });
+//
+//            alert.setOnShowListener( new DialogInterface.OnShowListener() {
+//                @Override
+//                public void onShow(DialogInterface arg0) {
+//                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary1));
+//                }
+//            });
+//
+//
+//
+//            alert.show();
+////            Intent seachIntent = new Intent(MainActivity.this, MapsActivity.class);
+////            startActivity(seachIntent);
+//            //Para silenciar notificacion
+//            //API/silenciarNotificacion/
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
 
     public void show_toolbar(String titulo, boolean upBoton){
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);

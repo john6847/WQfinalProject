@@ -86,7 +86,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         try  {
                             //Your code goes here
                             HttpClient httpClient=new DefaultHttpClient();
-                            HttpPost httpPost=new HttpPost("http://waterqualityjohn.herokuapp.com/API/EditarProfile/");
+                            HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/EditarProfile/");
 
                             String json="{"+"id:"+idUsuario +",nombre:"+name.getText().toString()+",direccion:"+direccion.getText().toString()+",telefono:"+telefono.getText().toString()+",username:"+username.getText().toString()+"}";
 

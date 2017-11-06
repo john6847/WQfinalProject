@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Water Quality</string>
-    <string name="email">Username</string>
-    <string name="password">Password</string>
-    <string name="login">Login</string>
-    <string name="no_account_yet_create_one">Forgot your password? get it again</string>
+    <string name="email">Nombre Usuario</string>
+    <string name="password">Contrasena</string>
+    <string name="login">Logear</string>
+    <string name="no_account_yet_create_one">Favor dar click para recuperar su contrasena</string>
     <string name="title_activity_reference">ReferenceActivity</string>
     <string name="toolbar_title_dispositivo">Ver dispositivos</string>
     <string name="toolbar_title_ListaDispositivo">Ver Lista dispositivos</string>
@@ -19,5 +19,6 @@
     <string name="info">Informacion</string>
     <string name="default1">Default</string>
     <string name="localizacion">Localizacion</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
 

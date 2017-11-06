@@ -7,41 +7,66 @@
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     cardview:cardCornerRadius="@dimen/cornerRadius">
 
+
     <FrameLayout
-        android:layout_height="@dimen/heightcard_view"
         android:layout_width="match_parent"
-        android:background="@color/backgroundCardView"
-        >
+        android:layout_height="@dimen/heightcard_view"
+        android:background="@color/backgroundCardView">
 
-        <LinearLayout
-            android:layout_height="118dp"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:paddingBottom="10dp"
-            android:paddingLeft="@dimen/cardViewPaddingLeft"
-            >
+        <!--<TextView-->
+            <!--android:id="@+id/nombreDispositivo1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:text="Nombre Dispositivo: "-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@color/editTextColor"-->
+            <!--android:textSize="@dimen/textSizeParameterPh" />-->
 
-            <TextView
-                android:id="@+id/nombreDispositivo"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/editTextColor"
-                android:text="Hi"
-
-                android:textSize="@dimen/textSizeParameterPh"
-                android:fontFamily="serif-monospace"
-                />
-</LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/nombreDispositivo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:text="Hi"
+            android:textColor="@color/editTextColor"
+            android:textSize="@dimen/textSizeParameterPh" />
+
+
+        <View
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="1dp"
+            android:layout_marginTop="95dp"
+            android:background="@android:color/background_light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
             android:layout_gravity="bottom"
-            android:paddingTop="10dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/cardViewPaddingLeft">
+
+
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="240dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="Ver Ultima Muestra" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/cardViewPaddingLeft"
-            >
+            android:paddingTop="10dp">
 
             <Button
                 android:id="@+id/localizacionDispo"
@@ -52,27 +77,19 @@
 
             <Button
                 android:id="@+id/informacionDispositivos"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/info"
-                />
-
-            <Button
-                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="->" />
+                android:text="@string/info" />
 
             <!--<Button-->
-                <!--android:id="@+id/setearDefaultDispositivos"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:text="@string/default1"-->
-                <!--/>-->
-            </LinearLayout>
+            <!--android:id="@+id/setearDefaultDispositivos"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/default1"-->
+            <!--/>-->
+        </LinearLayout>
 
     </FrameLayout>
 

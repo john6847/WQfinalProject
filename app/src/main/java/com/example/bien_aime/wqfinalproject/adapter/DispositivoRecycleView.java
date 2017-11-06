@@ -2,6 +2,7 @@ package com.example.bien_aime.wqfinalproject.adapter;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.ReceiverCallNotAllowedException;
 import android.content.pm.PackageManager;
@@ -13,11 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.bien_aime.wqfinalproject.HomeActivity;
 import com.example.bien_aime.wqfinalproject.MonitoreoActivity;
 import com.example.bien_aime.wqfinalproject.R;
 import com.example.bien_aime.wqfinalproject.ReferenceActivity;
@@ -30,6 +33,8 @@ import com.google.android.gms.maps.MapView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.example.bien_aime.wqfinalproject.R.layout.cardviw_dispositivos;
 
@@ -42,6 +47,7 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
     private List<Dispositivo> dispositivos;
     private Activity activity;
     private DownloadResultReceiver mReceiver;
+
 
 
     public DispositivoRecycleView(List<Dispositivo> dispositivos, Activity activity) {
@@ -61,10 +67,11 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
         final Dispositivo dispositivo = dispositivos.get(position);
         holder.textView.setText(dispositivo.getNombreDispositivo());
         System.out.println("Nombre Dispositivo "+dispositivo.getNombreDispositivo());
-        holder.textView1.setText(String.valueOf(dispositivo.getId()));
         //holder.imageView.setImageResource(Integer.parseInt(muestra.getPicture()));
+        ProgressDialog mDialog = mDialog = new ProgressDialog(activity);;
 
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+        final ProgressDialog finalMDialog = mDialog;
+        holder.monitoreoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -75,7 +82,6 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
 
             }
         });
-
     }
 
     @Override
@@ -89,6 +95,7 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
         private ImageView imageView;
         private TextView textView;
         private TextView textView1;
+        private TextView monitoreoButton;
 
         public ParameterViewHolder(View itemView) {
             super(itemView);
@@ -104,7 +111,8 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
 
 //            imageView=(ImageView) itemView.findViewById(R.id.imageDispositivo);
             textView=(TextView) itemView.findViewById(R.id.nombreDispositivo);
-            textView1=(TextView) itemView.findViewById(R.id.locationDispositivo);
+
+            monitoreoButton=(TextView) itemView.findViewById(R.id.buttonMonitoreo);
         }
 
 //        public void bind(final Dispositivo dispositivo,final OnItemCLickedListener listener){

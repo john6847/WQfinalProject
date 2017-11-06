@@ -22,6 +22,9 @@ public class Muestra implements Serializable
     @SerializedName("valor")
     @Expose
     private Double valor;
+    @SerializedName("notificada")
+    @Expose
+    private Boolean notificada;
     @SerializedName("muestra")
     @Expose
     private Muestra_ muestra;
@@ -111,4 +114,11 @@ public class Muestra implements Serializable
         this.creadoPor = creadoPor;
     }
 
+    public Boolean getNotificada() {
+        return notificada;
+    }
+
+    public void setNotificada(Boolean notificada) {
+        this.notificada = notificada;
+    }
 }

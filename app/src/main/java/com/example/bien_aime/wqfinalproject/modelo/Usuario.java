@@ -276,6 +276,18 @@ public class Usuario implements Serializable
     @Expose
     private Direccion direccion;
 
+    public Boolean getSilenciarNotificacion() {
+        return silenciarNotificacion;
+    }
+
+    public void setSilenciarNotificacion(Boolean silenciarNotificacion) {
+        this.silenciarNotificacion = silenciarNotificacion;
+    }
+
+    @SerializedName("silenciarNotificacion")
+    @Expose
+    private Boolean silenciarNotificacion;
+
     public Integer getId() {
         return id;
     }

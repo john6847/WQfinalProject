@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.bien_aime.wqfinalproject.verMuestraNotificacion">
+
+
+        <include layout="@layout/activity_toolbar"/>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:orientation="vertical"
+            >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pictureRecycler"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent">
+                </android.support.v7.widget.RecyclerView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="500dp"
+                            android:text="Ver Localizacion"
+                            android:id="@+id/load_direction"
+                            android:layout_margin="5dp"
+                            />
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -79,13 +80,29 @@ public class MonitoreoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoreo);
 
+        final ProgressDialog dialog = new ProgressDialog(MonitoreoActivity.this);
+        dialog.setTitle("Buscando la ultima Muestra...");
+        dialog.setMessage("Favor Esperar.");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        long delayInMillis = 8000;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, delayInMillis);
+
         Intent i = getIntent();
         dispositivoName = i.getStringExtra("dispositivo");
 
         notification = new NotificationCompat.Builder(this);
         notification.setAutoCancel(true);
 
-        show_toolbar(getResources().getString(R.string.toolbar_title_dispositivo), true);
+        show_toolbar(getResources().getString(R.string.toolbar_title_dispositivo), false);
     }
 
     @Override
@@ -111,7 +128,7 @@ public class MonitoreoActivity extends AppCompatActivity {
         int sizeMuestra=getSizeMuestra();
         System.out.println("::::::::::::::::::::::::::::: "+sizeMuestra);//Buscar porque esta llegando null
 
-        Cursor cursor = resolver.query(CONTENT_URL, projection, null,null," id DESC"+" LIMIT 1",null);
+        Cursor cursor = resolver.query(CONTENT_URL, projection, null,null," id DESC"+" LIMIT "+sizeMuestra,null);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -123,7 +140,6 @@ public class MonitoreoActivity extends AppCompatActivity {
                 String dispositivo = cursor.getString(cursor.getColumnIndex("dispositivo"));
 
                 if (dispositivo.equals(dispositivoName)) {
-                    System.out.println("))))))))))))))))))))))))" + dispositivo);
                     muestras.put(id,new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", nombreParametro, Double.parseDouble(valor), fecha));
                 }
             } while (cursor.moveToNext());
@@ -132,12 +148,11 @@ public class MonitoreoActivity extends AppCompatActivity {
             cursor.close();
         }
 
-        System.out.println("Otro ladoooooooooooooooooooooooooooooooooooooooooooooo"+muestras.size());
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pictureRecycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
 
         ParameterRecyclerView parameterRecycler = new ParameterRecyclerView(new ArrayList<>(muestras.values()), MonitoreoActivity.this);
         recyclerView.setAdapter(parameterRecycler);
@@ -159,7 +174,6 @@ public class MonitoreoActivity extends AppCompatActivity {
 
     public int getSizeMuestra() {
         ApiService apiService = ApiService.retrofit.create(ApiService.class);
-        final List<Muestra> muestraList = new ArrayList<>();
 
         final retrofit2.Call<List<Muestra>> call = apiService.getValores();
         call.enqueue(new Callback<List<Muestra>>() {
@@ -170,13 +184,13 @@ public class MonitoreoActivity extends AppCompatActivity {
 
                 for (Muestra muestra : muestras) {
                     if (muestra.getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
-                        muestraList.add(muestra);
                         cont++;
                     }
                 }
             }
             @Override
             public void onFailure(Call<List<Muestra>> call, Throwable t) {
+
             }
         });
         return  cont;

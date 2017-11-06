@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
+import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
 
 import org.apache.http.HttpResponse;
@@ -41,8 +42,6 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ApiService apiService= ApiService.retrofit.create(ApiService.class);
-//        final retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
         setContentView(R.layout.activity_login);
 
         final EditText username = (EditText) findViewById(R.id.username);
@@ -54,6 +53,11 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
             @Override
             public void onClick(View view) {
 
+                mDialog.setMessage("Estas Logeando...");
+                mDialog.setCanceledOnTouchOutside(false);
+                mDialog.setProgress(5);
+                mDialog.show();
+
                 Thread thread = new Thread(new Runnable() {
 
                     @Override
@@ -64,7 +68,7 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                             HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/logear");
                             //Recordar que la primera ver no hay id para ese usuario(No puedo buscar por Id)
                             //Se buscar por username ya que es unico
-                            String json="{"+"id:"+ 1 +",username:"+username.getText().toString()+",password:"+password.getText().toString()+"}";
+                            String json="{"+"username:"+username.getText().toString()+",password:"+password.getText().toString()+"}";
 
                             StringEntity entity = null;
                             try {
@@ -81,7 +85,7 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                 System.out.println("Responseee "+response.getStatusLine().getStatusCode());
 
                                 if(response.getStatusLine().toString().equals("no valid password")){
-                                    System.out.println("Password is not valid");
+                                    Toast.makeText(LoginActivity.this, "El nombre de usuario o contraseno no es valido", Toast.LENGTH_SHORT).show();
                                 }else{
                                     System.out.println("Status Lineeeee: "+response.getStatusLine());
                                     String jsonString = EntityUtils.toString(response.getEntity());
@@ -99,17 +103,12 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                         Toast.makeText(LoginActivity.this, "La contrasena debe ser mayor que 6 caracteres", Toast.LENGTH_SHORT).show();
                                         return;
                                     }
-
-                                        //System.out.println("---------------------------------))))))"+usuario.getDispositivos().get(0).getNombreDispositivo());
-
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         public void run() {
-                                            mDialog.setMessage("Estas Logeando...");
-                                            mDialog.setCanceledOnTouchOutside(false);
-                                            mDialog.show();
 
                                             try {
                                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra("user", (String) jsonObj.get("username")));
+                                                new Intent(LoginActivity.this, ServiceMonitoreo.class).putExtra("user", (String) jsonObj.get("username"));
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }

@@ -4,13 +4,14 @@ package com.example.bien_aime.wqfinalproject.ModeloDB;
  * Created by Bien-aime on 9/6/2017.
  */
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Bien-aime on 8/23/2017.
  */
 
-public class Muestras {
+public class Muestras implements Serializable {
     private String picture;
     private String titulo;
     private double cantidad;

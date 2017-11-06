@@ -12,37 +12,33 @@
         android:layout_width="match_parent"
         android:background="@color/backgroundCardView"
         >
-
-
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_gravity="bottom"
             android:paddingLeft="@dimen/cardViewPaddingLeft"
-            >
+            android:weightSum="1">
+
 
             <TextView
                 android:id="@+id/nombreDispositivo"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textColor="@color/editTextColor"
-                android:text="Hi"
-                android:textSize="@dimen/textSizeParameterPh"
-                android:fontFamily="serif-monospace"
-                />
+                android:text="Dispositivo 1"
+                android:textSize="30dp"
+                android:layout_weight="0.08" />
 
-
-            <TextView
-                android:id="@+id/locationDispositivo"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:textColor="@color/editTextColor"
-                android:textSize="@dimen/textSizeParameterPh"
-                android:gravity="right"
-                android:fontFamily="serif-monospace"
-                />
-
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/buttonMonitoreo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="60dp"
+                android:layout_gravity="center"
+                android:shadowColor="@color/colorAccent"
+                android:drawableLeft="@drawable/ico2"
+                 />
 
         </LinearLayout>
 

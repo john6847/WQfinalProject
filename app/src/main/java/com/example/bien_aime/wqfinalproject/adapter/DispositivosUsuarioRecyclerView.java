@@ -16,6 +16,7 @@ import com.example.bien_aime.wqfinalproject.MonitoreoActivity;
 import com.example.bien_aime.wqfinalproject.R;
 import com.example.bien_aime.wqfinalproject.Servicios.DownloadResultReceiver;
 import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
+import com.example.bien_aime.wqfinalproject.UltimaMuestraActivity;
 import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,7 +37,6 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
 
     public DispositivosUsuarioRecyclerView(List<Dispositivo> dispositivos, Activity activity) {
         this.dispositivos = dispositivos;
-//        this.ressources = ressources;
         this.activity = activity;
     }
 
@@ -50,19 +50,12 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
     public void onBindViewHolder(DispositivoViewHolder holder, int position) {
         final Dispositivo dispositivo = dispositivos.get(position);
 
-
         holder.textView.setText(dispositivo.getNombreDispositivo());
-
-       // holder.textView1.setText(String.valueOf(dispositivo.getId()));
-        //holder.imageView.setImageResource(Integer.parseInt(muestra.getPicture()));
 
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 activity.startActivity(new Intent(activity, DispositivoPersonaActivity.class).putExtra("dispositivo", dispositivo.getNombreDispositivo()));
-                //activity.startService(new Intent(activity, ServiceMonitoreo.class).putExtra("dispositivo", dispositivo.getNombreDispositivo()));
-                //activity.startService(new Intent(activity, MyIntentService.class).putExtra("dispositivo",dispositivo.getNombreDispositivo()));
             }
         });
 
@@ -70,21 +63,25 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
             @Override
             public void onClick(View view) {
 
-//                System.out.println("Dispositivo: "+dispositivo.getLocalizacion().getLatitud());
-                System.out.println("Dispositivo: "+dispositivo.getNombreDispositivo());
-                System.out.println("Dispositivo: "+dispositivo.getLocalizacion());
-
-                String uri = "http://maps.google.com/maps?saddr=" + dispositivo.getLocalizacion().getLatitud().toString()+","+dispositivo.getLocalizacion().getLongitud().toString();
+                String uri = "http://maps.google.com/maps?daddr=" + dispositivo.getLocalizacion().getLatitud().toString()+","+dispositivo.getLocalizacion().getLongitud().toString();
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
                 intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                 activity.startActivity(intent);
             }
         });
 
-        holder.btnLocalizacion.setOnClickListener(new View.OnClickListener() {
+
+        holder.btnInformacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 activity.startActivity(new Intent(activity, DispositivoPersonaActivity.class).putExtra("dispositivo", dispositivo.getNombreDispositivo()));
+            }
+        });
+
+        holder.btnUltimaMuestra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.startActivity(new Intent(activity, UltimaMuestraActivity.class).putExtra("dispositivo", dispositivo.getNombreDispositivo()));
             }
         });
     }
@@ -101,14 +98,15 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
         private Button btnInformacion;
         private Button btnUltimaMuestra;
         private Button btnLocalizacion;
+
         //private TextView textView1;
 
         public DispositivoViewHolder(View itemView) {
             super(itemView);
-//            imageView=(ImageView) itemView.findViewById(R.id.imageDispositivo);
             textView=(TextView) itemView.findViewById(R.id.nombreDispositivo);
             btnLocalizacion=(Button) itemView.findViewById(R.id.localizacionDispo);
             btnInformacion=(Button) itemView.findViewById(R.id.informacionDispositivos);
+            btnUltimaMuestra=(Button) itemView.findViewById(R.id.button2);
         }
     }
 }

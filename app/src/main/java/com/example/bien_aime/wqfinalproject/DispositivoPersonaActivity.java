@@ -4,10 +4,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
@@ -16,6 +19,7 @@ import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
 import com.example.bien_aime.wqfinalproject.modelo.ListaDispositivo;
 import com.example.bien_aime.wqfinalproject.modelo.Muestra;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +29,7 @@ import retrofit2.Response;
 
 public class DispositivoPersonaActivity extends AppCompatActivity  {
     String dispositivoName;
+    Dispositivo dispositivoFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +41,11 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
 
         //final TextView textView=(TextView) findViewById(R.id.tvDispositivoPersonal);
         final TextView nameAfterProfileCollapse=(TextView) findViewById(R.id.usernameProfileAfter);
-        final TextView descripcionDispo=(TextView) findViewById(R.id.descripcionDispositivo);
+        final TextView descripcionDispo=(TextView) findViewById(R.id.tvDescripcion);
+        final TextView nombreDispo=(TextView) findViewById(R.id.tvNombreDispositivo);
+        final TextView fechaCreacionDispo=(TextView) findViewById(R.id.tvFechaCreacion);
+        final TextView normativaAsignadaDispo=(TextView) findViewById(R.id.tvNormativaAsignada);
         final CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.toolbar_layout1);
-
 
 
         ApiService apiService = ApiService.retrofit.create(ApiService.class);
@@ -50,22 +57,34 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
                 List<Dispositivo> dispositivos= response.body();
                 for (Dispositivo dispositivo: dispositivos){
                     if (dispositivo.getNombreDispositivo().equals(dispositivoName)){
-                        //textView.setText(dispositivo.getNombreDispositivo());
                         collapsingToolbarLayout.setTitle(dispositivo.getNombreDispositivo());
                         nameAfterProfileCollapse.setText(dispositivo.getNombreDispositivo());
-                        descripcionDispo.setText(dispositivo.getDescripcion());
+                        if(dispositivo.getDescripcion()!=null){
+                            descripcionDispo.setText(dispositivo.getDescripcion());
+                        }
+                        nombreDispo.setText(dispositivo.getNombreDispositivo());
+                        fechaCreacionDispo.setText(dispositivo.getDateCreated());
+                        fechaCreacionDispo.setText(dispositivo.getDateCreated());
+                        normativaAsignadaDispo.setText(dispositivo.getNormativaAsignada().getNombreNormativa());
+                        dispositivoFinal=dispositivo;
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<List<Dispositivo>> call, Throwable t) {
-
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.editDispositivofab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent intent=new Intent(DispositivoPersonaActivity.this,EditDispositivoActivity.class);
+                intent.putExtra("dispositivo",(Serializable)dispositivoFinal);
+                startActivity(intent);
+            }
+        });
     }
-
-
 }

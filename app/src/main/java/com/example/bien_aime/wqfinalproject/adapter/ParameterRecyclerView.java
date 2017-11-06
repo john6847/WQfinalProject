@@ -27,14 +27,13 @@ import static com.example.bien_aime.wqfinalproject.R.layout.cardview_parameter;
  * Created by Bien-aime on 8/23/2017.
  */
 
+
 public class ParameterRecyclerView extends RecyclerView.Adapter<ParameterRecyclerView.ParameterViewHolder>  {
     private List<Muestras> muestras;
-//    private int ressources;
     private Activity activity;
 
     public ParameterRecyclerView(List<Muestras> muestras,Activity activity) {
         this.muestras = muestras;
-//        this.ressources = ressources;
         this.activity = activity;
     }
 
@@ -52,9 +51,6 @@ public class ParameterRecyclerView extends RecyclerView.Adapter<ParameterRecycle
                 holder.textView1.setText(String.valueOf(muestra.getCantidad()));
                 holder.textView3.setText(String.valueOf(muestra.getFecha()));
                 Picasso.with(activity).load(muestra.getPicture()).into(holder.imageView);
-
-
-
     }
 
     @Override
@@ -78,7 +74,5 @@ public class ParameterRecyclerView extends RecyclerView.Adapter<ParameterRecycle
             textView3=(TextView) itemView.findViewById(R.id.fechaParametro);
 
         }
-
-
     }
 }

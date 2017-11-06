@@ -27,7 +27,7 @@ public class Dispositivo implements Serializable{
     private String lastUpdated;
     @SerializedName("localizacion")
     @Expose
-    private Localizacion localizacion;
+    private Localizacion_ localizacion;
     @SerializedName("descripcion")
     @Expose
     private String descripcion;
@@ -42,7 +42,7 @@ public class Dispositivo implements Serializable{
     private NormativaAsignada normativaAsignada;
     @SerializedName("direccion")
     @Expose
-    private Object direccion;
+    private Direccion direccion;
 
     public Integer getId() {
         return id;
@@ -84,11 +84,11 @@ public class Dispositivo implements Serializable{
         this.lastUpdated = lastUpdated;
     }
 
-    public Localizacion getLocalizacion() {
+    public Localizacion_ getLocalizacion() {
         return localizacion;
     }
 
-    public void setLocalizacion(Localizacion localizacion) {
+    public void setLocalizacion(Localizacion_ localizacion) {
         this.localizacion = localizacion;
     }
 
@@ -124,17 +124,19 @@ public class Dispositivo implements Serializable{
         this.normativaAsignada = normativaAsignada;
     }
 
-    public Object getDireccion() {
+    public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Object direccion) {
+    public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
 
-    public Dispositivo(Integer id, String nombreDispositivo, String descripcion) {
+    public Dispositivo(Integer id, String nombreDispositivo, String descripcion,Localizacion_ localizacion) {
         this.id = id;
         this.descripcion = descripcion;
+        this.nombreDispositivo = nombreDispositivo;
+        this.localizacion = localizacion;
         this.nombreDispositivo = nombreDispositivo;
     }
 }

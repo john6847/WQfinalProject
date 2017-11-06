@@ -14,8 +14,12 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,8 +30,11 @@ import com.example.bien_aime.wqfinalproject.ModeloDB.MuestraSQLiteHelper;
 import com.example.bien_aime.wqfinalproject.MonitoreoActivity;
 import com.example.bien_aime.wqfinalproject.MuestrasContentProvider;
 import com.example.bien_aime.wqfinalproject.R;
+import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
+import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
 import com.example.bien_aime.wqfinalproject.modelo.Muestra;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
+import com.example.bien_aime.wqfinalproject.verMuestraNotificacion;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -36,6 +43,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -51,6 +59,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.R.attr.cacheColorHint;
 import static android.R.attr.name;
 
 public class ServiceMonitoreo extends Service {
@@ -60,6 +69,8 @@ public class ServiceMonitoreo extends Service {
     static final Uri CONTENT_URL =
             Uri.parse("com.exemple.bien_aime.wqfinalproject.MuestrasContentProvider/cpmuestras");
     Handler mHandler;
+    String usuarioLlegando;
+    List<Usuario> usuarios=new ArrayList<>();
 
     public ServiceMonitoreo() {
     }
@@ -71,14 +82,14 @@ public class ServiceMonitoreo extends Service {
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId){
 
+
+//        usuarioLlegando = intent.getStringExtra("user");
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Everytime brooooooooooooooooooooooooooooooooooooooooo");
-                //sendRequest(intent);
                 requestValor(intent);
             }
-        }, 0, 10000);//5 Seconds
+        }, 0, 10000);
 
         return START_STICKY;
     }
@@ -87,8 +98,11 @@ public class ServiceMonitoreo extends Service {
         final String nombreDispositivo=intent.getStringExtra("dispositivo");
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
 
+
+
         final retrofit2.Call<List<Muestra>> call= apiService.getValores();
         call.enqueue(new Callback<List<Muestra>>() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
                 List<Muestra> muestras=response.body();
@@ -106,20 +120,24 @@ public class ServiceMonitoreo extends Service {
 
                     for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
                         if(muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable")){
-                            if(!muestra.getMuestra().getListaNotificaciones().get(i).getStatusEnviada()){
-                                System.out.println("Nooooooooooooooooooooooooooooooooooooooooooooooo");
+                            Usuario[] usuarios=getUser();
+//                            if(!muestra.getMuestra().getListaNotificaciones().get(i).getStatusEnviada()){
+                            if(!muestra.getNotificada()){
 
-                                NotificationCompat.Builder builder =
-                                        new NotificationCompat.Builder(ServiceMonitoreo.this)
-                                                .setSmallIcon(R.drawable.profile_icon)
-                                                .setContentTitle("Agua No potable")
-                                                .setContentText("Se considera que ese agua es no potable5");
-
-
-                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, LoginActivity.class);
+                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, verMuestraNotificacion.class).putExtra("muestras",(Serializable) muestra);
 
                                 PendingIntent contentIntent = PendingIntent.getActivity(ServiceMonitoreo.this, 0, notificationIntent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                NotificationCompat.Builder builder =
+                                        new NotificationCompat.Builder(ServiceMonitoreo.this)
+                                                .setSmallIcon(R.drawable.logo)
+                                                .setAutoCancel(true)
+                                                .setContentTitle("Agua No potable")
+                                                .setContentText("Se considera que ese agua es no potable")
+                                                .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
+                                                .setColor(getColor(R.color.colorPrimary));
+
 
                                 builder.setContentIntent(contentIntent);
                                 builder.setAutoCancel(true);
@@ -131,43 +149,6 @@ public class ServiceMonitoreo extends Service {
                                 builder.setSound(alarmSound);
                                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                                 manager.notify(1, builder.build());
-
-
-
-                                Thread thread = new Thread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        try  {
-                                            //Your code goes here
-                                            HttpClient httpClient=new DefaultHttpClient();
-                                            HttpPost httpPost=new HttpPost("http://waterqualityjohn.herokuapp.com/API/ActivateNotification/");
-                                            //Hay que pensar en cambiar esto porque podria haber mas de una notificacion
-                                            String json="{"+"id:"+muestra.getMuestra().getListaNotificaciones().get(0).getId() +",statusEnviada:"+"true"+"}";
-
-                                            StringEntity entity = null;
-                                            try {
-                                                entity = new StringEntity(json);
-                                            } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                            }
-                                            httpPost.setEntity(entity);
-                                            httpPost.setHeader("Accept", "application/json");
-                                            httpPost.setHeader("Content-type", "application/json");
-
-                                            try {
-                                                HttpResponse response=httpClient.execute(httpPost);
-                                                System.out.println("Responseee"+response.getStatusLine().getStatusCode());
-                                                //assertThat(response.getStatusLine().getStatusCode(), (Matcher<? super Integer>) equalTo(200));
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                                thread.start();
                             }
                         }
                     }
@@ -181,6 +162,38 @@ public class ServiceMonitoreo extends Service {
             }
         });
     }
+
+    public Usuario[] getUser(){
+        ApiService apiService= ApiService.retrofit.create(ApiService.class);
+
+        final Usuario[] usuarioRequerido = {new Usuario()};
+        retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
+
+        call.enqueue(new Callback<List<Usuario>>() {
+            @Override
+            public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                Log.d("OnResponse ", response.body().toString());
+                Log.d("OnResponse ", response.body().toString());
+
+                usuarios = response.body();
+
+                for (Usuario usuario: usuarios){
+                    if (usuario.getUsername().equals(usuarioLlegando)){
+                        usuarioRequerido[0] =usuario;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Usuario>> call, Throwable t) {
+                Log.e("failure", String.valueOf(t.getMessage()));
+            }
+        });
+
+        return usuarioRequerido;
+    }
+
+
 
    /* public void sendRequest(Intent intent){
 //Toast.makeText(this,"Empieza el servicio", Toast.LENGTH_LONG).show();

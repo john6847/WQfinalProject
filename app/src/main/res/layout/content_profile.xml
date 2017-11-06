@@ -21,6 +21,42 @@
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin">
 
+
+            <Switch
+                android:id="@+id/simpleSwitch"
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textOff="No"
+                android:textOn="Si"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:showText="true"
+                android:shadowColor="@color/colorPrimary"
+                android:text="Activar Notificaciones            "/>
+
+            <ImageView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:src="@android:drawable/alert_dark_frame"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:scaleType="fitXY"
+
+                android:layout_below="@id/simpleSwitch"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
             <ImageView
                 android:id="@+id/ivContactItem1"
                 android:layout_width="20dp"
@@ -38,8 +74,6 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem1"
                 android:text="John Doe"
-
-
                 android:textColor="#212121" />
 
         </RelativeLayout>

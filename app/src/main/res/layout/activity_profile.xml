@@ -20,9 +20,8 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="100dp"
+            app:expandedTitleMarginStart="110dp"
             android:scrollbarSize="@dimen/cornerRadius"
-
             app:title=" "
             app:titleEnabled="true"
             app:expandedTitleTextAppearance="@color/common_google_signin_btn_text_dark"

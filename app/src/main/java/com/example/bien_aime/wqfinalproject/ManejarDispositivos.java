@@ -38,14 +38,6 @@ public class ManejarDispositivos extends AppCompatActivity {
         usuarios= (List<Usuario>) i.getSerializableExtra("data");
         usuarioLlegando=i.getStringExtra("usuario");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         RecyclerView recyclerView=(RecyclerView) findViewById(R.id.dispositivoProfileRecycler);
         recyclerView.setHasFixedSize(true);
