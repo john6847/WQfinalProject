@@ -15,6 +15,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
@@ -65,15 +66,18 @@ import static android.R.attr.name;
 public class ServiceMonitoreo extends Service {
     private Timer timer = new Timer();
     List<Muestra> muestras=new ArrayList<>();
+    Usuario usuarioRequerido;
 
     static final Uri CONTENT_URL =
             Uri.parse("com.exemple.bien_aime.wqfinalproject.MuestrasContentProvider/cpmuestras");
     Handler mHandler;
+
     String usuarioLlegando;
     List<Usuario> usuarios=new ArrayList<>();
 
     public ServiceMonitoreo() {
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -83,7 +87,7 @@ public class ServiceMonitoreo extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId){
 
 
-//        usuarioLlegando = intent.getStringExtra("user");
+
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -95,7 +99,12 @@ public class ServiceMonitoreo extends Service {
     }
 
     public void requestValor(Intent intent){
-        final String nombreDispositivo=intent.getStringExtra("dispositivo");
+        Bundle extras = intent.getExtras();
+        final String nombreDispositivo = extras.getString("dispositivo");
+        usuarioLlegando = extras.getString("user");
+
+//        final String nombreDispositivo=intent.getStringExtra("dispositivo");
+//        usuarioLlegando = intent.getStringExtra("user");
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
 
 
@@ -119,12 +128,17 @@ public class ServiceMonitoreo extends Service {
                     Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
 
                     for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
-                        if(muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable")){
-                            Usuario[] usuarios=getUser();
-//                            if(!muestra.getMuestra().getListaNotificaciones().get(i).getStatusEnviada()){
-                            if(!muestra.getNotificada()){
 
-                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, verMuestraNotificacion.class).putExtra("muestras",(Serializable) muestra);
+                        Usuario usuarioAChequear=getUser();
+
+                        if(usuarioAChequear!=null)
+                            System.out.println("El usuario requerido es:::::::::::::::::::::::::::: : "+usuarioAChequear.getUsername());
+
+                        if (usuarioAChequear != null && muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable") && !usuarioAChequear.getSilenciarNotificacion()) {
+
+                            if (!muestra.getNotificada()) {
+
+                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestra);
 
                                 PendingIntent contentIntent = PendingIntent.getActivity(ServiceMonitoreo.this, 0, notificationIntent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
@@ -142,7 +156,7 @@ public class ServiceMonitoreo extends Service {
                                 builder.setContentIntent(contentIntent);
                                 builder.setAutoCancel(true);
                                 builder.setLights(Color.BLUE, 500, 500);
-                                long[] pattern = {500,500,500,500,500,500,500,500,500};
+                                long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
                                 builder.setVibrate(pattern);
                                 builder.setStyle(new NotificationCompat.InboxStyle());
                                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -163,23 +177,28 @@ public class ServiceMonitoreo extends Service {
         });
     }
 
-    public Usuario[] getUser(){
+    public Usuario getUser(){
         ApiService apiService= ApiService.retrofit.create(ApiService.class);
 
-        final Usuario[] usuarioRequerido = {new Usuario()};
         retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
 
         call.enqueue(new Callback<List<Usuario>>() {
+
             @Override
             public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                System.out.println("Encontro una resuesta?????????");
                 Log.d("OnResponse ", response.body().toString());
                 Log.d("OnResponse ", response.body().toString());
 
                 usuarios = response.body();
 
+
+                System.out.println("Usuario Llegando: "+usuarioLlegando);
+
                 for (Usuario usuario: usuarios){
                     if (usuario.getUsername().equals(usuarioLlegando)){
-                        usuarioRequerido[0] =usuario;
+                        System.out.println("Encontro el maldito usuario?????????????");
+                        usuarioRequerido =usuario;
                     }
                 }
             }

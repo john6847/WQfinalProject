@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
+import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
 
 import org.apache.http.HttpResponse;
@@ -66,8 +67,6 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
 
                             HttpClient httpClient=new DefaultHttpClient();
                             HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/logear");
-                            //Recordar que la primera ver no hay id para ese usuario(No puedo buscar por Id)
-                            //Se buscar por username ya que es unico
                             String json="{"+"username:"+username.getText().toString()+",password:"+password.getText().toString()+"}";
 
                             StringEntity entity = null;
@@ -84,8 +83,8 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                 HttpResponse response=httpClient.execute(httpPost);
                                 System.out.println("Responseee "+response.getStatusLine().getStatusCode());
 
-                                if(response.getStatusLine().toString().equals("no valid password")){
-                                    Toast.makeText(LoginActivity.this, "El nombre de usuario o contraseno no es valido", Toast.LENGTH_SHORT).show();
+                                if(response.getStatusLine().getStatusCode()!=200){
+                                    Toast.makeText(LoginActivity.this, "Problema al tratar de logearse", Toast.LENGTH_SHORT).show();
                                 }else{
                                     System.out.println("Status Lineeeee: "+response.getStatusLine());
                                     String jsonString = EntityUtils.toString(response.getEntity());
@@ -109,6 +108,7 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                             try {
                                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra("user", (String) jsonObj.get("username")));
                                                 new Intent(LoginActivity.this, ServiceMonitoreo.class).putExtra("user", (String) jsonObj.get("username"));
+                                                new Intent(LoginActivity.this, DispositivoRecycleView.class).putExtra("user", (String) jsonObj.get("username"));
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
@@ -128,61 +128,6 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                 thread.start();
             }
         });
-
-//        buttonLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //lLAMAMOS A LA FUNCION GETuSUARIOS
-//                //apiService=APIclient.getClient().create(ApiService.class);
-//
-//                //La cambie de lugar para verificar porque esta tomando tantos tiempos
-//                ApiService apiService= ApiService.retrofit.create(ApiService.class);
-//                final retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
-//
-//                call.enqueue(new Callback<List<Usuario>>() {
-//                    @Override
-//                    public void onResponse(retrofit2.Call<List<Usuario>> call, Response<List<Usuario>> response) {
-//                        List<Usuario> usuarios = response.body();
-////                        System.out.println("---------------" + usuarios.get(0).getApellido());
-//                        System.out.println("Thereeee");
-//
-//                        for (Usuario usuario : usuarios) {
-//                            if (TextUtils.isEmpty(username.getText().toString())) {
-//                                Toast.makeText(LoginActivity.this, "Ingresar un correo Electronico", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            } else if (TextUtils.isEmpty(password.getText().toString())) {
-//                                Toast.makeText(LoginActivity.this, "Ingresar una contrasena", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            } else if (password.getText().toString().length() < 3) {
-//                                Toast.makeText(LoginActivity.this, "La contrasena debe ser mayor que 6 caracteres", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//                            if (username.getText().toString().equals(usuario.getUsername()) && password.getText().toString().equals(usuario.getContrasena())) {
-//                                System.out.println("Siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-//
-//                                //System.out.println("---------------------------------))))))"+usuario.getDispositivos().get(0).getNombreDispositivo());
-//                                mDialog.setMessage("Estas Logeando...");
-//                                mDialog.setCanceledOnTouchOutside(false);
-//                                mDialog.show();
-//
-//                                startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra("user",usuario.getUsername()));
-//
-//                            } else {
-//                                mDialog.dismiss();
-//                                Toast.makeText(LoginActivity.this, "Error al logear", Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(retrofit2.Call<List<Usuario>> call, Throwable t) {
-//                        Toast.makeText(LoginActivity.this,"La aplicacion no encuentra ese usuario", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//
-//            }
-//        });
-
 
     }
 
