@@ -39,6 +39,18 @@ public class ListaDispositivo implements Serializable
     @Expose
     private String creadoPor;
 
+    public Boolean getUsuarioNotificado() {
+        return usuarioNotificado;
+    }
+
+    public void setUsuarioNotificado(Boolean usuarioNotificado) {
+        this.usuarioNotificado = usuarioNotificado;
+    }
+
+    @SerializedName("usuarioNotificado")
+    @Expose
+    private Boolean usuarioNotificado;
+
     public Integer getId() {
         return id;
     }

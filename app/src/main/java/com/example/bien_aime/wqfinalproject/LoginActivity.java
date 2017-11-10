@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
+import com.example.bien_aime.wqfinalproject.Servicios.ServicioNotificacion;
 import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
 
@@ -106,9 +107,12 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                         public void run() {
 
                                             try {
+
                                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class).putExtra("user", (String) jsonObj.get("username")));
                                                 new Intent(LoginActivity.this, ServiceMonitoreo.class).putExtra("user", (String) jsonObj.get("username"));
                                                 new Intent(LoginActivity.this, DispositivoRecycleView.class).putExtra("user", (String) jsonObj.get("username"));
+                                                startService(new Intent(LoginActivity.this, ServicioNotificacion.class).putExtra("user", (String) jsonObj.get("username")));
+
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }

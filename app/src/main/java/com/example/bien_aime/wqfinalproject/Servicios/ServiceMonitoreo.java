@@ -77,7 +77,6 @@ public class ServiceMonitoreo extends Service {
 
     public ServiceMonitoreo() {
     }
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -127,45 +126,45 @@ public class ServiceMonitoreo extends Service {
                     }
                     Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
 
-                    for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
-
-                        Usuario usuarioAChequear=getUser();
-
-                        if(usuarioAChequear!=null)
-                            System.out.println("El usuario requerido es:::::::::::::::::::::::::::: : "+usuarioAChequear.getUsername());
-
-                        if (usuarioAChequear != null && muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable") && !usuarioAChequear.getSilenciarNotificacion()) {
-
-                            if (!muestra.getNotificada()) {
-
-                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestra);
-
-                                PendingIntent contentIntent = PendingIntent.getActivity(ServiceMonitoreo.this, 0, notificationIntent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-                                NotificationCompat.Builder builder =
-                                        new NotificationCompat.Builder(ServiceMonitoreo.this)
-                                                .setSmallIcon(R.drawable.logo)
-                                                .setAutoCancel(true)
-                                                .setContentTitle("Agua No potable")
-                                                .setContentText("Se considera que ese agua es no potable")
-                                                .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
-                                                .setColor(getColor(R.color.colorPrimary));
-
-
-                                builder.setContentIntent(contentIntent);
-                                builder.setAutoCancel(true);
-                                builder.setLights(Color.BLUE, 500, 500);
-                                long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
-                                builder.setVibrate(pattern);
-                                builder.setStyle(new NotificationCompat.InboxStyle());
-                                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                builder.setSound(alarmSound);
-                                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                                manager.notify(1, builder.build());
-                            }
-                        }
-                    }
+//                    for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
+//
+//                        Usuario usuarioAChequear=getUser();
+//
+//                        if(usuarioAChequear!=null)
+//                            System.out.println("El usuario requerido es:::::::::::::::::::::::::::: : "+usuarioAChequear.getUsername());
+//
+//                        if (usuarioAChequear != null && muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable") && !usuarioAChequear.getSilenciarNotificacion()) {
+//
+//                            if (!muestra.getNotificada()) {
+//
+//                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestra);
+//
+//                                PendingIntent contentIntent = PendingIntent.getActivity(ServiceMonitoreo.this, 0, notificationIntent,
+//                                        PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//                                NotificationCompat.Builder builder =
+//                                        new NotificationCompat.Builder(ServiceMonitoreo.this)
+//                                                .setSmallIcon(R.drawable.logo)
+//                                                .setAutoCancel(true)
+//                                                .setContentTitle("Agua No potable")
+//                                                .setContentText("Se considera que ese agua es no potable")
+//                                                .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
+//                                                .setColor(getColor(R.color.colorPrimary));
+//
+//
+//                                builder.setContentIntent(contentIntent);
+//                                builder.setAutoCancel(true);
+//                                builder.setLights(Color.BLUE, 500, 500);
+//                                long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
+//                                builder.setVibrate(pattern);
+//                                builder.setStyle(new NotificationCompat.InboxStyle());
+//                                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                                builder.setSound(alarmSound);
+//                                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                                manager.notify(1, builder.build());
+                        //    }
+                    //    }
+                   // }
                 }
                 System.out.println("**************************************"+muestras.size());
             }
