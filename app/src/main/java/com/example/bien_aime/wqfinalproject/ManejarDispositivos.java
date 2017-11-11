@@ -31,7 +31,7 @@ public class ManejarDispositivos extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        show_toolbar(getResources().getString(R.string.toolbar_title_ListaDispositivo), true);
+        show_toolbar(getResources().getString(R.string.toolbar_title_ListaDispositivo), false);
 
         Intent i = getIntent();
         dispositivos= (List<Dispositivo>) i.getSerializableExtra("dispositivos");

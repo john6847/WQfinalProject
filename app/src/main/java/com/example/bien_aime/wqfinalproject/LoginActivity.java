@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Callback;
@@ -55,10 +56,7 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
             @Override
             public void onClick(View view) {
 
-                mDialog.setMessage("Estas Logeando...");
-                mDialog.setCanceledOnTouchOutside(false);
-                mDialog.setProgress(5);
-                mDialog.show();
+
 
                 Thread thread = new Thread(new Runnable() {
 
@@ -84,23 +82,52 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                 HttpResponse response=httpClient.execute(httpPost);
                                 System.out.println("Responseee "+response.getStatusLine().getStatusCode());
 
-                                if(response.getStatusLine().getStatusCode()!=200){
-                                    Toast.makeText(LoginActivity.this, "Problema al tratar de logearse", Toast.LENGTH_SHORT).show();
+                                if(Arrays.toString(response.getAllHeaders()).contains("[X-Application-Context: application:development, Content-Type: text/html;charset=utf-8")){
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            Toast.makeText(LoginActivity.this, "Problema al tratar de logearse", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+//                                    Toast.makeText(LoginActivity.this, "Problema al tratar de logearse", Toast.LENGTH_SHORT).show();
                                 }else{
-                                    System.out.println("Status Lineeeee: "+response.getStatusLine());
+
+
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            mDialog.setMessage("Estas Logeando...");
+                                            mDialog.setCanceledOnTouchOutside(false);
+                                            mDialog.setProgress(5);
+                                            mDialog.show();                                        }
+                                    });
+
+                                    System.out.println("Status Lineeeee: "+ Arrays.toString(response.getAllHeaders()));
                                     String jsonString = EntityUtils.toString(response.getEntity());
+
                                     final JSONObject jsonObj = new JSONObject(jsonString);
                                     System.out.println("Status Lineeeee: "+jsonString);
                                     System.out.println("Status Lineeeee: "+jsonObj.get("username"));
 
                                     if (TextUtils.isEmpty(username.getText().toString())) {
-                                        Toast.makeText(LoginActivity.this, "Ingresar un correo Electronico", Toast.LENGTH_SHORT).show();
+                                        LoginActivity.this.runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(LoginActivity.this, "Ingresar un nombre de usuario", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                         return;
                                     } else if (TextUtils.isEmpty(password.getText().toString())) {
-                                        Toast.makeText(LoginActivity.this, "Ingresar una contrasena", Toast.LENGTH_SHORT).show();
+                                        LoginActivity.this.runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(LoginActivity.this, "Ingresar una contrasena", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                         return;
                                     } else if (password.getText().toString().length() < 3) {
-                                        Toast.makeText(LoginActivity.this, "La contrasena debe ser mayor que 6 caracteres", Toast.LENGTH_SHORT).show();
+                                        LoginActivity.this.runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(LoginActivity.this, "La contrasena debe ser mayor que 6 caracteres", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                         return;
                                     }
                                     LoginActivity.this.runOnUiThread(new Runnable() {

@@ -1,5 +1,6 @@
 package com.example.bien_aime.wqfinalproject;
 
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,6 +24,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
@@ -127,6 +131,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+
+    public void didTapButton(View view) {
+        Button button = (Button)findViewById(R.id.buttonMonitoreo);
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+
+        // Use bounce interpolator with amplitude 0.2 and frequency 20
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        myAnim.setInterpolator(interpolator);
+
+        button.startAnimation(myAnim);
+    }
+
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

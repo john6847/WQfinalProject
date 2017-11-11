@@ -1,25 +1,18 @@
 package com.example.bien_aime.wqfinalproject;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ContentValues;
-import android.content.Context;
+
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
-import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
-import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
 import com.example.bien_aime.wqfinalproject.modelo.Muestra;
-import com.example.bien_aime.wqfinalproject.modelo.Usuario;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +22,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,51 +34,61 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
     private GoogleMap mMap;
     String dispositivoName;
     Muestra muestraFinal;
+    ListView mListView;
+    Double latitud;
+    Double longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ultima_muestra);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
 
         Intent i = getIntent();
         dispositivoName = i.getStringExtra("dispositivo");
 
 
-        final TextView fechaMuestra=(TextView) findViewById(R.id.load_immueble_fecha);
-        final TextView normativaMuestra=(TextView) findViewById(R.id.load_normativaAsignada);
-        final TextView dispositivoMuestra=(TextView) findViewById(R.id.load_immueble_dispositivo);
-        final TextView contenedorMuestra=(TextView) findViewById(R.id.load_immueble_Contenedor);
-        final TextView estadoMuestra=(TextView) findViewById(R.id.load_immueble_estado);
+        final TextView fechaMuestra = (TextView) findViewById(R.id.load_immueble_fecha);
+
+        mListView = (ListView) findViewById(R.id.list);
+        final ArrayList<String> listaMuestra = new ArrayList<>();
+
 
         ApiService apiService = ApiService.retrofit.create(ApiService.class);
-        final retrofit2.Call<List<Muestra>> call= apiService.getValores();
+        final retrofit2.Call<List<Muestra>> call = apiService.getValores();
         call.enqueue(new Callback<List<Muestra>>() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
-                List<Muestra> muestras=response.body();
+                List<Muestra> muestras = response.body();
 
-                ContentValues contentValues = new ContentValues();
-                for (final Muestra muestra: muestras) {
-                    if (muestra.getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
-                        fechaMuestra.setText(muestra.getMuestra().getFechaMuestra());
-                        normativaMuestra.setText(muestra.getMuestra().getNormativa().getNombreNormativa());
-                        dispositivoMuestra.setText(muestra.getMuestra().getDispositivo().getNombreDispositivo());
-//                        contenedorMuestra.setText(muestra.getMuestra().getContenedor());
-                        estadoMuestra.setText(muestra.getMuestra().getEstadoMuestra().getNombre());
+                for (int i = 0; i < muestras.size(); i++) {
+                    if (muestras.get(i).getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
+                        fechaMuestra.setText(muestras.get(i).getMuestra().getFechaMuestra());
+                        latitud = muestras.get(i).getMuestra().getLocalizacion().getLatitud();
+                        longitud = muestras.get(i).getMuestra().getLocalizacion().getLongitud();
+                        listaMuestra.add(muestras.get(i).getParametro().getNombreParametro() + "         " + muestras.get(i).getValor());
 
                     }
                 }
+                ArrayAdapter<String> arrayAdapter =
+                        new ArrayAdapter<String>(UltimaMuestraActivity.this, android.R.layout.simple_list_item_1, listaMuestra);
+                // Set The Adapter
+                mListView.setAdapter(arrayAdapter);
+
+                // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(UltimaMuestraActivity.this);
+
+
             }
 
             @Override
             public void onFailure(Call<List<Muestra>> call, Throwable t) {
             }
         });
+
     }
 
 
@@ -97,16 +101,27 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @Override
+    public void onMapReady(GoogleMap retMap) {
 
-       // LatLng sydney = new LatLng(-70.66545, 19.44835);
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        LatLng sydney = new LatLng(19.44835,-70.66545);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Santiago"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10f));
+        mMap = retMap;
 
-        //Add a marker in Sydney, Australia, and move the camera.
+        setUpMap();
+
+    }
+
+    public void setUpMap() {
+
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        if(longitud!=null && latitud!=null) {
+            System.out.println("La encontro");
+            LatLng sydney = new LatLng(latitud, longitud);
+            mMap.addMarker(new MarkerOptions().position(sydney).title("Santiago"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 18f));
+        }else{
+            Toast.makeText(this, "Unable to fetch the current location", Toast.LENGTH_SHORT).show();
+        }
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -118,4 +133,6 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
             }
         });
     }
+
+
 }

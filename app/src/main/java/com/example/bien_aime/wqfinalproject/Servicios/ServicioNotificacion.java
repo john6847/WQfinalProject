@@ -3,9 +3,12 @@ package com.example.bien_aime.wqfinalproject.Servicios;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -19,6 +22,7 @@ import android.util.Log;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.HomeActivity;
+import com.example.bien_aime.wqfinalproject.ModeloDB.Muestras;
 import com.example.bien_aime.wqfinalproject.MuestrasContentProvider;
 import com.example.bien_aime.wqfinalproject.R;
 import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
@@ -31,6 +35,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -51,6 +56,14 @@ public class ServicioNotificacion extends Service {
     List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
     List<Muestra> muestras;
+    public static final String PREFS_NAME = "com.example.bien_aime.wqfinalproject";
+
+
+//    static final Uri CONTENT_URL =
+//            Uri.parse("content://com.exemple.bien_aime.wqfinalproject.MuestrasContentProvider/cpmuestras");
+//
+//    ContentResolver resolver;
+    long idMuestra;
 
     public ServicioNotificacion() {
     }
@@ -85,6 +98,9 @@ public class ServicioNotificacion extends Service {
         ApiService apiService= ApiService.retrofit.create(ApiService.class);
 
         final List<Muestra> muestras=getMuestras();
+//
+//        final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        idMuestra= prefs.getInt("idMuestra", -1);
 
         retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
 
@@ -108,13 +124,49 @@ public class ServicioNotificacion extends Service {
                                         if (muestras.get(i).getMuestra().getListaNotificaciones().get(0).getNombre().equalsIgnoreCase("noPotable") && !usuario.getSilenciarNotificacion()) {
                                             System.out.println("Gritando No potable");
 
-                                            if(!usuario.getListaDispositivos().get(j).getUsuarioNotificado()) {
+                                            final int finalJ = j;
+                                            Thread thread = new Thread(new Runnable() {
 
+                                                @Override
+                                                public void run() {
+                                                    try  {
+                                                        HttpClient httpClient=new DefaultHttpClient();
+                                                        HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
+                                                        String json="{"+"idUsuario:"+usuario.getId()+",idDispositivo:"+usuario.getListaDispositivos().get(finalJ).getId() +",notificacion:"+"true"+"}";
+
+                                                        StringEntity entity = null;
+                                                        try {
+                                                            entity = new StringEntity(json);
+                                                        } catch (UnsupportedEncodingException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        httpPost.setEntity(entity);
+                                                        httpPost.setHeader("Accept", "application/json");
+                                                        httpPost.setHeader("Content-type", "application/json");
+
+                                                        try {
+                                                            HttpResponse response=httpClient.execute(httpPost);
+                                                            System.out.println("Responseee"+response.getStatusLine().getStatusCode());
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+                                            thread.start();
+
+
+//                                            System.out.println("Id de la nueva muestra:: "+muestras.get(i).getId());
+//                                            System.out.println("Id de la nueva muestra 2:: "+idMuestra);
+//                                            System.out.println("Id de la nueva muestra 3:: "+muestras.get(i).getMuestra().getId());
+//                                            System.out.println("Size : "+prefs.getAll());
+
+
+                                            if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && muestras.get(i).getMuestra().getId() != idMuestra) {
+                                                System.out.println("No deberia entrar aqui");
                                                 Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras.get(i)).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
-//                                                new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras",usuario);
-//                                                new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("usuarioId", usuario.getId());
-//                                                System.out.println("Usuario que voy a mandar: "+usuario.getId());
-//                                                new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("idDispositivo", usuario.getListaDispositivos().get(j));
 
                                                 PendingIntent contentIntent = PendingIntent.getActivity(ServicioNotificacion.this, 0, notificationIntent,
                                                         PendingIntent.FLAG_UPDATE_CURRENT);
@@ -140,39 +192,11 @@ public class ServicioNotificacion extends Service {
                                                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                                                 manager.notify(1, builder.build());
 
+                                                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+                                                editor.putInt("idMuestra", muestras.get(i).getMuestra().getId());
+                                                editor.apply();
 
-                                                final int finalJ = j;
-                                                Thread thread = new Thread(new Runnable() {
 
-                                                    @Override
-                                                    public void run() {
-                                                        try  {
-                                                            HttpClient httpClient=new DefaultHttpClient();
-                                                            HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
-                                                            String json="{"+"idUsuario:"+usuario.getId()+",idDispositivo:"+usuario.getListaDispositivos().get(finalJ).getId() +",notificacion:"+"true"+"}";
-
-                                                            StringEntity entity = null;
-                                                            try {
-                                                                entity = new StringEntity(json);
-                                                            } catch (UnsupportedEncodingException e) {
-                                                                e.printStackTrace();
-                                                            }
-                                                            httpPost.setEntity(entity);
-                                                            httpPost.setHeader("Accept", "application/json");
-                                                            httpPost.setHeader("Content-type", "application/json");
-
-                                                            try {
-                                                                HttpResponse response=httpClient.execute(httpPost);
-                                                                System.out.println("Responseee"+response.getStatusLine().getStatusCode());
-                                                            } catch (IOException e) {
-                                                                e.printStackTrace();
-                                                            }
-                                                        } catch (Exception e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                });
-                                                thread.start();
                                             }
 
                                         }
@@ -192,9 +216,15 @@ public class ServicioNotificacion extends Service {
         });
     }
 
+
+
     public List<Muestra> getMuestras()
     {
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
+//
+//        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+//        editor.putInt("idMuestra", 0);
+//        editor.apply();
 
 
         final retrofit2.Call<List<Muestra>> call= apiService.getValores();
@@ -202,7 +232,22 @@ public class ServicioNotificacion extends Service {
             @Override
             public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
                 muestras=response.body();
-                System.out.println("Size 2 de muestra "+muestras.get(0).getId());
+//                System.out.println("Size 2 de muestra "+muestras.get(0).getId());
+//                ContentValues contentValues = new ContentValues();
+
+//                for (final Muestra muestra: muestras){
+//
+//                        contentValues.put(MuestrasContentProvider.nombreParametro,muestra.getParametro().getNombreParametro());
+//                        contentValues.put(MuestrasContentProvider.valor,muestra.getValor());
+//                        contentValues.put(MuestrasContentProvider.fecha,muestra.getMuestra().getFechaMuestra());
+//                        contentValues.put(MuestrasContentProvider.dispositivo,muestra.getMuestra().getDispositivo().getNombreDispositivo());
+//                    }
+//                    Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
+//
+
+//                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+//                editor.putInt("idMuestra", muestras.get(0).getMuestra().getId());
+//                editor.apply();
             }
 
             @Override
