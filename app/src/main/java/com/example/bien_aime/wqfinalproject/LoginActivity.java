@@ -39,8 +39,6 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
     ProgressDialog mDialog;
-   // ApiService apiService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +53,6 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
                 Thread thread = new Thread(new Runnable() {
 
                     @Override
@@ -97,7 +92,7 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                                         public void run() {
                                             mDialog.setMessage("Estas Logeando...");
                                             mDialog.setCanceledOnTouchOutside(false);
-                                            mDialog.setProgress(5);
+                                            mDialog.setProgress(7);
                                             mDialog.show();                                        }
                                     });
 
@@ -159,7 +154,6 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                 thread.start();
             }
         });
-
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -180,7 +174,6 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
         }else if (id == R.id.nav_map) {
 
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -1,6 +1,7 @@
 package com.example.bien_aime.wqfinalproject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.bien_aime.wqfinalproject.Servicios.ServicioNotificacion.PREFS_NAME;
+
 public class verMuestraNotificacion extends AppCompatActivity {
 
     Muestra muestraLLegando;
@@ -54,6 +57,8 @@ public class verMuestraNotificacion extends AppCompatActivity {
         Intent intent=getIntent();
         usuarioId=intent.getStringExtra("usuarioId");
         dispositivoId= intent.getStringExtra("idDispositivo");
+
+
 
         Intent i = getIntent();
         muestraLLegando= (Muestra) i.getSerializableExtra("muestras");
@@ -90,6 +95,12 @@ public class verMuestraNotificacion extends AppCompatActivity {
                 }
             });
             thread.start();
+
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+//        editor.putInt("idMuestra", muestraLLegando.getMuestra().getId());
+        editor.clear();
+        editor.putBoolean("leido", true);
+        editor.apply();
 
         Button btnLocalizacion=(Button) findViewById(R.id.load_direction);
 

@@ -1,6 +1,4 @@
 package com.example.bien_aime.wqfinalproject;
-
-
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -118,7 +116,7 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
             System.out.println("La encontro");
             LatLng sydney = new LatLng(latitud, longitud);
             mMap.addMarker(new MarkerOptions().position(sydney).title("Santiago"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 18f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15f));
         }else{
             Toast.makeText(this, "Unable to fetch the current location", Toast.LENGTH_SHORT).show();
         }

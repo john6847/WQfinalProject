@@ -45,6 +45,10 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
         final TextView nombreDispo=(TextView) findViewById(R.id.tvNombreDispositivo);
         final TextView fechaCreacionDispo=(TextView) findViewById(R.id.tvFechaCreacion);
         final TextView normativaAsignadaDispo=(TextView) findViewById(R.id.tvNormativaAsignada);
+        final TextView sector=(TextView) findViewById(R.id.tvSector);
+        final TextView ciudad=(TextView) findViewById(R.id.tvCiudad);
+        final TextView pais=(TextView) findViewById(R.id.tvPais);
+        final TextView calle=(TextView) findViewById(R.id.tvCalle);
         final CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.toolbar_layout1);
 
 
@@ -57,10 +61,18 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
                 List<Dispositivo> dispositivos= response.body();
                 for (Dispositivo dispositivo: dispositivos){
                     if (dispositivo.getNombreDispositivo().equals(dispositivoName)){
+
                         collapsingToolbarLayout.setTitle(dispositivo.getNombreDispositivo());
                         nameAfterProfileCollapse.setText(dispositivo.getNombreDispositivo());
                         if(dispositivo.getDescripcion()!=null){
                             descripcionDispo.setText(dispositivo.getDescripcion());
+                        }
+
+                        if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null || dispositivo.getDireccion().getSector().getCiudad()!=null || dispositivo.getDireccion().getSector().getCiudad().getPais()!=null){
+                            sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
+                            ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
+                            pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+                            calle.setText(dispositivo.getDireccion().getCalle());
                         }
                         nombreDispo.setText(dispositivo.getNombreDispositivo());
                         fechaCreacionDispo.setText(dispositivo.getDateCreated());
@@ -87,4 +99,7 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
             }
         });
     }
+
+
+
 }

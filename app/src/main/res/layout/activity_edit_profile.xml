@@ -3,9 +3,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:inputType="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:orientation="vertical"
@@ -39,6 +39,7 @@
 
                 <EditText android:id="@+id/usernameEdit"
                     android:layout_width="match_parent"
+                    android:editable="false"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/editTextColor"
@@ -70,12 +71,57 @@
                 android:textColorHint="@color/editTextColor"
                 android:layout_marginBottom="8dp">
 
-                <EditText android:id="@+id/direccionEdit"
+                <EditText android:id="@+id/direccionPaisEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/editTextColor"
-                    android:hint="Direccion" />
+                    android:hint="Pais" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColorHint="@color/editTextColor"
+                android:layout_marginBottom="8dp">
+
+                <EditText android:id="@+id/direccionCiudadEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/editTextColor"
+                    android:hint="Ciudad" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColorHint="@color/editTextColor"
+            android:layout_marginBottom="8dp">
+
+            <EditText android:id="@+id/direccionSectorEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/editTextColor"
+                android:hint="Sector" />
+        </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColorHint="@color/editTextColor"
+                android:layout_marginBottom="8dp">
+
+                <EditText android:id="@+id/direccionCalleEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/editTextColor"
+                    android:hint="Calle" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Email Label -->
@@ -111,7 +157,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/guardarEditButton"
+                android:id="@+id/guardarEditUsuarioButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

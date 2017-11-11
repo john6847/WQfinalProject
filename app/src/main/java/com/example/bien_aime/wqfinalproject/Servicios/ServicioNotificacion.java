@@ -56,7 +56,10 @@ public class ServicioNotificacion extends Service {
     List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
     List<Muestra> muestras;
-    public static final String PREFS_NAME = "com.example.bien_aime.wqfinalproject";
+    public static final String PREFS_NAME = "com.example.bien_aime";
+    static boolean notificado=false;
+
+
 
 
 //    static final Uri CONTENT_URL =
@@ -79,7 +82,10 @@ public class ServicioNotificacion extends Service {
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId){
 
-
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putInt("idMuestra", 0);
+        editor.putBoolean("leido", false);
+        editor.apply();
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -158,14 +164,17 @@ public class ServicioNotificacion extends Service {
                                             thread.start();
 
 
-//                                            System.out.println("Id de la nueva muestra:: "+muestras.get(i).getId());
-//                                            System.out.println("Id de la nueva muestra 2:: "+idMuestra);
-//                                            System.out.println("Id de la nueva muestra 3:: "+muestras.get(i).getMuestra().getId());
-//                                            System.out.println("Size : "+prefs.getAll());
+//
+                                            SharedPreferences lector = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//                                            lector.getInt("idMuestra", -1);
+//                                            lector.getBoolean("leido",false);
+                                            System.out.println("Thereeeeeeeeeeeeeeeeeeeeeeeeee "+lector.getInt("idMuestra", -1));
+                                            System.out.println("Thereeeeeeeeeeeeeeeeeeeeeeeeee2222 "+lector.getBoolean("leido",true));
+                                            boolean prueba=lector.getBoolean("leido",true);
+                                            System.out.println("Pruebaaaaaaaaaaaaaa"+prueba);
 
-
-                                            if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && muestras.get(i).getMuestra().getId() != idMuestra) {
-                                                System.out.println("No deberia entrar aqui");
+                                            if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && !prueba && muestras.get(i).getMuestra().getId()!=lector.getInt("idMuestra", -1)) {
+                                                System.out.println("Deberia entrar aqui");
                                                 Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras.get(i)).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
 
                                                 PendingIntent contentIntent = PendingIntent.getActivity(ServicioNotificacion.this, 0, notificationIntent,
@@ -180,7 +189,6 @@ public class ServicioNotificacion extends Service {
                                                                 .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
                                                                 .setColor(getColor(R.color.colorPrimary));
 
-
                                                 builder.setContentIntent(contentIntent);
                                                 builder.setAutoCancel(true);
                                                 builder.setLights(Color.BLUE, 500, 500);
@@ -192,9 +200,9 @@ public class ServicioNotificacion extends Service {
                                                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                                                 manager.notify(1, builder.build());
 
-                                                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-                                                editor.putInt("idMuestra", muestras.get(i).getMuestra().getId());
-                                                editor.apply();
+//                                                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+//                                                editor.putInt("idMuestra", muestras.get(i).getMuestra().getId());
+//                                                editor.apply();
 
 
                                             }
@@ -218,13 +226,15 @@ public class ServicioNotificacion extends Service {
 
 
 
+
+
+
+
     public List<Muestra> getMuestras()
     {
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
-//
-//        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-//        editor.putInt("idMuestra", 0);
-//        editor.apply();
+
+
 
 
         final retrofit2.Call<List<Muestra>> call= apiService.getValores();
@@ -232,22 +242,20 @@ public class ServicioNotificacion extends Service {
             @Override
             public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
                 muestras=response.body();
-//                System.out.println("Size 2 de muestra "+muestras.get(0).getId());
-//                ContentValues contentValues = new ContentValues();
+                final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                int muestraId= prefs.getInt("idMuestra", -1);
 
-//                for (final Muestra muestra: muestras){
-//
-//                        contentValues.put(MuestrasContentProvider.nombreParametro,muestra.getParametro().getNombreParametro());
-//                        contentValues.put(MuestrasContentProvider.valor,muestra.getValor());
-//                        contentValues.put(MuestrasContentProvider.fecha,muestra.getMuestra().getFechaMuestra());
-//                        contentValues.put(MuestrasContentProvider.dispositivo,muestra.getMuestra().getDispositivo().getNombreDispositivo());
-//                    }
-//                    Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
-//
+                System.out.println("Muestra id : "+muestraId);
+                System.out.println("Muestra id 1: "+muestras.get(0).getMuestra().getId());
 
-//                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-//                editor.putInt("idMuestra", muestras.get(0).getMuestra().getId());
-//                editor.apply();
+                if(muestraId != muestras.get(0).getMuestra().getId()){
+                    System.out.println("Set la pa fet");
+                    SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.clear();
+                    editor.putInt("idMuestra", muestras.get(0).getMuestra().getId());
+                    editor.putBoolean("leido",false);
+                    editor.apply();
+                }
             }
 
             @Override
