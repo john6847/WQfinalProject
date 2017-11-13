@@ -2,12 +2,18 @@ package com.example.bien_aime.wqfinalproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +28,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class EditDispositivoActivity extends AppCompatActivity {
+import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.countryStr;
+import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.states_RepublicaDominicana;
+
+public class EditDispositivoActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener{
 
     String dispositivoName;
     Dispositivo dispositivo;
     ProgressDialog mDialog;
+
+    private Spinner country;
+    private Spinner city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +47,30 @@ public class EditDispositivoActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         mDialog = new ProgressDialog(this);
-//        dispositivoName = i.getStringExtra("dispositivo");
         dispositivo = (Dispositivo) i.getSerializableExtra("dispositivo");
 
-        //final TextView textView=(TextView) findViewById(R.id.tvDispositivoPersonal);
-        final TextView pais=(TextView) findViewById(R.id.paisEdit);
-        final TextView ciudad=(TextView) findViewById(R.id.ciudadEdit);
         final TextView sector=(TextView) findViewById(R.id.sectorEdit);
         final TextView calle=(TextView) findViewById(R.id.calleEdit);
-//        final CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.toolbar_layout1);
+
+
+        country = (Spinner) findViewById(R.id.spinnerCountryDispositivo);
+
+        country.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        ArrayAdapter <String> c = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,countryStr);
+        c.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        country.setAdapter(c);
+
+        city=(Spinner)findViewById(R.id.spinnerCityDispositivo);
+        city.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        city.setPrompt("Seleccionar Ciudad");
+        city.setEnabled(true);
 
         if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null || dispositivo.getDireccion().getSector().getCiudad()!=null || dispositivo.getDireccion().getSector().getCiudad().getPais()!=null) {
 
-            pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-            ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
+//            pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+//            ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
+            country.setPrompt(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+            city.setPrompt(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
             sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
             calle.setText(dispositivo.getDireccion().getCalle());
         }
@@ -58,45 +80,57 @@ public class EditDispositivoActivity extends AppCompatActivity {
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Thread thread = new Thread(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        try  {
-                            //Your code goes here
-                            HttpClient httpClient=new DefaultHttpClient();
-                            HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/editarDispositivoDireccion/");
+                if( sector.getText().toString().trim().equals("") ||
+                        city.getSelectedItem()==null || country.getSelectedItem().toString().equals("Seleccionar Pais") ||
+                        calle.getText().toString().trim().equals("")) {
 
-                            String json="{"+"id:"+dispositivo.getId()
-                                    + ",sector:" + sector.getText().toString() + ",ciudad:"
-                                    + ciudad.getText().toString() + ",pais:" + pais.getText().toString()
-                                    + ",calle:" + calle.getText().toString()
-                                    + "}";
+                    sector.setError("Debe completar todos los campos!!!");
+                    country.setPrompt("Debe Completar todos los campos");
+                    city.setPrompt("Debe Completar todos los campos");
+                    calle.setError("Debe completar todos los campos!!!");
+                }else {
 
-                            StringEntity entity = null;
+                    Thread thread = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
                             try {
-                                entity = new StringEntity(json);
-                            } catch (UnsupportedEncodingException e) {
+                                //Your code goes here
+                                HttpClient httpClient = new DefaultHttpClient();
+                                HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/editarDispositivoDireccion/");
+
+                                String json = "{" + "id:" + dispositivo.getId()
+                                        + ",sector:" + sector.getText().toString() + ",ciudad:"
+                                        + city.getSelectedItem().toString() + ",pais:" + country.getSelectedItem().toString()
+                                        + ",calle:" + calle.getText().toString()
+                                        + "}";
+
+                                StringEntity entity = null;
+                                try {
+                                    entity = new StringEntity(json);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                httpPost.setEntity(entity);
+                                httpPost.setHeader("Accept", "application/json");
+                                httpPost.setHeader("Content-type", "application/json");
+
+                                try {
+                                    HttpResponse response = httpClient.execute(httpPost);
+                                    System.out.println("Responseee" + response.getStatusLine().getStatusCode());
+                                    //assertThat(response.getStatusLine().getStatusCode(), (Matcher<? super Integer>) equalTo(200));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            httpPost.setEntity(entity);
-                            httpPost.setHeader("Accept", "application/json");
-                            httpPost.setHeader("Content-type", "application/json");
-
-                            try {
-                                HttpResponse response=httpClient.execute(httpPost);
-                                System.out.println("Responseee"+response.getStatusLine().getStatusCode());
-                                //assertThat(response.getStatusLine().getStatusCode(), (Matcher<? super Integer>) equalTo(200));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
+                    });
 
-                thread.start();
+                    thread.start();
+
 
                 Toast.makeText(EditDispositivoActivity.this, "Guardado", Toast.LENGTH_LONG).show();
 //                Snackbar.make(view, "If you edit your profile You will have to get back to the log Screen to notice the changes", Snackbar.LENGTH_LONG)
@@ -111,9 +145,55 @@ public class EditDispositivoActivity extends AppCompatActivity {
                 mDialog.setProgress(7);
                 mDialog.show();
                 startActivity(loginScreen.putExtra("dispositivo", dispositivo.getNombreDispositivo()));
-
-
+                }
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+
+    public void onItemSelected(AdapterView<?> parent, View view, int position,long id)
+    {
+        city.setEnabled(true);
+        ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+        ((TextView) parent.getChildAt(0)).setTextSize(18);
+
+        switch(parent.getId())
+        {
+            case R.id.spinnerCountryDispositivo:
+                city.setEnabled(true);
+                if(country.getSelectedItem().equals("Republica Dominicana"))
+                {
+                    ArrayAdapter <String> s1 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_RepublicaDominicana);
+                    s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    city.setAdapter(s1);
+                }
+                else  if(country.getSelectedItem().equals("Pakistan"))
+                {
+//                    ArrayAdapter <String> s2 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_pak);
+//                    s2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    city.setAdapter(s2);
+                }
+                else  if(country.getSelectedItem().equals("China"))
+                {
+//                    ArrayAdapter <String> s3 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_china);
+//                    s3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    city.setAdapter(s3);
+                }
+                break;
+
+            case R.id.spinnerCityDispositivo:
+                String cityStr1=city.getSelectedItem().toString();
+                Log.e("city1",cityStr1);
+        }
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
+        city.setEnabled(true);
     }
 }

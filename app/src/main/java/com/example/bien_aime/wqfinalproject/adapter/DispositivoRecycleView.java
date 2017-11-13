@@ -63,7 +63,7 @@ import static com.example.bien_aime.wqfinalproject.R.layout.cardviw_dispositivos
  * Created by Bien-aime on 8/23/2017.
  */
 
-public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecycleView.ParameterViewHolder> implements OnMapReadyCallback {
+public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecycleView.ParameterViewHolder>  {
     private List<Dispositivo> dispositivos;
     private List<Usuario> usuarios;
     private Activity activity;
@@ -98,7 +98,7 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
         latitud=dispositivo.getLocalizacion().getLatitud();
         longitud=dispositivo.getLocalizacion().getLongitud();
 
-
+        Picasso.with(activity).load(dispositivo.getPicture()).into(holder.imageView);
         Intent i = activity.getIntent();
 
         assert i != null;
@@ -154,51 +154,52 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
-    @Override
-    public void onMapReady(GoogleMap retMap) {
-
-        mMap = retMap;
-
-        setUpMap();
-
-    }
-
-    public void setUpMap() {
-
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-        if(longitud!=null && latitud!=null) {
-            System.out.println("La encontro");
-            LatLng sydney = new LatLng(latitud, longitud);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Santiago"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 18f));
-        }else{
-            System.out.println("No se todavia");
-        }
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mMap.clear();
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
-                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng));
-            }
-        });
-    }
+//    /**
+//     * Manipulates the map once available.
+//     * This callback is triggered when the map is ready to be used.
+//     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+//     * we just add a marker near Sydney, Australia.
+//     * If Google Play services is not installed on the device, the user will be prompted to install
+//     * it inside the SupportMapFragment. This method will only be triggered once the user has
+//     * installed Google Play services and returned to the app.
+//     */
+//
+//    @Override
+//    public void onMapReady(GoogleMap retMap) {
+//
+//        mMap = retMap;
+//
+//        setUpMap();
+//
+//    }
+//
+//    public void setUpMap() {
+//
+//        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+//
+//        if(longitud!=null && latitud!=null) {
+//            System.out.println("La encontro");
+//            LatLng sydney = new LatLng(latitud, longitud);
+//            mMap.addMarker(new MarkerOptions().position(sydney).title("Santiago"));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 18f));
+//        }else{
+//            System.out.println("No se todavia");
+//        }
+//
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//                mMap.clear();
+//
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
+//                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng));
+//            }
+//        });
+//    }
 
     public class ParameterViewHolder extends RecyclerView.ViewHolder {
-
+        MapView mapView;
+        GoogleMap map;
         private ImageView imageView;
         private TextView textView;
         private TextView textView1;
@@ -207,18 +208,18 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
 
         public ParameterViewHolder(View itemView) {
             super(itemView);
-
             textView=(TextView) itemView.findViewById(R.id.nombreDispositivo);
-
+            imageView=(ImageView) itemView.findViewById(R.id.imageDispositivo);
             monitoreoButton=(TextView) itemView.findViewById(R.id.buttonMonitoreo);
-
-            SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity)activity).getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(DispositivoRecycleView.this);
+//
+//            SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity)activity).getSupportFragmentManager()
+//                    .findFragmentById(R.id.map1);
+//            mapFragment.getMapAsync(DispositivoRecycleView.this);
 
         }
 
-    }
+
+        }
 
 }
 

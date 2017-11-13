@@ -1,53 +1,27 @@
 package com.example.bien_aime.wqfinalproject.Servicios;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.CursorLoader;
+
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.media.RingtoneManager;
+
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
-import com.example.bien_aime.wqfinalproject.HomeActivity;
-import com.example.bien_aime.wqfinalproject.LoginActivity;
-import com.example.bien_aime.wqfinalproject.ModeloDB.MuestraSQLiteHelper;
-import com.example.bien_aime.wqfinalproject.MonitoreoActivity;
+
 import com.example.bien_aime.wqfinalproject.MuestrasContentProvider;
-import com.example.bien_aime.wqfinalproject.R;
-import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
-import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
+
 import com.example.bien_aime.wqfinalproject.modelo.Muestra;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
 import com.example.bien_aime.wqfinalproject.verMuestraNotificacion;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,20 +34,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.cacheColorHint;
-import static android.R.attr.name;
-
 public class ServiceMonitoreo extends Service {
     private Timer timer = new Timer();
-    List<Muestra> muestras=new ArrayList<>();
-    Usuario usuarioRequerido;
 
     static final Uri CONTENT_URL =
             Uri.parse("com.exemple.bien_aime.wqfinalproject.MuestrasContentProvider/cpmuestras");
-    Handler mHandler;
-
     String usuarioLlegando;
-    List<Usuario> usuarios=new ArrayList<>();
 
     public ServiceMonitoreo() {
     }
@@ -84,9 +50,6 @@ public class ServiceMonitoreo extends Service {
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId){
-
-
-
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -102,8 +65,6 @@ public class ServiceMonitoreo extends Service {
         final String nombreDispositivo = extras.getString("dispositivo");
         usuarioLlegando = extras.getString("user");
 
-//        final String nombreDispositivo=intent.getStringExtra("dispositivo");
-//        usuarioLlegando = intent.getStringExtra("user");
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
 
 
@@ -126,45 +87,6 @@ public class ServiceMonitoreo extends Service {
                     }
                     Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
 
-//                    for(int i=0;i<muestra.getMuestra().getListaNotificaciones().size();i++){
-//
-//                        Usuario usuarioAChequear=getUser();
-//
-//                        if(usuarioAChequear!=null)
-//                            System.out.println("El usuario requerido es:::::::::::::::::::::::::::: : "+usuarioAChequear.getUsername());
-//
-//                        if (usuarioAChequear != null && muestra.getMuestra().getListaNotificaciones().get(i).getNombre().equalsIgnoreCase("noPotable") && !usuarioAChequear.getSilenciarNotificacion()) {
-//
-//                            if (!muestra.getNotificada()) {
-//
-//                                Intent notificationIntent = new Intent(ServiceMonitoreo.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestra);
-//
-//                                PendingIntent contentIntent = PendingIntent.getActivity(ServiceMonitoreo.this, 0, notificationIntent,
-//                                        PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                                NotificationCompat.Builder builder =
-//                                        new NotificationCompat.Builder(ServiceMonitoreo.this)
-//                                                .setSmallIcon(R.drawable.logo)
-//                                                .setAutoCancel(true)
-//                                                .setContentTitle("Agua No potable")
-//                                                .setContentText("Se considera que ese agua es no potable")
-//                                                .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
-//                                                .setColor(getColor(R.color.colorPrimary));
-//
-//
-//                                builder.setContentIntent(contentIntent);
-//                                builder.setAutoCancel(true);
-//                                builder.setLights(Color.BLUE, 500, 500);
-//                                long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
-//                                builder.setVibrate(pattern);
-//                                builder.setStyle(new NotificationCompat.InboxStyle());
-//                                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//                                builder.setSound(alarmSound);
-//                                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                                manager.notify(1, builder.build());
-                        //    }
-                    //    }
-                   // }
                 }
                 System.out.println("**************************************"+muestras.size());
             }
@@ -175,80 +97,7 @@ public class ServiceMonitoreo extends Service {
             }
         });
     }
-
-    public Usuario getUser(){
-        ApiService apiService= ApiService.retrofit.create(ApiService.class);
-
-        retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
-
-        call.enqueue(new Callback<List<Usuario>>() {
-
-            @Override
-            public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
-                System.out.println("Encontro una resuesta?????????");
-                Log.d("OnResponse ", response.body().toString());
-                Log.d("OnResponse ", response.body().toString());
-
-                usuarios = response.body();
-
-
-                System.out.println("Usuario Llegando: "+usuarioLlegando);
-
-                for (Usuario usuario: usuarios){
-                    if (usuario.getUsername().equals(usuarioLlegando)){
-                        System.out.println("Encontro el maldito usuario?????????????");
-                        usuarioRequerido =usuario;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Usuario>> call, Throwable t) {
-                Log.e("failure", String.valueOf(t.getMessage()));
-            }
-        });
-
-        return usuarioRequerido;
-    }
-
-
-
-   /* public void sendRequest(Intent intent){
-//Toast.makeText(this,"Empieza el servicio", Toast.LENGTH_LONG).show();
-        //final String nombreDispositivo=intent.getStringExtra("dispositivo");
-        final String nombreDispositivo = intent.getStringExtra("dispositivo");
-        //Toast.makeText(this,"Empieza el servicio"+nombreDispositivo, Toast.LENGTH_LONG).show();
-        System.out.println("empiezaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + nombreDispositivo);
-
-
-        ApiService apiService = ApiService.retrofit.create(ApiService.class);
-        final Call<Muestra> call = apiService.getMuestra();
-
-        call.enqueue(new Callback<Muestra>() {
-            @Override
-            public void onResponse(Call<Muestra> call, Response<Muestra> response) {
-                Muestra muestra = response.body();
-                System.out.println("Muestraaaaaaaaaaaaaa"+muestra.getFechaMuestra());
-                ContentValues contentValues = new ContentValues();
-                for (int i=0;i<muestra.getListadoValores().size();i++){
-                    if(muestra.getDispositivo().getNombreDispositivo().equals(nombreDispositivo)){
-                        contentValues.put(MuestrasContentProvider.nombreParametro,muestra.getListadoValores().get(i).getParametro().getNombreParametro());
-                        contentValues.put(MuestrasContentProvider.valor,muestra.getListadoValores().get(i).getValor());
-                        contentValues.put(MuestrasContentProvider.fecha,muestra.getFechaMuestra());
-                        contentValues.put(MuestrasContentProvider.dispositivo,muestra.getDispositivo().getNombreDispositivo());
-                    }
-                    Uri uri=getContentResolver().insert(MuestrasContentProvider.CONTENT_URL,contentValues);
-                }
-
-                System.out.println("New muestra added");
-            }
-
-            @Override
-            public void onFailure(Call<Muestra> call, Throwable t) {
-
-            }
-        });
-
-}*/
 }
+
+
 

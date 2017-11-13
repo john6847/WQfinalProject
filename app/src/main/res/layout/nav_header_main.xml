@@ -20,10 +20,11 @@
         android:layout_marginTop="10dp"
         android:layout_weight="0.72"
         />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Water quality"
+        android:text="Water quality Monitoring"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>

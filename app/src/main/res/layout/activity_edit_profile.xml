@@ -39,11 +39,11 @@
 
                 <EditText android:id="@+id/usernameEdit"
                     android:layout_width="match_parent"
-                    android:editable="false"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="none"
                     android:textColor="@color/editTextColor"
                     android:hint="@string/email" />
+
             </android.support.design.widget.TextInputLayout>
 
 
@@ -58,13 +58,41 @@
                 <EditText android:id="@+id/nombreEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:textColor="@color/editTextColor"
                     android:hint="Nombre" />
             </android.support.design.widget.TextInputLayout>
 
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/editTextColor"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_below="@+id/textView1"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/editTextColor"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/editTextColor"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_below="@+id/textView1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp" />
+
             <!-- Email Label -->
-            <android.support.design.widget.TextInputLayout
+ <!--           <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -74,25 +102,25 @@
                 <EditText android:id="@+id/direccionPaisEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:textColor="@color/editTextColor"
-                    android:hint="Pais" />
-            </android.support.design.widget.TextInputLayout>
+                    android:hint="Pais" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
-                android:layout_marginBottom="8dp">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:textColorHint="@color/editTextColor"-->
+                <!--android:layout_marginBottom="8dp">-->
 
-                <EditText android:id="@+id/direccionCiudadEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/editTextColor"
-                    android:hint="Ciudad" />
-            </android.support.design.widget.TextInputLayout>
+                <!--<EditText android:id="@+id/direccionCiudadEdit"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:inputType="text"-->
+                    <!--android:textColor="@color/editTextColor"-->
+                    <!--android:hint="Ciudad" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
 
             <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -104,7 +132,7 @@
             <EditText android:id="@+id/direccionSectorEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:textColor="@color/editTextColor"
                 android:hint="Sector" />
         </android.support.design.widget.TextInputLayout>
@@ -119,8 +147,9 @@
                 <EditText android:id="@+id/direccionCalleEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:textColor="@color/editTextColor"
+                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnm "
                     android:hint="Calle" />
             </android.support.design.widget.TextInputLayout>
 
@@ -135,7 +164,7 @@
                 <EditText android:id="@+id/telefonoEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:textColor="@color/editTextColor"
                     android:hint="Telefono" />
             </android.support.design.widget.TextInputLayout>
@@ -164,7 +193,7 @@
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
                 android:textColor="#000000"
-                android:background="#FFD777"
+                android:background="@color/colorAccent"
                 android:text="Guardar"/>
 
         </LinearLayout>

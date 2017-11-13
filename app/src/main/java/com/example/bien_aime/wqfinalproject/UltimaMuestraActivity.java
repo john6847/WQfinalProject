@@ -13,6 +13,7 @@ import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.modelo.Muestra;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -89,6 +90,15 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MapFragment f = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        if (f != null)
+            getFragmentManager().beginTransaction().remove(f).commit();
+    }
+
 
     /**
      * Manipulates the map once available.
@@ -131,6 +141,5 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
             }
         });
     }
-
 
 }

@@ -14,11 +14,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.HomeActivity;
@@ -50,23 +53,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 public class ServicioNotificacion extends Service {
     private Timer timer = new Timer();
     String usuarioLlegando;
     List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
     List<Muestra> muestras;
-    public static final String PREFS_NAME = "com.example.bien_aime";
-    static boolean notificado=false;
 
-
-
-
-//    static final Uri CONTENT_URL =
-//            Uri.parse("content://com.exemple.bien_aime.wqfinalproject.MuestrasContentProvider/cpmuestras");
-//
-//    ContentResolver resolver;
-    long idMuestra;
 
     public ServicioNotificacion() {
     }
@@ -74,18 +69,19 @@ public class ServicioNotificacion extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
+
+        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+//        editor.clear();
+        editor.putInt("idMuestra", 0);
+        editor.putBoolean("leido", true);
+        editor.apply();
+
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-
-
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId){
-
-        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putInt("idMuestra", 0);
-        editor.putBoolean("leido", false);
-        editor.apply();
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -99,14 +95,13 @@ public class ServicioNotificacion extends Service {
 
     public void requestValor(Intent intent){
 
+
         usuarioLlegando = intent.getStringExtra("user");
 
         ApiService apiService= ApiService.retrofit.create(ApiService.class);
 
         final List<Muestra> muestras=getMuestras();
-//
-//        final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-//        idMuestra= prefs.getInt("idMuestra", -1);
+
 
         retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
 
@@ -116,7 +111,6 @@ public class ServicioNotificacion extends Service {
             public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
                 Log.d("OnResponse ", response.body().toString());
                 Log.d("OnResponse ", response.body().toString());
-
                 usuarios = response.body();
 
                 for (final Usuario usuario: usuarios){
@@ -125,55 +119,55 @@ public class ServicioNotificacion extends Service {
 
                             if (muestras != null) {
                                 for (int i = 0; i < muestras.size(); i++) {
-                                    if (Objects.equals(muestras.get(i).getMuestra().getDispositivo().getId(), usuario.getListaDispositivos().get(j).getDispositivo().getId())) {
+                                    if (Objects.equals(muestras.get(0).getMuestra().getDispositivo().getId(), usuario.getListaDispositivos().get(j).getDispositivo().getId())) {
 
-                                        if (muestras.get(i).getMuestra().getListaNotificaciones().get(0).getNombre().equalsIgnoreCase("noPotable") && !usuario.getSilenciarNotificacion()) {
-                                            System.out.println("Gritando No potable");
+                                        //No hay notificacion
+                                        if( muestras.get(i).getMuestra().getListaNotificaciones().size()!= 0){
+                                            if (muestras.get(i).getMuestra().getListaNotificaciones().get(0).getNombre().equalsIgnoreCase("noPotable") && !usuario.getSilenciarNotificacion()) {
+                                                System.out.println("Gritando No potable");
 
-                                            final int finalJ = j;
-                                            Thread thread = new Thread(new Runnable() {
+                                                final int finalJ = j;
+                                                Thread thread = new Thread(new Runnable() {
 
-                                                @Override
-                                                public void run() {
-                                                    try  {
-                                                        HttpClient httpClient=new DefaultHttpClient();
-                                                        HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
-                                                        String json="{"+"idUsuario:"+usuario.getId()+",idDispositivo:"+usuario.getListaDispositivos().get(finalJ).getId() +",notificacion:"+"true"+"}";
-
-                                                        StringEntity entity = null;
+                                                    @Override
+                                                    public void run() {
                                                         try {
-                                                            entity = new StringEntity(json);
-                                                        } catch (UnsupportedEncodingException e) {
+                                                            HttpClient httpClient = new DefaultHttpClient();
+                                                            HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
+                                                            String json = "{" + "idUsuario:" + usuario.getId() + ",idDispositivo:" + usuario.getListaDispositivos().get(finalJ).getId() + ",notificacion:" + "true" + "}";
+
+                                                            StringEntity entity = null;
+                                                            try {
+                                                                entity = new StringEntity(json);
+                                                            } catch (UnsupportedEncodingException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            httpPost.setEntity(entity);
+                                                            httpPost.setHeader("Accept", "application/json");
+                                                            httpPost.setHeader("Content-type", "application/json");
+
+                                                            try {
+                                                                HttpResponse response = httpClient.execute(httpPost);
+                                                                System.out.println("Responseee " + response.getStatusLine().getStatusCode());
+                                                            } catch (IOException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
-                                                        httpPost.setEntity(entity);
-                                                        httpPost.setHeader("Accept", "application/json");
-                                                        httpPost.setHeader("Content-type", "application/json");
-
-                                                        try {
-                                                            HttpResponse response=httpClient.execute(httpPost);
-                                                            System.out.println("Responseee"+response.getStatusLine().getStatusCode());
-                                                        } catch (IOException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
                                                     }
-                                                }
-                                            });
-                                            thread.start();
+                                                });
+                                                thread.start();
+                                            }
 
+                                            SharedPreferences lector = getDefaultSharedPreferences(getApplicationContext());
 
-//
-                                            SharedPreferences lector = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-//                                            lector.getInt("idMuestra", -1);
-//                                            lector.getBoolean("leido",false);
-                                            System.out.println("Thereeeeeeeeeeeeeeeeeeeeeeeeee "+lector.getInt("idMuestra", -1));
-                                            System.out.println("Thereeeeeeeeeeeeeeeeeeeeeeeeee2222 "+lector.getBoolean("leido",true));
+//                                            SharedPreferences lector =   getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                                             boolean prueba=lector.getBoolean("leido",true);
-                                            System.out.println("Pruebaaaaaaaaaaaaaa"+prueba);
 
-                                            if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && !prueba && muestras.get(i).getMuestra().getId()!=lector.getInt("idMuestra", -1)) {
+                                            System.out.println("El valor de leido: "+prueba);
+
+                                            if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && !prueba) {
                                                 System.out.println("Deberia entrar aqui");
                                                 Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras.get(i)).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
 
@@ -200,17 +194,12 @@ public class ServicioNotificacion extends Service {
                                                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                                                 manager.notify(1, builder.build());
 
-//                                                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-//                                                editor.putInt("idMuestra", muestras.get(i).getMuestra().getId());
-//                                                editor.apply();
-
-
                                             }
 
                                         }
                                     }
                                 }
-                                dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(), usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
+                                dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png" ,usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
                             }
                         }
                     }
@@ -224,40 +213,43 @@ public class ServicioNotificacion extends Service {
         });
     }
 
-
-
-
-
-
-
     public List<Muestra> getMuestras()
     {
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
-
-
-
 
         final retrofit2.Call<List<Muestra>> call= apiService.getValores();
         call.enqueue(new Callback<List<Muestra>>() {
             @Override
             public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
-                muestras=response.body();
-                final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                int muestraId= prefs.getInt("idMuestra", -1);
+                muestras = response.body();
 
-                System.out.println("Muestra id : "+muestraId);
-                System.out.println("Muestra id 1: "+muestras.get(0).getMuestra().getId());
+                SharedPreferences p = getDefaultSharedPreferences(getApplicationContext());
+                int muestraId = p.getInt("idMuestra", -1);
 
-                if(muestraId != muestras.get(0).getMuestra().getId()){
-                    System.out.println("Set la pa fet");
-                    SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-                    editor.clear();
-                    editor.putInt("idMuestra", muestras.get(0).getMuestra().getId());
-                    editor.putBoolean("leido",false);
-                    editor.apply();
+                if (muestras.size() != 0) {
+                    System.out.println("Muestra id : " + muestraId);
+                    System.out.println("Muestra id 1: " + muestras.get(0).getMuestra().getId());
+
+                    if (muestraId != muestras.get(0).getMuestra().getId()) {
+                        System.out.println("Set la pa fet");
+
+                        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.clear();
+                        editor.putInt("idMuestra", muestras.get(0).getMuestra().getId());
+                        editor.putBoolean("leido", false);
+                        editor.apply();
+                    }
+                }else {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ServicioNotificacion.this.getApplicationContext(),"Problema con la Muestra",Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
-
             @Override
             public void onFailure(Call<List<Muestra>> call, Throwable t) {
 

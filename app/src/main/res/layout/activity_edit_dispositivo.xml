@@ -30,37 +30,52 @@
 
 
             <!-- Email Label -->
-            <android.support.design.widget.TextInputLayout
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:textColorHint="@color/editTextColor"-->
+                <!--android:layout_marginBottom="8dp">-->
+
+                <!--<EditText android:id="@+id/paisEdit"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:inputType="textEmailAddress"-->
+                    <!--android:textColor="@color/editTextColor"-->
+                    <!--android:hint="Pais" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
+
+
+            <!--&lt;!&ndash; Email Label &ndash;&gt;-->
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:textColorHint="@color/editTextColor"-->
+                <!--android:layout_marginBottom="8dp">-->
+
+                <!--<EditText android:id="@+id/ciudadEdit"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:inputType="textEmailAddress"-->
+                    <!--android:textColor="@color/editTextColor"-->
+                    <!--android:hint="Ciudad" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
+
+            <Spinner
+                android:id="@+id/spinnerCountryDispositivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
-                android:layout_marginBottom="8dp">
+                android:textColor="@color/editTextColor"
+                android:layout_marginTop="8dp" />
 
-                <EditText android:id="@+id/paisEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/editTextColor"
-                    android:hint="Pais" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <!-- Email Label -->
-            <android.support.design.widget.TextInputLayout
+            <Spinner
+                android:id="@+id/spinnerCityDispositivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
-                android:layout_marginBottom="8dp">
-
-                <EditText android:id="@+id/ciudadEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/editTextColor"
-                    android:hint="Ciudad" />
-            </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/editTextColor"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp" />
 
             <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
@@ -102,7 +117,7 @@
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
                 android:textColor="#000000"
-                android:background="#FFD777"
+                android:background="@color/colorAccent"
                 android:text="Guardar cambios"/>
 
         </LinearLayout>

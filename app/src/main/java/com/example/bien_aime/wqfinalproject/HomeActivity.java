@@ -58,9 +58,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //JSONArray jsonArray;
-   // private static String username;
-    TextView textView;
+
     String usuarioLlegando;
     List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
@@ -97,9 +95,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
                 Log.d("OnResponse ", response.body().toString());
-                Log.d("OnResponse ", response.body().toString());
-
-                System.out.println("Bueno "+response.body());
 
                 usuarios = response.body();
                 System.out.println("Usuariossssssssssssssss "+usuarios.get(0).getUsername());
@@ -109,7 +104,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         usuarioFinal=usuario;
                         for (int j=0;j<usuario.getListaDispositivos().size();j++){
                             System.out.println("-------------------------------- Anndan la");
-                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(),usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
+                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png",usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(),usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
                         }
                     }
                 }
@@ -143,13 +138,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         button.startAnimation(myAnim);
     }
 
-    public void onBackPressed() {
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
-        startMain.addCategory(Intent.CATEGORY_HOME);
-        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startMain);
-
-    }
+//    public void onBackPressed() {
+//        Intent startMain = new Intent(Intent.ACTION_MAIN);
+//        startMain.addCategory(Intent.CATEGORY_HOME);
+//        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(startMain);
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

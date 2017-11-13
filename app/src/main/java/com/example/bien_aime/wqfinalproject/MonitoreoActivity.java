@@ -147,8 +147,7 @@ public class MonitoreoActivity extends AppCompatActivity {
         if (cursor != null) {
             cursor.close();
         }
-
-
+        
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pictureRecycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());

@@ -5,7 +5,7 @@
     <string name="login">Logear</string>
     <string name="no_account_yet_create_one">Favor dar click para recuperar su contrasena</string>
     <string name="title_activity_reference">ReferenceActivity</string>
-    <string name="toolbar_title_dispositivo">Ver dispositivos</string>
+    <string name="toolbar_title_dispositivo">Valores Muestra</string>
     <string name="toolbar_title_ListaDispositivo">Ver Lista dispositivos</string>
     <string name="ph">PH</string>
     <string name="homeToolbar">Home</string>

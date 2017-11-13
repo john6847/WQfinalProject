@@ -20,14 +20,12 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="110dp"
+            app:expandedTitleMarginStart="130dp"
             android:scrollbarSize="@dimen/cornerRadius"
             app:title=" "
             app:titleEnabled="true"
             app:expandedTitleTextAppearance="@color/common_google_signin_btn_text_dark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-
 
             <ImageView
                 android:layout_width="match_parent"
@@ -44,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/editTextColor"
+
             android:textSize="@dimen/textSize_userProfile"
             />
 
