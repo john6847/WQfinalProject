@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,8 +59,10 @@ import static org.parceler.guava.base.Predicates.equalTo;
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
 
     List<Usuario> usuarios = new ArrayList<>();
-    String usuarioLlegando;
+    Usuario usuario;
     static long idUsuario;
+
+    String GuardarCiudad;
 
     private Spinner country;
     private Spinner city;
@@ -71,7 +75,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         Intent i = getIntent();
         usuarios = (List<Usuario>) i.getSerializableExtra("usuariosEditable");
-        usuarioLlegando = i.getStringExtra("usuario");
+        usuario = (Usuario) i.getSerializableExtra("usuario");
 
 
         final EditText username = (EditText) findViewById(R.id.usernameEdit);
@@ -97,26 +101,34 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         city.setEnabled(true);
 
 
+//        for (Usuario usuario : usuarios) {
+//            if (usuario.getUsername().equals(usuarioLlegando)) {
+        idUsuario =usuario.getId();
 
-        for (Usuario usuario : usuarios) {
-            if (usuario.getUsername().equals(usuarioLlegando)) {
-                idUsuario =usuario.getId();
+        name.setText(usuario.getNombre());
+        email.setText("bencosky50@gmail.com");
+        telefono.setText(usuario.getTelefono());
 
-                name.setText(usuario.getNombre());
-                email.setText("bencosky50@gmail.com");
-                telefono.setText(usuario.getTelefono());
-                city.setPrompt(usuario.getDireccion().getSector().getCiudad().getNombreCiudad());
-                sector.setText(usuario.getDireccion().getSector().getNombreSector());
-                country.setPrompt(usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-                calle.setText(usuario.getDireccion().getCalle());
-                username.setText(usuario.getUsername());
-            }
+        String  CompareValue= usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais();
+
+        if (!CompareValue.equals(null)) {
+            int SpinnerPostion = c.getPosition(CompareValue);
+            country.setSelection(SpinnerPostion);
+            SpinnerPostion = 0;
         }
+
+        sector.setText(usuario.getDireccion().getSector().getNombreSector());
+        GuardarCiudad= usuario.getDireccion().getSector().getCiudad().getNombreCiudad();
+        calle.setText(usuario.getDireccion().getCalle());
+        username.setText(usuario.getUsername());
+//            }
+//        }
 
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                System.out.println("Presiono el boton guardar");
                 if( username.getText().toString().trim().equals("") || name.getText().toString().trim().equals("") ||
                         telefono.getText().toString().trim().equals("") || sector.getText().toString().trim().equals("") ||
                         city.getSelectedItem()==null || country.getSelectedItem().toString().equals("Seleccionar Pais") ||
@@ -132,10 +144,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     sector.setError("Debe completar todos los campos!!!");
                     country.setElevation(5);
                     city.setElevation(5);
-                    country.setContentDescription("Debes Seleccionar un pais");
-                    city.setContentDescription("Debes Seleccionar una ciudad");
                     calle.setError("Debe completar todos los campos!!!");
 
+                }else if(!isValidEmail(email.getText().toString()) ){
+                    Toast.makeText(EditProfileActivity.this,"Favor entrar un correo correcto",Toast.LENGTH_LONG);
+                }else if(!isValidPhoneNumber(telefono.getText().toString())){
+                    Toast.makeText(EditProfileActivity.this,"Favor entrar un numero de telefono correcto",Toast.LENGTH_LONG);
                 }
                 else {
 
@@ -204,7 +218,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     loginScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                Toast.makeText(EditProfileActivity.this, "WELCOME TO LOGINSCREEN", Toast.LENGTH_SHORT).show();
 //                EditProfileActivity.this.supportFinishAfterTransition();
-                    startActivity(loginScreen.putExtra("usuario", usuarioLlegando).putExtra("data", (Serializable) usuarios));
+                    startActivity(loginScreen.putExtra("usuario", usuario.getUsername()).putExtra("data", (Serializable) usuarios));
                 }
             }
         });
@@ -222,6 +236,20 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             return null;
         }
     };
+
+    private boolean isValidEmail(CharSequence email) {
+        if (!TextUtils.isEmpty(email)) {
+            return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }
+        return false;
+    }
+
+    private boolean isValidPhoneNumber(CharSequence phoneNumber) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            return Patterns.PHONE.matcher(phoneNumber).matches();
+        }
+        return false;
+    }
 
     @Override
     public void onClick(View view) {
@@ -241,6 +269,16 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     ArrayAdapter <String> s1 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_RepublicaDominicana);
                     s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     city.setAdapter(s1);
+
+
+                    String  CompareValue2= GuardarCiudad;
+
+                    if (!CompareValue2.equals(null)) {
+                        int SpinnerPostion = s1.getPosition(CompareValue2);
+                        city.setSelection(SpinnerPostion);
+                        SpinnerPostion = 0;
+                    }
+
                 }
                 else  if(country.getSelectedItem().equals("Pakistan"))
                 {

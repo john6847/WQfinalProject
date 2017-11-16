@@ -69,6 +69,18 @@
                 android:textColor="@color/editTextColor"
                 android:layout_marginTop="8dp" />
 
+            <ImageView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:src="@android:drawable/alert_dark_frame"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:scaleType="fitXY"
+
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" />
+
             <Spinner
                 android:id="@+id/spinnerCityDispositivo"
                 android:layout_width="match_parent"
@@ -76,6 +88,18 @@
                 android:textColor="@color/editTextColor"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp" />
+
+            <ImageView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:src="@android:drawable/alert_dark_frame"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:scaleType="fitXY"
+
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" />
 
             <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
@@ -90,6 +114,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/editTextColor"
+                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                     android:hint="Sector" />
             </android.support.design.widget.TextInputLayout>
 
@@ -106,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/editTextColor"
+                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                     android:hint="Calle" />
             </android.support.design.widget.TextInputLayout>
 

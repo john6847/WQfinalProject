@@ -51,7 +51,6 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
         final TextView calle=(TextView) findViewById(R.id.tvCalle);
         final CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.toolbar_layout1);
 
-
         ApiService apiService = ApiService.retrofit.create(ApiService.class);
         final Call<List<Dispositivo>> call = apiService.getDispositivos();
 
@@ -68,15 +67,16 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
                             descripcionDispo.setText(dispositivo.getDescripcion());
                         }
 
-                        if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null || dispositivo.getDireccion().getSector().getCiudad()!=null || dispositivo.getDireccion().getSector().getCiudad().getPais()!=null){
+                        if(dispositivo.getDireccion()!=null){
                             sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
                             ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
                             pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
                             calle.setText(dispositivo.getDireccion().getCalle());
                         }
+
                         nombreDispo.setText(dispositivo.getNombreDispositivo());
-                        fechaCreacionDispo.setText(dispositivo.getDateCreated());
-                        fechaCreacionDispo.setText(dispositivo.getDateCreated());
+                        fechaCreacionDispo.setText(dispositivo.getDateCreated().replace("Z"," ").replace("T"," "));
+//                        fechaCreacionDispo.setText(dispositivo.getDateCreated());
                         normativaAsignadaDispo.setText(dispositivo.getNormativaAsignada().getNombreNormativa());
                         dispositivoFinal=dispositivo;
                     }
@@ -99,7 +99,4 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
             }
         });
     }
-
-
-
 }

@@ -39,6 +39,7 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
 
     private Spinner country;
     private Spinner city;
+    String GuardarCiudad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +63,22 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
 
         city=(Spinner)findViewById(R.id.spinnerCityDispositivo);
         city.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        city.setPrompt("Seleccionar Ciudad");
+
         city.setEnabled(true);
 
         if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null || dispositivo.getDireccion().getSector().getCiudad()!=null || dispositivo.getDireccion().getSector().getCiudad().getPais()!=null) {
 
-//            pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-//            ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
-            country.setPrompt(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-            city.setPrompt(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
+            String  CompareValue= dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais();
+
+            if (!CompareValue.equals(null)) {
+                int SpinnerPostion = c.getPosition(CompareValue);
+                country.setSelection(SpinnerPostion);
+                SpinnerPostion = 0;
+            }
+
             sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
             calle.setText(dispositivo.getDireccion().getCalle());
+            GuardarCiudad= dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad();
         }
 
 
@@ -140,7 +146,7 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
                 loginScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                Toast.makeText(EditDispositivoActivity.this, "WELCOME TO LOGINSCREEN", Toast.LENGTH_SHORT).show();
 //                EditDispositivoActivity.this.finish();
-                mDialog.setMessage("Estas Logeando...");
+                mDialog.setMessage("Guardando los datos...");
                 mDialog.setCanceledOnTouchOutside(false);
                 mDialog.setProgress(7);
                 mDialog.show();
@@ -171,6 +177,14 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
                     ArrayAdapter <String> s1 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_RepublicaDominicana);
                     s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     city.setAdapter(s1);
+
+                    String  CompareValue2= GuardarCiudad;
+
+                    if (!CompareValue2.equals(null)) {
+                        int SpinnerPostion = s1.getPosition(CompareValue2);
+                        city.setSelection(SpinnerPostion);
+                        SpinnerPostion = 0;
+                    }
                 }
                 else  if(country.getSelectedItem().equals("Pakistan"))
                 {

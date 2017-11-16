@@ -28,8 +28,6 @@
             android:paddingBottom="20dp"
             >
 
-
-            <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,11 +41,9 @@
                     android:inputType="none"
                     android:textColor="@color/editTextColor"
                     android:hint="@string/email" />
-
             </android.support.design.widget.TextInputLayout>
 
 
-            <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
+                    android:digits="qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                     android:textColor="@color/editTextColor"
                     android:hint="Nombre" />
             </android.support.design.widget.TextInputLayout>
@@ -72,6 +69,18 @@
                 android:layout_alignLeft="@+id/textView1"
                 android:layout_below="@+id/textView1"
                 android:layout_marginTop="8dp" />
+
+            <ImageView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:src="@android:drawable/alert_dark_frame"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:scaleType="fitXY"
+
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -91,36 +100,17 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="8dp" />
 
-            <!-- Email Label -->
- <!--           <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
-                android:layout_marginBottom="8dp">
+            <ImageView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:src="@android:drawable/alert_dark_frame"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:scaleType="fitXY"
 
-                <EditText android:id="@+id/direccionPaisEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@color/editTextColor"
-                    android:hint="Pais" />-->
-            <!--</android.support.design.widget.TextInputLayout>-->
-
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:textColorHint="@color/editTextColor"-->
-                <!--android:layout_marginBottom="8dp">-->
-
-                <!--<EditText android:id="@+id/direccionCiudadEdit"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:inputType="text"-->
-                    <!--android:textColor="@color/editTextColor"-->
-                    <!--android:hint="Ciudad" />-->
-            <!--</android.support.design.widget.TextInputLayout>-->
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" />
 
             <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -134,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:textColor="@color/editTextColor"
+                android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                 android:hint="Sector" />
         </android.support.design.widget.TextInputLayout>
 
@@ -149,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:textColor="@color/editTextColor"
-                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnm "
+                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                     android:hint="Calle" />
             </android.support.design.widget.TextInputLayout>
 

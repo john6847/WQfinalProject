@@ -1,5 +1,6 @@
 package com.example.bien_aime.wqfinalproject;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -142,6 +143,9 @@ public class verMuestraNotificacion extends AppCompatActivity {
                 ParameterRecyclerView parameterRecycler = new ParameterRecyclerView(new ArrayList<>(muestraLis.values()), verMuestraNotificacion.this);
                 recyclerView.setAdapter(parameterRecycler);
                 recyclerView.setLayoutManager(linearLayoutManager);
+
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.cancel(1);
 
             }
 

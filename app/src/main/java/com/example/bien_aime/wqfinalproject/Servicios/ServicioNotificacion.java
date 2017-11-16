@@ -69,16 +69,10 @@ public class ServicioNotificacion extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
-
-        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-//        editor.clear();
-        editor.putInt("idMuestra", 0);
-        editor.putBoolean("leido", true);
-        editor.apply();
-
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId){
@@ -94,7 +88,6 @@ public class ServicioNotificacion extends Service {
     }
 
     public void requestValor(Intent intent){
-
 
         usuarioLlegando = intent.getStringExtra("user");
 
@@ -122,8 +115,8 @@ public class ServicioNotificacion extends Service {
                                     if (Objects.equals(muestras.get(0).getMuestra().getDispositivo().getId(), usuario.getListaDispositivos().get(j).getDispositivo().getId())) {
 
                                         //No hay notificacion
-                                        if( muestras.get(i).getMuestra().getListaNotificaciones().size()!= 0){
-                                            if (muestras.get(i).getMuestra().getListaNotificaciones().get(0).getNombre().equalsIgnoreCase("noPotable") && !usuario.getSilenciarNotificacion()) {
+                                        if( muestras.get(0).getMuestra().getListaNotificaciones().size()!= 0)
+                                            if (muestras.get(0).getMuestra().getListaNotificaciones().get(0).getNombre().equalsIgnoreCase("noPotable") && !usuario.getSilenciarNotificacion()) {
                                                 System.out.println("Gritando No potable");
 
                                                 final int finalJ = j;
@@ -131,10 +124,10 @@ public class ServicioNotificacion extends Service {
 
                                                     @Override
                                                     public void run() {
-                                                        try {
-                                                            HttpClient httpClient = new DefaultHttpClient();
-                                                            HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
-                                                            String json = "{" + "idUsuario:" + usuario.getId() + ",idDispositivo:" + usuario.getListaDispositivos().get(finalJ).getId() + ",notificacion:" + "true" + "}";
+                                                        try  {
+                                                            HttpClient httpClient=new DefaultHttpClient();
+                                                            HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
+                                                            String json="{"+"idUsuario:"+usuario.getId()+",idDispositivo:"+usuario.getListaDispositivos().get(finalJ).getId() +",notificacion:"+"true"+"}";
 
                                                             StringEntity entity = null;
                                                             try {
@@ -147,8 +140,8 @@ public class ServicioNotificacion extends Service {
                                                             httpPost.setHeader("Content-type", "application/json");
 
                                                             try {
-                                                                HttpResponse response = httpClient.execute(httpPost);
-                                                                System.out.println("Responseee " + response.getStatusLine().getStatusCode());
+                                                                HttpResponse response=httpClient.execute(httpPost);
+                                                                System.out.println("Responseee "+response.getStatusLine().getStatusCode());
                                                             } catch (IOException e) {
                                                                 e.printStackTrace();
                                                             }
@@ -158,53 +151,53 @@ public class ServicioNotificacion extends Service {
                                                     }
                                                 });
                                                 thread.start();
+
+                                                SharedPreferences lector = getDefaultSharedPreferences(getApplicationContext());
+
+    //                                            SharedPreferences lector =   getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                                boolean prueba=lector.getBoolean("leido",true);
+
+                                                System.out.println("El valor de leido: "+prueba);
+
+                                                if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && !prueba) {
+                                                    System.out.println("Deberia entrar aqui");
+                                                    Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras.get(i)).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
+
+                                                    PendingIntent contentIntent = PendingIntent.getActivity(ServicioNotificacion.this, 0, notificationIntent,
+                                                            PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                                    NotificationCompat.Builder builder =
+                                                            new NotificationCompat.Builder(ServicioNotificacion.this)
+                                                                    .setSmallIcon(R.drawable.logo)
+                                                                    .setAutoCancel(true)
+                                                                    .setContentTitle("Agua No potable")
+                                                                    .setContentText("Se ha recorrido una muestra no potable")
+                                                                    .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
+                                                                    .setColor(getColor(R.color.colorPrimary));
+
+                                                    builder.setContentIntent(contentIntent);
+                                                    builder.setAutoCancel(true);
+                                                    builder.setLights(Color.BLUE, 500, 500);
+                                                    long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
+                                                    builder.setVibrate(pattern);
+                                                    builder.setStyle(new NotificationCompat.InboxStyle());
+                                                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                                    builder.setSound(alarmSound);
+                                                    NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                                    manager.notify(1, builder.build());
+
+
+                                                }
+
                                             }
-
-                                            SharedPreferences lector = getDefaultSharedPreferences(getApplicationContext());
-
-//                                            SharedPreferences lector =   getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                                            boolean prueba=lector.getBoolean("leido",true);
-
-                                            System.out.println("El valor de leido: "+prueba);
-
-                                            if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && !prueba) {
-                                                System.out.println("Deberia entrar aqui");
-                                                Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras.get(i)).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
-
-                                                PendingIntent contentIntent = PendingIntent.getActivity(ServicioNotificacion.this, 0, notificationIntent,
-                                                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-                                                NotificationCompat.Builder builder =
-                                                        new NotificationCompat.Builder(ServicioNotificacion.this)
-                                                                .setSmallIcon(R.drawable.logo)
-                                                                .setAutoCancel(true)
-                                                                .setContentTitle("Agua No potable")
-                                                                .setContentText("Se ha recorrido una muestra no potable")
-                                                                .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
-                                                                .setColor(getColor(R.color.colorPrimary));
-
-                                                builder.setContentIntent(contentIntent);
-                                                builder.setAutoCancel(true);
-                                                builder.setLights(Color.BLUE, 500, 500);
-                                                long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
-                                                builder.setVibrate(pattern);
-                                                builder.setStyle(new NotificationCompat.InboxStyle());
-                                                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                                builder.setSound(alarmSound);
-                                                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                                                manager.notify(1, builder.build());
-
-                                            }
-
                                         }
                                     }
+                                    dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png" ,usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
                                 }
-                                dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png" ,usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
                             }
                         }
                     }
                 }
-            }
 
             @Override
             public void onFailure(Call<List<Usuario>> call, Throwable t) {
@@ -212,6 +205,7 @@ public class ServicioNotificacion extends Service {
             }
         });
     }
+
 
     public List<Muestra> getMuestras()
     {

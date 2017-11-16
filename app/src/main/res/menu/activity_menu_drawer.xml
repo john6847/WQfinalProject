@@ -10,10 +10,11 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_manage"
             android:title="Manejar Dispositivos" />
+
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
-            android:title="Logout" />
+            android:title="Cerrar sesión" />
 
         <!--<item-->
             <!--android:id="@+id/nav_manage"-->

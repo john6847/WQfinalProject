@@ -63,7 +63,7 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
 
                 for (int i = 0; i < muestras.size(); i++) {
                     if (muestras.get(i).getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
-                        fechaMuestra.setText(muestras.get(i).getMuestra().getFechaMuestra());
+                        fechaMuestra.setText(String.valueOf(muestras.get(i).getMuestra().getFechaMuestra()).replace("Z"," ").replace("T"," "));
                         latitud = muestras.get(i).getMuestra().getLocalizacion().getLatitud();
                         longitud = muestras.get(i).getMuestra().getLocalizacion().getLongitud();
                         listaMuestra.add(muestras.get(i).getParametro().getNombreParametro() + "         " + muestras.get(i).getValor());

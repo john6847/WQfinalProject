@@ -95,8 +95,8 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
 //                .findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(DispositivoRecycleView.this);
 
-        latitud=dispositivo.getLocalizacion().getLatitud();
-        longitud=dispositivo.getLocalizacion().getLongitud();
+//        latitud=dispositivo.getLocalizacion().getLatitud();
+//        longitud=dispositivo.getLocalizacion().getLongitud();
 
         Picasso.with(activity).load(dispositivo.getPicture()).into(holder.imageView);
         Intent i = activity.getIntent();

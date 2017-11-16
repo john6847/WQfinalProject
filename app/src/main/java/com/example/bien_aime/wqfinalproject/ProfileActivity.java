@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
 import com.example.bien_aime.wqfinalproject.adapter.DispositivosUsuarioRecyclerView;
 import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
@@ -32,10 +34,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProfileActivity extends AppCompatActivity {
     List<Usuario> usuarios=new ArrayList<>();
     String usuarioLlegando;
-    Usuario usuarioFinal=new Usuario();
+    Usuario usuarioFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         Intent i = getIntent();
-//        dispositivos= (List<Dispositivo>) i.getSerializableExtra("dispositivos");
-        usuarios= (List<Usuario>) i.getSerializableExtra("data");
+//        usuarios= (List<Usuario>) i.getSerializableExtra("data");
         usuarioLlegando=i.getStringExtra("usuario");
 
         final TextView nombre= (TextView) findViewById(R.id.tvNumber1);
@@ -55,36 +60,52 @@ public class ProfileActivity extends AppCompatActivity {
         final TextView direccion= (TextView) findViewById(R.id.tvdireccion);
 
         final Switch simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
-//        simpleSwitch.setTextOn("SI");
-//        simpleSwitch.setTextOff("NO");
-
-
-//        Boolean switchState = simpleSwitch.isChecked();
 
         final CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
-        for (Usuario usuario: usuarios){
-            if(usuario.getUsername().equals(usuarioLlegando)){
-                nombre.setText(usuario.getNombre());
+        ApiService apiService= ApiService.retrofit.create(ApiService.class);
 
-                usuarioFinal=usuario;
-                telefono.setText(usuario.getTelefono());
-                direccion.setText(usuario.getDireccion().getCalle());
-                sector.setText(usuario.getDireccion().getSector().getNombreSector());
-                ciudad.setText(usuario.getDireccion().getSector().getCiudad().getNombreCiudad());
-                pais.setText(usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-                collapsingToolbarLayout.setTitle(usuario.getUsername());
+        retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
 
-                if(!usuario.getSilenciarNotificacion()){
-                    simpleSwitch.setChecked(false);
-                }else {
-                    simpleSwitch.setChecked(true);
+        call.enqueue(new Callback<List<Usuario>>() {
+            @Override
+            public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                usuarios = response.body();
+                System.out.println("Usuariossssssssssssssss " + usuarios.get(0).getUsername());
+
+                for (Usuario usuario : usuarios) {
+                    if (usuario.getUsername().equals(usuarioLlegando)) {
+
+                        nombre.setText(usuario.getNombre());
+
+                        telefono.setText(usuario.getTelefono());
+                        direccion.setText(usuario.getDireccion().getCalle());
+                        sector.setText(usuario.getDireccion().getSector().getNombreSector());
+                        ciudad.setText(usuario.getDireccion().getSector().getCiudad().getNombreCiudad());
+                        pais.setText(usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+                        collapsingToolbarLayout.setTitle(" " + usuario.getUsername());
+
+                        usuarioFinal = usuario;
+
+                        if (!usuario.getSilenciarNotificacion()) {
+                            simpleSwitch.setChecked(false);
+                        } else {
+                            simpleSwitch.setChecked(true);
+                        }
+                    }
+
                 }
             }
+        @Override
+        public void onFailure(Call<List<Usuario>> call, Throwable t) {
+            Log.e("failure", String.valueOf(t.getMessage()));
         }
+    });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,10 +114,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Intent intent=new Intent(ProfileActivity.this,EditProfileActivity.class);
                 intent.putExtra("usuariosEditable",(Serializable) usuarios);
-                intent.putExtra("usuario",usuarioLlegando);
+                intent.putExtra("usuario",usuarioFinal);
                 startActivity(intent);
-                Snackbar.make(view, "If you edit your profile You will have to get back to the log Screen to notice the changes", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
 

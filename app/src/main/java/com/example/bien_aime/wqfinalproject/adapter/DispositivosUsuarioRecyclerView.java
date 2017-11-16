@@ -2,6 +2,7 @@ package com.example.bien_aime.wqfinalproject.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,16 +60,22 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
             }
         });
 
-        holder.btnLocalizacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                String uri = "http://maps.google.com/maps?daddr=" + dispositivo.getLocalizacion().getLatitud().toString()+","+dispositivo.getLocalizacion().getLongitud().toString();
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                activity.startActivity(intent);
-            }
-        });
+        if(dispositivo.getLocalizacion()!=null) {
+            holder.btnLocalizacion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String uri = "http://maps.google.com/maps?daddr=" + dispositivo.getLocalizacion().getLatitud().toString() + "," + dispositivo.getLocalizacion().getLongitud().toString();
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                    activity.startActivity(intent);
+                }
+            });
+        }else {
+            holder.btnLocalizacion.setEnabled(false);
+//            holder.btnLocalizacion.setBackgroundColor(Color.CYAN);
+        }
 
 
         holder.btnInformacion.setOnClickListener(new View.OnClickListener() {
