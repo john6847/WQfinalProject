@@ -34,6 +34,7 @@
         <Button
             android:id="@+id/BtnListarDispo"
             android:layout_width="500dp"
+
             android:textColor="@color/editTextColor"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
