@@ -2,6 +2,7 @@ package com.example.bien_aime.wqfinalproject;
 
 import android.animation.Animator;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -33,6 +35,7 @@ import android.support.annotation.NonNull;
 
 import com.example.bien_aime.wqfinalproject.API.ApiService;
 import com.example.bien_aime.wqfinalproject.Servicios.ServiceMonitoreo;
+import com.example.bien_aime.wqfinalproject.Servicios.ServicioNotificacion;
 import com.example.bien_aime.wqfinalproject.adapter.DispositivoRecycleView;
 import com.example.bien_aime.wqfinalproject.modelo.Dispositivo;
 import com.example.bien_aime.wqfinalproject.modelo.Usuario;
@@ -63,6 +66,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     List<Dispositivo> dispositivos=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
     Usuario usuarioFinal=new Usuario();
+    ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +194,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             intent.putExtra("data", (Serializable) usuarios);
 
             startActivity(intent);
+        }else if (id == R.id.nav_exit) {
+
+            mDialog = new ProgressDialog(HomeActivity.this);
+
+            mDialog.setMessage("Cerrando Aplicaccion");
+            mDialog.setCanceledOnTouchOutside(false);
+            mDialog.show();
+
+
+            stopService(new Intent(getApplicationContext(),ServiceMonitoreo.class));
+            stopService(new Intent(getApplicationContext(),ServicioNotificacion.class));
+            moveTaskToBack(true);
+            finish();
+
+//            System.exit(1);
+
+//            System.exit(1);
+
         }
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);

@@ -32,14 +32,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:layout_marginBottom="8dp">
 
                 <EditText android:id="@+id/usernameEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:textColor="@color/editTextColor"
+                    android:textColor="@color/colorPrimaryDark"
                     android:hint="@string/email" />
             </android.support.design.widget.TextInputLayout>
 
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:layout_marginBottom="8dp">
 
                 <EditText android:id="@+id/nombreEdit"
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:digits="qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
-                    android:textColor="@color/editTextColor"
+                    android:textColor="@color/colorPrimaryDark"
                     android:hint="Nombre" />
             </android.support.design.widget.TextInputLayout>
 
@@ -65,7 +65,7 @@
                 android:id="@+id/spinner1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/editTextColor"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_alignLeft="@+id/textView1"
                 android:layout_below="@+id/textView1"
                 android:layout_marginTop="8dp" />
@@ -87,14 +87,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/editTextColor"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_marginBottom="8dp"/>
 
             <Spinner
                 android:id="@+id/spinnerCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/editTextColor"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_alignLeft="@+id/textView1"
                 android:layout_below="@+id/textView1"
                 android:layout_marginBottom="10dp"
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:textColor="@color/editTextColor"
+                android:textColor="@color/colorPrimaryDark"
                 android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                 android:hint="Sector" />
         </android.support.design.widget.TextInputLayout>
@@ -132,14 +132,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:layout_marginBottom="8dp">
 
                 <EditText android:id="@+id/direccionCalleEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:textColor="@color/editTextColor"
+                    android:textColor="@color/colorPrimaryDark"
                     android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM "
                     android:hint="Calle" />
             </android.support.design.widget.TextInputLayout>
@@ -149,14 +149,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:layout_marginBottom="8dp">
 
                 <EditText android:id="@+id/telefonoEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:textColor="@color/editTextColor"
+                    android:textColor="@color/colorPrimaryDark"
                     android:hint="Telefono" />
             </android.support.design.widget.TextInputLayout>
 
@@ -165,14 +165,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColorHint="@color/editTextColor"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:layout_marginBottom="8dp">
 
                 <EditText android:id="@+id/emailEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/editTextColor"
+                    android:textColor="@color/colorPrimaryDark"
                     android:hint="Email" />
             </android.support.design.widget.TextInputLayout>
 

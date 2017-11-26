@@ -20,6 +20,7 @@ public class WelcomeActivity extends AppCompatActivity {
         usuarioLlegando = i.getStringExtra("user");
 
         Button btnListar=(Button)findViewById(R.id.BtnListarDispo);
+        Button btnPerfil=(Button)findViewById(R.id.BtnVerPerfil);
 
         btnListar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,6 +28,15 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(new Intent(WelcomeActivity.this, HomeActivity.class).putExtra("user", usuarioLlegando));
             }
         });
+
+        btnPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(WelcomeActivity.this, ProfileActivity.class).putExtra("usuario", usuarioLlegando));
+            }
+        });
+
+
     }
 
     public void onBackPressed() {

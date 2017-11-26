@@ -14,14 +14,15 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/m" />
+        android:src="@drawable/m"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relativeLayout">
 
         <View
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/btnlistardispo"
-            android:text="Listar Dispositivos"
+            android:text="Monitorear Dispositivos"
             android:layout_alignParentBottom="true"/>
 
         <!--<Button-->
@@ -54,6 +55,32 @@
             <!--android:layout_below="@id/BtnColorPickerCancel"/>-->
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_above="@+id/relativeLayout"
+        android:id="@+id/relativeLayout2">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_alignParentTop="true"/>
+
+    <Button
+        android:id="@+id/BtnVerPerfil"
+        android:layout_width="500dp"
+
+        android:textColor="@color/editTextColor"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/btnlistardispo"
+        android:text="Ver Perfil Usuario"
+        android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
 
 
 </RelativeLayout>

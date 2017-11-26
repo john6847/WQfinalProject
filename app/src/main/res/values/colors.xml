@@ -9,7 +9,7 @@
     <color name="colorAccent">#0277BD</color>
     <color name="editTextColor">#FFFFFF</color>
     <color name="backgroundCardView">#00BCD4</color>
-    <color name="toolbarTextColor">#000000</color>
+    <color name="toolbarTextColor">#FFFFFF</color>
 
     <!--<color name="colorPrimary">#BDBDBD</color>-->
     <!--<color name="colorPrimary1">#607D8B</color>-->

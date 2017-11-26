@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@color/colorPrimaryDark"
-    android:backgroundTint="@color/colorPrimary"
+    android:backgroundTint="@color/colorPrimaryDark"
     android:divider="@color/colorPrimaryDark"
     android:gravity="bottom"
     android:orientation="horizontal"
@@ -16,12 +16,10 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/mm"
+        android:src="@drawable/m"
         android:layout_weight="1" />
-
-
 
 
     <!--<TextView-->
