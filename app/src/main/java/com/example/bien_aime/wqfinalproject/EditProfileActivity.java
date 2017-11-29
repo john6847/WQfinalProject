@@ -101,8 +101,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         city.setEnabled(true);
 
 
-//        for (Usuario usuario : usuarios) {
-//            if (usuario.getUsername().equals(usuarioLlegando)) {
         idUsuario =usuario.getId();
 
         name.setText(usuario.getNombre());
@@ -257,7 +255,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,long id)
     {
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
         ((TextView) parent.getChildAt(0)).setTextSize(18);
 
         switch(parent.getId())

@@ -165,7 +165,7 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
     public void onItemSelected(AdapterView<?> parent, View view, int position,long id)
     {
         city.setEnabled(true);
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
         ((TextView) parent.getChildAt(0)).setTextSize(18);
 
         switch(parent.getId())

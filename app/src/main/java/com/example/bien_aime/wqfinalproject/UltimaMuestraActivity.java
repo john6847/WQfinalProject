@@ -63,11 +63,11 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
 
                 for (int i = 0; i < muestras.size(); i++) {
                     if (muestras.get(i).getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
+                        System.out.println("Muestraaaaaaaaaaaaaa "+muestras.get(i));
                         fechaMuestra.setText(String.valueOf(muestras.get(i).getMuestra().getFechaMuestra()).replace("Z"," ").replace("T"," "));
                         latitud = muestras.get(i).getMuestra().getLocalizacion().getLatitud();
                         longitud = muestras.get(i).getMuestra().getLocalizacion().getLongitud();
                         listaMuestra.add(muestras.get(i).getParametro().getNombreParametro() + "         " + muestras.get(i).getValor());
-
                     }
                 }
                 ArrayAdapter<String> arrayAdapter =
@@ -79,8 +79,6 @@ public class UltimaMuestraActivity extends AppCompatActivity implements OnMapRea
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map);
                 mapFragment.getMapAsync(UltimaMuestraActivity.this);
-
-
             }
 
             @Override
