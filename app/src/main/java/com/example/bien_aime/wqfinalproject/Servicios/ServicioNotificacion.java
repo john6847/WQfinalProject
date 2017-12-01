@@ -95,7 +95,6 @@ public class ServicioNotificacion extends Service {
 
         final List<Muestra> muestras=getMuestras();
 
-
         retrofit2.Call<List<Usuario>> call= apiService.getUsuarios();
 
         call.enqueue(new Callback<List<Usuario>>() {
