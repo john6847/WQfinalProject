@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity  implements NavigationView.
                             try {
 
                                 HttpClient httpClient = new DefaultHttpClient();
-                                HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/logear");
+                                HttpPost httpPost = new HttpPost("https://waterquality.pionot.com/API/logear");
                                 String json = "{" + "username:" + username.getText().toString() + ",password:" + password.getText().toString() + "}";
 
                                 StringEntity entity = null;

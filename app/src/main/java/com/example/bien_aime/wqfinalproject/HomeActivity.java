@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     String usuarioLlegando;
     List<Dispositivo> dispositivos=new ArrayList<>();
+    List<Dispositivo> dispositivosIntent=new ArrayList<>();
     List<Usuario> usuarios=new ArrayList<>();
     Usuario usuarioFinal=new Usuario();
     ProgressDialog mDialog;
@@ -107,8 +108,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if (usuario.getUsername().equals(usuarioLlegando)){
                         usuarioFinal=usuario;
                         for (int j=0;j<usuario.getListaDispositivos().size();j++){
-                            System.out.println("-------------------------------- Anndan la");
-                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png",usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(),usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
+                            System.out.println("-------------------------------- Anndan la "+usuario.getListaDispositivos().get(j).getDispositivo().getDireccion().getLocalizacion().getLatitud());
+                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png",usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getDireccion()));
                         }
                     }
                 }

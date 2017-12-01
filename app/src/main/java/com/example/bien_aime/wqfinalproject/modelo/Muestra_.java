@@ -52,10 +52,12 @@ public class Muestra_ implements Serializable
     private EstadoMuestra estadoMuestra;
     @SerializedName("direccion")
     @Expose
-    private Object direccion;
+    private Direccion direccion;
     @SerializedName("listaNotificaciones")
     @Expose
     private List<ListaNotificacione> listaNotificaciones = null;
+
+
     private final static long serialVersionUID = -4926385673316871288L;
 
     public Integer getId() {
@@ -162,11 +164,11 @@ public class Muestra_ implements Serializable
         this.estadoMuestra = estadoMuestra;
     }
 
-    public Object getDireccion() {
+    public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Object direccion) {
+    public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
 

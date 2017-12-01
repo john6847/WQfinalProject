@@ -104,20 +104,23 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         idUsuario =usuario.getId();
 
         name.setText(usuario.getNombre());
-        email.setText("bencosky50@gmail.com");
+        email.setText(usuario.getEmail());
         telefono.setText(usuario.getTelefono());
 
-        String  CompareValue= usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais();
+        if(usuario.getDireccion()!=null){
+            String  CompareValue= usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais();
 
-        if (!CompareValue.equals(null)) {
-            int SpinnerPostion = c.getPosition(CompareValue);
-            country.setSelection(SpinnerPostion);
-            SpinnerPostion = 0;
+            if (!CompareValue.equals(null)) {
+                int SpinnerPostion = c.getPosition(CompareValue);
+                country.setSelection(SpinnerPostion);
+                SpinnerPostion = 0;
+            }
+
+            sector.setText(usuario.getDireccion().getSector().getNombreSector());
+            GuardarCiudad= usuario.getDireccion().getSector().getCiudad().getNombreCiudad();
+            calle.setText(usuario.getDireccion().getCalle());
         }
 
-        sector.setText(usuario.getDireccion().getSector().getNombreSector());
-        GuardarCiudad= usuario.getDireccion().getSector().getCiudad().getNombreCiudad();
-        calle.setText(usuario.getDireccion().getCalle());
         username.setText(usuario.getUsername());
 //            }
 //        }
@@ -158,7 +161,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         public void run() {
                             try {
                                 HttpClient httpClient = new DefaultHttpClient();
-                                HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/EditarProfile/");
+                                HttpPost httpPost = new HttpPost("https://waterquality.pionot.com/API/EditarProfile/");
 
                                 String json =
                                         "{" + "id:" + idUsuario

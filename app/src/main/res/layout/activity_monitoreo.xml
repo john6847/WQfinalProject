@@ -10,7 +10,8 @@
     <include layout="@layout/activity_toolbar"/>
 
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/abajo2"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -19,6 +20,7 @@
         android:paddingRight="20dp"
         android:orientation="vertical"
         >
+
 
         <TextView android:id="@+id/refresh"
             android:layout_width="wrap_content"
@@ -29,9 +31,23 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/pictureRecycler"
             android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_marginBottom="50dp"
+            >
 
         </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="500dp"
+            android:text="Ver Localizacion"
+            android:paddingTop="5dp"
+            android:id="@+id/load_directionMonitoreo"
+            android:layout_margin="5dp"
+            />
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

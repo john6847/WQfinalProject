@@ -68,10 +68,14 @@ public class DispositivoPersonaActivity extends AppCompatActivity  {
                         }
 
                         if(dispositivo.getDireccion()!=null){
-                            sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
-                            ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
-                            pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
-                            calle.setText(dispositivo.getDireccion().getCalle());
+                            if (dispositivo.getDireccion().getSector() != null) {
+                                sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
+                                ciudad.setText(dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad());
+                                pais.setText(dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+                            }
+                            if (dispositivo.getDireccion().getCalle() != null) {
+                                calle.setText(dispositivo.getDireccion().getCalle());
+                            }
                         }
 
                         nombreDispo.setText(dispositivo.getNombreDispositivo());

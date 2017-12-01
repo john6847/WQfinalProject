@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         final TextView sector= (TextView) findViewById(R.id.tvSector);
         final TextView pais= (TextView) findViewById(R.id.tvPais);
         final TextView direccion= (TextView) findViewById(R.id.tvdireccion);
+        final TextView email= (TextView) findViewById(R.id.tvNumberEmail);
 
         final Switch simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
 
@@ -77,12 +78,15 @@ public class ProfileActivity extends AppCompatActivity {
                     if (usuario.getUsername().equals(usuarioLlegando)) {
 
                         nombre.setText(usuario.getNombre());
-
+                        email.setText(usuario.getEmail());
                         telefono.setText(usuario.getTelefono());
-                        direccion.setText(usuario.getDireccion().getCalle());
-                        sector.setText(usuario.getDireccion().getSector().getNombreSector());
-                        ciudad.setText(usuario.getDireccion().getSector().getCiudad().getNombreCiudad());
-                        pais.setText(usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+                        if(usuario.getDireccion()!=null){
+                            direccion.setText(usuario.getDireccion().getCalle());
+                            sector.setText(usuario.getDireccion().getSector().getNombreSector());
+                            ciudad.setText(usuario.getDireccion().getSector().getCiudad().getNombreCiudad());
+                            pais.setText(usuario.getDireccion().getSector().getCiudad().getPais().getNombrePais());
+                        }
+
                         collapsingToolbarLayout.setTitle(" " + usuario.getUsername());
 
                         usuarioFinal = usuario;
@@ -130,7 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
                     builder.setTitle("Advertencia").setIcon(R.drawable.silenciar);
 
                     builder.setMessage("Si presiona Ok, no le va a llegar ninguna notificacion de esa aplicacion!!!")
-                            .setCancelable(false)
+                            .setCancelable(true)
                             .setPositiveButton("Silenciar", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
 
@@ -141,7 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             try {
 
                                                 HttpClient httpClient = new DefaultHttpClient();
-                                                HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/silenciarNotificacion");
+                                                HttpPost httpPost = new HttpPost("https://waterquality.pionot.com/API/silenciarNotificacion");
                                                 String json = "{" + "id:" + usuarioFinal.getId() + ",silenciarNotificacion:" + "true" + "}";
 
                                                 StringEntity entity = null;
@@ -181,10 +185,11 @@ public class ProfileActivity extends AppCompatActivity {
                                 alert.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-//                                        simpleSwitch.setChecked(false);
+                                        simpleSwitch.setChecked(false);
                                         dialog.dismiss();
                                     }
                             });
+
                                 alert.setOnShowListener( new DialogInterface.OnShowListener() {
                                     @Override
                                     public void onShow(DialogInterface arg0) {
@@ -202,7 +207,7 @@ public class ProfileActivity extends AppCompatActivity {
                         public void run() {
                             try  {
                                 HttpClient httpClient=new DefaultHttpClient();
-                                HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/silenciarNotificacion");
+                                HttpPost httpPost=new HttpPost("https://waterquality.pionot.com/API/silenciarNotificacion");
                                 String json="{"+"id:"+usuarioFinal.getId()+",silenciarNotificacion:"+"false"+"}";
 
                                 StringEntity entity = null;

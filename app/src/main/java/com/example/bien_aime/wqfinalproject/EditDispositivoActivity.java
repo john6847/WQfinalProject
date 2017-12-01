@@ -66,7 +66,7 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
 
         city.setEnabled(true);
 
-        if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null || dispositivo.getDireccion().getSector().getCiudad()!=null || dispositivo.getDireccion().getSector().getCiudad().getPais()!=null) {
+        if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null) {
 
             String  CompareValue= dispositivo.getDireccion().getSector().getCiudad().getPais().getNombrePais();
 
@@ -104,7 +104,7 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
                             try {
                                 //Your code goes here
                                 HttpClient httpClient = new DefaultHttpClient();
-                                HttpPost httpPost = new HttpPost("http://manueltm24.me:8080/API/editarDispositivoDireccion/");
+                                HttpPost httpPost = new HttpPost("https://waterquality.pionot.com/API/editarDispositivoDireccion/");
 
                                 String json = "{" + "id:" + dispositivo.getId()
                                         + ",sector:" + sector.getText().toString() + ",ciudad:"

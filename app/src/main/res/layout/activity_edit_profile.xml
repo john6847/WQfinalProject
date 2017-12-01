@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/editTextColor"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_marginBottom="8dp">
 
             <EditText android:id="@+id/direccionSectorEdit"
@@ -183,7 +183,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
-                android:textColor="#000000"
+                android:textColor="@color/editTextColor"
                 android:background="@color/colorAccent"
                 android:text="Guardar"/>
 

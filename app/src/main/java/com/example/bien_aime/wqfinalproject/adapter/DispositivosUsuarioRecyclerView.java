@@ -60,13 +60,14 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
             }
         });
 
+        System.out.println("Dosssssssssssssssssssssssssssssssssss "+dispositivo.getDireccion());
 
-        if(dispositivo.getLocalizacion()!=null) {
+        if(dispositivo.getDireccion().getLocalizacion()!=null) {
             holder.btnLocalizacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    String uri = "http://maps.google.com/maps?daddr=" + dispositivo.getLocalizacion().getLatitud().toString() + "," + dispositivo.getLocalizacion().getLongitud().toString();
+                    String uri = "http://maps.google.com/maps?daddr=" + dispositivo.getDireccion().getLocalizacion().getLatitud().toString() + "," + dispositivo.getDireccion().getLocalizacion().getLongitud().toString();
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
                     intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                     activity.startActivity(intent);

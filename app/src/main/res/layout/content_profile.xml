@@ -73,10 +73,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem1"
-                android:text="John Doe"
+                android:text="N/A"
                 android:textColor="#212121" />
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactEmail"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+
+                android:scaleType="fitXY"
+                android:src="@drawable/email" />
+
+            <TextView
+                android:id="@+id/tvNumberEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/ivContactEmail"
+                android:text="N/A"
+                android:textColor="#212121" />
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -100,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem2"
-                android:text="Masculino"
+                android:text="N/A"
                 android:textColor="#212121" />
 
         </RelativeLayout>
@@ -130,7 +159,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/telefonoProfile"
                 android:textStyle="normal"
-                android:text="8295806847"
+                android:text="N/A"
                 android:textColor="#212121" />
 
         </RelativeLayout>
@@ -157,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/direccionProfile"
-                android:text="Text"
+                android:text="N/A"
                 android:textColor="#212121" />
 
         </RelativeLayout>
@@ -184,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ciudadProfile"
-                android:text="Text"
+                android:text="N/A"
                 android:textColor="#212121" />
         </RelativeLayout>
 
@@ -211,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/sectorProfile"
-                android:text=" Text"
+                android:text=" N/A"
                 android:textColor="#212121" />
         </RelativeLayout>
 
@@ -237,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/paisProfile"
-                android:text="Text"
+                android:text="N/A"
                 android:textColor="#212121" />
         </RelativeLayout>
 

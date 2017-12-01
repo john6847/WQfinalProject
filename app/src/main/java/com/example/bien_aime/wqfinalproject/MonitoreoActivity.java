@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -24,6 +25,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ import com.example.bien_aime.wqfinalproject.Servicios.DownloadResultReceiver;
 import com.example.bien_aime.wqfinalproject.Servicios.MyIntentService;
 import com.example.bien_aime.wqfinalproject.adapter.ParameterRecyclerView;
 import com.example.bien_aime.wqfinalproject.modelo.Muestra;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -73,6 +77,7 @@ public class MonitoreoActivity extends AppCompatActivity {
     String dispositivoName;
     ContentResolver resolver;
     int cont;
+    Button btnLocalizacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +89,7 @@ public class MonitoreoActivity extends AppCompatActivity {
         dialog.setTitle("Buscando la ultima Muestra...");
         dialog.setMessage("Favor Esperar.");
         dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();
 
         long delayInMillis = 8000;
@@ -101,6 +106,7 @@ public class MonitoreoActivity extends AppCompatActivity {
 
         notification = new NotificationCompat.Builder(this);
         notification.setAutoCancel(true);
+        btnLocalizacion=(Button) findViewById(R.id.load_directionMonitoreo);
 
         show_toolbar(getResources().getString(R.string.toolbar_title_dispositivo), false);
     }
@@ -162,6 +168,38 @@ public class MonitoreoActivity extends AppCompatActivity {
             muestras.remove(i);
             muestras.clear();
         }
+
+        ApiService apiService = ApiService.retrofit.create(ApiService.class);
+        final retrofit2.Call<List<Muestra>> call = apiService.getValores();
+        call.enqueue(new Callback<List<Muestra>>() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
+                final List<Muestra> muestras = response.body();
+
+                for (int i = 0; i < muestras.size(); i++) {
+                    if (muestras.get(i).getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
+                        System.out.println("Latituddddddddddddddddd "+muestras.get(0).getMuestra().getDireccion().getLocalizacion().getLatitud());
+
+                        btnLocalizacion.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String uri = "http://maps.google.com/maps?daddr=" + muestras.get(0).getMuestra().getDireccion().getLocalizacion().getLatitud().toString()+","+ muestras.get(0).getMuestra().getDireccion().getLocalizacion().getLongitud().toString();
+                                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                                startActivity(intent);
+                            }
+                        });
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Muestra>> call, Throwable t) {
+            }
+        });
     }
 
     @Override

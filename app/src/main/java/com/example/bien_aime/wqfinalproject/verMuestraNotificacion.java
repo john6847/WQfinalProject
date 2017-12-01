@@ -42,7 +42,8 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class verMuestraNotificacion extends AppCompatActivity {
 
-    Muestra muestraLLegando;
+//    Muestra muestraLLegando;
+    List<Muestra> muestrasLLegando;
     HashMap<String,Muestras> muestraLis = new HashMap<>();
     Usuario usuario;
     Dispositivo dispositivo;
@@ -60,7 +61,11 @@ public class verMuestraNotificacion extends AppCompatActivity {
         dispositivoId= intent.getStringExtra("idDispositivo");
 
         Intent i = getIntent();
-        muestraLLegando= (Muestra) i.getSerializableExtra("muestras");
+        muestrasLLegando= (List<Muestra>) i.getSerializableExtra("muestras");
+
+        for(Muestra muestra:muestrasLLegando){
+            System.out.println("Hay "+muestra.getValor());
+        }
 
             Thread thread = new Thread(new Runnable() {
 
@@ -114,23 +119,43 @@ public class verMuestraNotificacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("Dispositivo: "+muestraLLegando.getMuestra().getLocalizacion().getLatitud());
-                System.out.println("Dispositivo: "+muestraLLegando.getMuestra().getLocalizacion().getLongitud());
+                System.out.println("Dispositivo: "+muestrasLLegando.get(1).getMuestra().getDireccion().getLocalizacion().getLatitud());
+//                System.out.println("Dispositivo: "+muestrasLLegando.get(0).getMuestra().getLocalizacion().getLatitud());
+//                System.out.println("Dispositivo: "+muestrasLLegando.get(2).getMuestra().getLocalizacion().getLatitud());
+//                System.out.println("Dispositivo: "+muestraLLegando.getMuestra().getLocalizacion().getLongitud());
 
-                String uri = "http://maps.google.com/maps?daddr=" + muestraLLegando.getMuestra().getLocalizacion().getLatitud().toString()+","+muestraLLegando.getMuestra().getLocalizacion().getLongitud().toString();
+                String uri = "http://maps.google.com/maps?daddr=" + muestrasLLegando.get(0).getMuestra().getDireccion().getLocalizacion().getLatitud().toString()+","+ muestrasLLegando.get(0).getMuestra().getDireccion().getLocalizacion().getLongitud().toString();
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
                 intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                 startActivity(intent);
             }
         });
 
-        call.enqueue(new Callback<List<Muestra>>() {
+
+
+        for(Muestra muestra:muestrasLLegando){
+            muestraLis.put(String.valueOf(muestra.getId()),new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra()));
+        }
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pictureRecycler);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        ParameterRecyclerView parameterRecycler = new ParameterRecyclerView(new ArrayList<>(muestraLis.values()), verMuestraNotificacion.this);
+        recyclerView.setAdapter(parameterRecycler);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(1);
+
+        /*call.enqueue(new Callback<List<Muestra>>() {
             @Override
             public void onResponse(Call<List<Muestra>> call, Response<List<Muestra>> response) {
                 List<Muestra> muestras=response.body();
 
                 for (Muestra muestra: muestras){
-                    if(Objects.equals(muestra.getId(), muestraLLegando.getId())){
+                    if(Objects.equals(muestra.getId(), muestrasLLegando.get(0).getId())){
                         muestraLis.put(String.valueOf(muestra.getId()),new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra()));
                     }
                 }
@@ -153,7 +178,7 @@ public class verMuestraNotificacion extends AppCompatActivity {
             public void onFailure(Call<List<Muestra>> call, Throwable t) {
 
             }
-        });
+        });*/
 
 //        Thread thread = new Thread(new Runnable() {
 //

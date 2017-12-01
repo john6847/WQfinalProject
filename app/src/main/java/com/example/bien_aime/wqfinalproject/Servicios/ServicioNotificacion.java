@@ -82,7 +82,7 @@ public class ServicioNotificacion extends Service {
             public void run() {
                 requestValor(intent);
             }
-        }, 0, 10000);
+        }, 0, 20000);
 
         return START_STICKY;
     }
@@ -126,7 +126,7 @@ public class ServicioNotificacion extends Service {
                                                     public void run() {
                                                         try  {
                                                             HttpClient httpClient=new DefaultHttpClient();
-                                                            HttpPost httpPost=new HttpPost("http://manueltm24.me:8080/API/notificarUsuarioDispositivo/");
+                                                            HttpPost httpPost=new HttpPost("https://waterquality.pionot.com/API/notificarUsuarioDispositivo/");
                                                             String json="{"+"idUsuario:"+usuario.getId()+",idDispositivo:"+usuario.getListaDispositivos().get(finalJ).getId() +",notificacion:"+"true"+"}";
 
                                                             StringEntity entity = null;
@@ -160,8 +160,9 @@ public class ServicioNotificacion extends Service {
                                                 System.out.println("El valor de leido: "+prueba);
 
                                                 if(usuario.getListaDispositivos().get(j).getUsuarioNotificado() && !prueba) {
+//                                                if(usuario.getListaDispositivos().get(j).getUsuarioNotificado()) {
                                                     System.out.println("Deberia entrar aqui");
-                                                    Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras.get(i)).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
+                                                    Intent notificationIntent = new Intent(ServicioNotificacion.this, verMuestraNotificacion.class).putExtra("muestras", (Serializable) muestras).putExtra("usuarioId", usuario.getId().toString()).putExtra("idDispositivo", usuario.getListaDispositivos().get(j).getDispositivo().getId().toString());
 
                                                     PendingIntent contentIntent = PendingIntent.getActivity(ServicioNotificacion.this, 0, notificationIntent,
                                                             PendingIntent.FLAG_UPDATE_CURRENT);
@@ -192,7 +193,7 @@ public class ServicioNotificacion extends Service {
                                             }
                                         }
                                     }
-                                    dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png" ,usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getLocalizacion()));
+                                    dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png" ,usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getDireccion()));
                                 }
                             }
                         }

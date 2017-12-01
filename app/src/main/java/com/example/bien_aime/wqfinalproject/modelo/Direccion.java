@@ -35,6 +35,17 @@ public class Direccion implements Serializable {
     @SerializedName("sector")
     @Expose
     private Sector sector;
+    @SerializedName("localizacion")
+    @Expose
+    private Localizacion_ localizacion;
+
+    public Localizacion_ getLocalizacion() {
+        return localizacion;
+    }
+
+    public void setLocalizacion(Localizacion_ localizacion) {
+        this.localizacion = localizacion;
+    }
 
     public Integer getId() {
         return id;

@@ -43,6 +43,7 @@ public class Dispositivo implements Serializable{
     @SerializedName("direccion")
     @Expose
     private Direccion direccion;
+
     private String picture;
 
     public String getPicture() {
@@ -141,11 +142,11 @@ public class Dispositivo implements Serializable{
         this.direccion = direccion;
     }
 
-    public Dispositivo(Integer id,String picture, String nombreDispositivo, String descripcion,Localizacion_ localizacion) {
+    public Dispositivo(Integer id,String picture, String nombreDispositivo, String descripcion,Direccion direccion) {
         this.id = id;
         this.descripcion = descripcion;
         this.nombreDispositivo = nombreDispositivo;
-        this.localizacion = localizacion;
         this.nombreDispositivo = nombreDispositivo;
+        this.direccion=direccion;
     }
 }

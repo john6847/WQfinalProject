@@ -42,6 +42,7 @@ public class Muestra implements Serializable
     private String creadoPor;
     private final static long serialVersionUID = 3232391496774018485L;
 
+
     public Integer getId() {
         return id;
     }

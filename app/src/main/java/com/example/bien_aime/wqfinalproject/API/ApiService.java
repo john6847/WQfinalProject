@@ -44,7 +44,7 @@ public interface  ApiService {
 
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://manueltm24.me:8080/")
+            .baseUrl("https://waterquality.pionot.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }
