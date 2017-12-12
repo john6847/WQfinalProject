@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        show_toolbar(getResources().getString(R.string.homeToolbar),false);
+        show_toolbar("Monitoreo dispositivos",false);
 
        // final String username= getIntent().getStringExtra("username");
         //Recibo aqui el objeto json array que contiene toda la informacion del usuario incluyendo los dispositivos de ese usuario
@@ -108,8 +108,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if (usuario.getUsername().equals(usuarioLlegando)){
                         usuarioFinal=usuario;
                         for (int j=0;j<usuario.getListaDispositivos().size();j++){
-                            System.out.println("-------------------------------- Anndan la "+usuario.getListaDispositivos().get(j).getDispositivo().getDireccion().getLocalizacion().getLatitud());
-                            dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png",usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getDireccion()));
+                            if (usuario.getListaDispositivos().get(j).getDispositivo().getDireccion() !=null) {
+                                dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png",usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getDireccion()));
+                            }else
+                            {
+                                dispositivos.add(new Dispositivo(usuario.getListaDispositivos().get(j).getDispositivo().getId(),"http://www.radix-int.com/wp-content/uploads/2015/03/mdmMockup.png",usuario.getListaDispositivos().get(j).getDispositivo().getNombreDispositivo(), usuario.getListaDispositivos().get(j).getDispositivo().getDescripcion(), usuario.getListaDispositivos().get(j).getDispositivo().getDireccion()));
+
+                            }
+                           // System.out.println("-------------------------------- Anndan la "+usuario.getListaDispositivos().get(j).getDispositivo().getDireccion().getLocalizacion().getLatitud());
                         }
                     }
                 }

@@ -62,6 +62,7 @@ dependencies {
 
 
 
+
 task startDemo(type: Exec) {
     dependsOn 'installDebug'
     def adb = new File("${System.env.ANDROID_HOME}", "platform-tools${File.separator}adb")

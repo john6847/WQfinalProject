@@ -146,7 +146,7 @@ public class MonitoreoActivity extends AppCompatActivity {
                 String dispositivo = cursor.getString(cursor.getColumnIndex("dispositivo"));
 
                 if (dispositivo.equals(dispositivoName)) {
-                    muestras.put(id,new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", nombreParametro, Double.parseDouble(valor), fecha));
+                    muestras.put(id,new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", nombreParametro, Double.parseDouble(valor), fecha," "));
                 }
             } while (cursor.moveToNext());
         }
@@ -179,7 +179,10 @@ public class MonitoreoActivity extends AppCompatActivity {
 
                 for (int i = 0; i < muestras.size(); i++) {
                     if (muestras.get(i).getMuestra().getDispositivo().getNombreDispositivo().equals(dispositivoName)) {
-                        System.out.println("Latituddddddddddddddddd "+muestras.get(0).getMuestra().getDireccion().getLocalizacion().getLatitud());
+//                        System.out.println("Latituddddddddddddddddd "+muestras.get(0).getMuestra().getDireccion().getLocalizacion().getLatitud());
+
+                        if(muestras.get(i).getMuestra().getDireccion().getLocalizacion()!=null){
+
 
                         btnLocalizacion.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -190,10 +193,11 @@ public class MonitoreoActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
-
+                        }else {
+                            btnLocalizacion.setEnabled(false);
+                        }
                     }
                 }
-
             }
 
             @Override

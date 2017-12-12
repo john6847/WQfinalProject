@@ -16,13 +16,31 @@ public class Muestras implements Serializable {
     private String titulo;
     private double cantidad;
     private String fecha;
+    private String niveles;
 
+
+    public Muestras(String picture, String titulo, double cantidad, String fecha,String niveles) {
+        this.picture = picture;
+        this.titulo = titulo;
+        this.cantidad = cantidad;
+        this.fecha = fecha;
+        this.niveles=niveles;
+    }
 
     public Muestras(String picture, String titulo, double cantidad, String fecha) {
         this.picture = picture;
         this.titulo = titulo;
         this.cantidad = cantidad;
         this.fecha = fecha;
+    }
+
+
+    public String getNiveles() {
+        return niveles;
+    }
+
+    public void setNiveles(String niveles) {
+        this.niveles = niveles;
     }
 
     public String getPicture() {

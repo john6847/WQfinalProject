@@ -3,6 +3,7 @@ package com.example.bien_aime.wqfinalproject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -88,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
                         }
 
                         collapsingToolbarLayout.setTitle(" " + usuario.getUsername());
+//                        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLUE);
 
                         usuarioFinal = usuario;
 
@@ -97,7 +99,6 @@ public class ProfileActivity extends AppCompatActivity {
                             simpleSwitch.setChecked(true);
                         }
                     }
-
                 }
             }
         @Override
@@ -106,10 +107,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
     });
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

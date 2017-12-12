@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,10 +96,6 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
 //                .findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(DispositivoRecycleView.this);
 
-//        latitud=dispositivo.getLocalizacion().getLatitud();
-//        longitud=dispositivo.getLocalizacion().getLongitud();
-
-        Picasso.with(activity).load(dispositivo.getPicture()).into(holder.imageView);
         Intent i = activity.getIntent();
 
         assert i != null;
@@ -144,6 +141,30 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
                 extras.putString("dispositivo",dispositivo.getNombreDispositivo());
                 activity.startService(new Intent(activity, ServiceMonitoreo.class).putExtras(extras));
 
+            }
+        });
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.startActivity(new Intent(activity, MonitoreoActivity.class).putExtra("dispositivo", dispositivo.getNombreDispositivo()));
+
+                Bundle extras = new Bundle();
+                extras.putString("user",usuarioRequerido.getUsername());
+                extras.putString("dispositivo",dispositivo.getNombreDispositivo());
+                activity.startService(new Intent(activity, ServiceMonitoreo.class).putExtras(extras));
+            }
+        });
+
+        holder.monitoreoButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.startActivity(new Intent(activity, MonitoreoActivity.class).putExtra("dispositivo", dispositivo.getNombreDispositivo()));
+
+                Bundle extras = new Bundle();
+                extras.putString("user",usuarioRequerido.getUsername());
+                extras.putString("dispositivo",dispositivo.getNombreDispositivo());
+                activity.startService(new Intent(activity, ServiceMonitoreo.class).putExtras(extras));
             }
         });
     }
@@ -200,21 +221,20 @@ public class DispositivoRecycleView extends RecyclerView.Adapter<DispositivoRecy
     public class ParameterViewHolder extends RecyclerView.ViewHolder {
         MapView mapView;
         GoogleMap map;
-        private ImageView imageView;
+        private ImageButton imageView;
         private TextView textView;
         private TextView textView1;
         private TextView monitoreoButton;
+        private ImageButton monitoreoButton1;
 
 
         public ParameterViewHolder(View itemView) {
             super(itemView);
             textView=(TextView) itemView.findViewById(R.id.nombreDispositivo);
-            imageView=(ImageView) itemView.findViewById(R.id.imageDispositivo);
+            imageView=(ImageButton) itemView.findViewById(R.id.imageDispositivo);
             monitoreoButton=(TextView) itemView.findViewById(R.id.buttonMonitoreo);
-//
-//            SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity)activity).getSupportFragmentManager()
-//                    .findFragmentById(R.id.map1);
-//            mapFragment.getMapAsync(DispositivoRecycleView.this);
+            monitoreoButton1=(ImageButton) itemView.findViewById(R.id.dispo);
+
 
         }
 

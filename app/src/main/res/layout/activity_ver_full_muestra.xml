@@ -34,22 +34,19 @@
             android:layout_width="match_parent"
             android:layout_marginBottom="50dp"
             >
-
         </android.support.v7.widget.RecyclerView>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="500dp"
-            android:textColor="@color/editTextColor"
-            android:text="Ver Localizacion"
-            android:paddingTop="5dp"
-            android:background="@drawable/btnlistardispo"
-            android:id="@+id/load_directionMonitoreo"
-            android:layout_margin="5dp"
-            />
-
+        <!--<Button-->
+            <!--android:id="@+id/load_regresar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginTop="500dp"-->
+            <!--android:textColor="@color/editTextColor"-->
+            <!--android:text="Regresar"-->
+            <!--android:paddingTop="0dp"-->
+            <!--android:background="@drawable/btnlistardispo"-->
+            <!--android:layout_margin="2dp"/>-->
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

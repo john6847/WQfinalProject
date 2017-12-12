@@ -2,7 +2,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="heightcard_view">200dp</dimen>
-    <dimen name="cornerRadius">4dp</dimen>
+    <dimen name="cornerRadius">10dp</dimen>
     <dimen name="cardViewPaddingLeft">16dp</dimen>
     <dimen name="textSizeParameterPh">25sp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->

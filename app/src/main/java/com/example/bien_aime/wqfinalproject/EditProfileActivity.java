@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import org.hamcrest.Matcher;
 
 import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.countryStr;
+import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.sector_Santiago;
 import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.states_RepublicaDominicana;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,9 +65,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     static long idUsuario;
 
     String GuardarCiudad;
+    String GuardarSector;
 
     private Spinner country;
     private Spinner city;
+    private Spinner sector;
 
 
     @Override
@@ -82,7 +86,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         final EditText name = (EditText) findViewById(R.id.nombreEdit);
         final EditText telefono = (EditText) findViewById(R.id.telefonoEdit);
         final EditText email = (EditText) findViewById(R.id.emailEdit);
-        final EditText sector = (EditText) findViewById(R.id.direccionSectorEdit);
+//        final EditText sector = (EditText) findViewById(R.id.direccionSectorEdit);
         final EditText calle = (EditText) findViewById(R.id.direccionCalleEdit);
         final Button buttonGuardar = (Button) findViewById(R.id.guardarEditUsuarioButton);
 
@@ -96,9 +100,18 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         city=(Spinner)findViewById(R.id.spinnerCity);
         city.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        city.setEnabled(true);
+
         calle.setFilters(new InputFilter[] { filter });
         username.setFocusable(false);
-        city.setEnabled(true);
+
+        sector=(Spinner)findViewById(R.id.spinnerSector);
+        sector.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        sector.setEnabled(true);
+
+//        calle.setFilters(new InputFilter[] { filter });
+//        username.setFocusable(false);
+//        city.setEnabled(true);
 
 
         idUsuario =usuario.getId();
@@ -116,14 +129,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 SpinnerPostion = 0;
             }
 
-            sector.setText(usuario.getDireccion().getSector().getNombreSector());
             GuardarCiudad= usuario.getDireccion().getSector().getCiudad().getNombreCiudad();
+            GuardarSector=usuario.getDireccion().getSector().getNombreSector();
             calle.setText(usuario.getDireccion().getCalle());
         }
 
         username.setText(usuario.getUsername());
-//            }
-//        }
+
 
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +143,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
                 System.out.println("Presiono el boton guardar");
                 if( username.getText().toString().trim().equals("") || name.getText().toString().trim().equals("") ||
-                        telefono.getText().toString().trim().equals("") || sector.getText().toString().trim().equals("") ||
+                        telefono.getText().toString().trim().equals("")  ||
                         city.getSelectedItem()==null || country.getSelectedItem().toString().equals("Seleccionar Pais") ||
                         calle.getText().toString().trim().equals(""))
 
@@ -142,7 +154,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     username.setError("Debe completar todos los campos!!!");
                     name.setError("Debe completar todos los campos!!!");
                     telefono.setError("Debe completar todos los campos!!!");
-                    sector.setError("Debe completar todos los campos!!!");
+//                    sector.setError("Debe completar todos los campos!!!");
                     country.setElevation(5);
                     city.setElevation(5);
                     calle.setError("Debe completar todos los campos!!!");
@@ -154,7 +166,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 else {
 
-
+                    System.out.println("Trato de mandar");
                     Thread thread = new Thread(new Runnable() {
 
                         @Override
@@ -167,7 +179,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                         "{" + "id:" + idUsuario
                                                 + ",nombre:" + name.getText().toString()
                                                 + ",telefono:" + telefono.getText().toString()
-                                                + ",sector:" + sector.getText().toString()
+                                                + ",sector:" +sector.getSelectedItem().toString()
                                                 + ",ciudad:" + city.getSelectedItem().toString()
                                                 + ",pais:" + country.getSelectedItem().toString()
                                                 + ",calle:" + calle.getText().toString()
@@ -256,29 +268,64 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view, int position,long id)
+    public void onItemSelected(final AdapterView<?> parent, View view, int position, long id)
     {
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+        city.setEnabled(true);
+        ((TextView) parent.getChildAt(0)).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
         ((TextView) parent.getChildAt(0)).setTextSize(18);
 
         switch(parent.getId())
         {
             case R.id.spinner1:
                 city.setEnabled(true);
-                if(country.getSelectedItem().equals("Republica Dominicana"))
-                {
-                    ArrayAdapter <String> s1 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_RepublicaDominicana);
+                if(country.getSelectedItem().equals("Republica Dominicana")) {
+                    ArrayAdapter<String> s1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, states_RepublicaDominicana);
                     s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     city.setAdapter(s1);
 
+                    String CompareValue2 = GuardarCiudad;
 
-                    String  CompareValue2= GuardarCiudad;
-
-                    if (!CompareValue2.equals(null)) {
-                        int SpinnerPostion = s1.getPosition(CompareValue2);
-                        city.setSelection(SpinnerPostion);
-                        SpinnerPostion = 0;
+                    if (GuardarCiudad != null) {
+                        if (!CompareValue2.equals(null)) {
+                            int SpinnerPostion = s1.getPosition(CompareValue2);
+                            city.setSelection(SpinnerPostion);
+                            SpinnerPostion = 0;
+                        }
                     }
+
+                    city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+                        @Override
+                        public void onItemSelected(AdapterView<?> arg0, View view,int position, long id) {
+
+
+                            ((TextView) parent.getChildAt(0)).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                            if (city.getSelectedItem().equals("Santiago de los Caballeros")) {
+                                System.out.println("Es la ciudaddddddddddddddd");
+                                ArrayAdapter<String> s11 = new ArrayAdapter<String>(EditProfileActivity.this, android.R.layout.simple_spinner_item, sector_Santiago);
+                                s11.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                sector.setAdapter(s11);
+
+                                String CompareValue3 = GuardarSector;
+
+                                if (GuardarSector != null) {
+                                    if (!CompareValue3.equals(null)) {
+                                        int SpinnerPostion = s11.getPosition(CompareValue3);
+                                        sector.setSelection(SpinnerPostion);
+                                        SpinnerPostion = 0;
+                                    }
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+
+                        }
+                    });
+
 
                 }
                 else  if(country.getSelectedItem().equals("Pakistan"))
@@ -295,7 +342,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
 
-            case R.id.spinnerCity:
+            case R.id.spinnerCityDispositivo:
                 String cityStr1=city.getSelectedItem().toString();
                 Log.e("city1",cityStr1);
         }

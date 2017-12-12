@@ -1,0 +1,8 @@
+<resources>
+    <string-array name="spinnerItems">
+        <item>Zona I</item>
+        <item>Zona I</item>
+        <item>Reparto del Este</item>
+        <item>Zona I</item>
+    </string-array>
+</resources>

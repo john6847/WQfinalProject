@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -165,22 +166,30 @@ public class ServicioNotificacion extends Service {
 
                                                     PendingIntent contentIntent = PendingIntent.getActivity(ServicioNotificacion.this, 0, notificationIntent,
                                                             PendingIntent.FLAG_UPDATE_CURRENT);
-
+//Define sound URI
+                                                    Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                                                     NotificationCompat.Builder builder =
                                                             new NotificationCompat.Builder(ServicioNotificacion.this)
-                                                                    .setSmallIcon(R.drawable.logo)
+                                                                    .setSmallIcon(R.drawable.m)
+                                                                    .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                                                                            R.mipmap.m))
                                                                     .setAutoCancel(true)
+                                                                    .setPriority(1)
+                                                                    .setSound(soundUri)
                                                                     .setContentTitle("Agua No potable")
                                                                     .setContentText("Se ha recorrido una muestra no potable")
                                                                     .addAction(R.drawable.common_full_open_on_phone, "Ver Informacion", contentIntent)
-                                                                    .setColor(getColor(R.color.colorPrimary));
+                                                                    .setColor(getColor(R.color.colorPrimaryDark));
 
                                                     builder.setContentIntent(contentIntent);
                                                     builder.setAutoCancel(true);
-                                                    builder.setLights(Color.BLUE, 500, 500);
+                                                    builder.setColor(getColor(R.color.colorPrimaryDark));
+
+//                                                    builder.set(getColor(R.color.colorPrimaryDark));
+                                                    builder.setLights(Color.RED, 500, 500);
                                                     long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
                                                     builder.setVibrate(pattern);
-                                                    builder.setStyle(new NotificationCompat.InboxStyle());
+                                                    builder.setStyle(new NotificationCompat.BigTextStyle());
                                                     Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                                                     builder.setSound(alarmSound);
                                                     NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

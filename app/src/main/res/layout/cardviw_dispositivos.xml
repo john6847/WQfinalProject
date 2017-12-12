@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="150dp"
+    android:layout_height="100dp"
     android:layout_width="match_parent"
     android:layout_marginBottom="11dp"
     android:focusable="true"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     cardview:cardCornerRadius="@dimen/cornerRadius">
-
 
     <FrameLayout
         android:layout_height="match_parent"
@@ -24,10 +23,20 @@
             <!--android:layout_height="200dp"-->
             <!--tools:context="com.example.bien_aime.wqfinalproject.MapsActivity" />-->
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageDispositivo"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@null"
+            android:layout_gravity="center"
+            />
+
+        <ImageButton
+            android:id="@+id/dispo"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/monitor"
             android:layout_gravity="center"
             />
 
@@ -54,6 +63,7 @@
                 android:id="@+id/buttonMonitoreo"
                 android:layout_width="wrap_content"
                 android:onClick="didTapButton"
+
                 android:layout_height="wrap_content"
                 android:paddingLeft="60dp"
                 android:layout_gravity="center"

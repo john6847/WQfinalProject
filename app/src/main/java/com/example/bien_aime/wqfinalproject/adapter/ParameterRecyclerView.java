@@ -57,6 +57,10 @@ public class ParameterRecyclerView extends RecyclerView.Adapter<ParameterRecycle
 
                 holder.textView.setText(muestra.getTitulo());
                 holder.textView1.setText(String.valueOf(muestra.getCantidad()));
+                if(muestra.getNiveles()!=null || String.valueOf(muestra.getNiveles())!=null){
+                    holder.textView4.setText(String.valueOf(muestra.getNiveles()));
+
+                }
 
         String oldstring = String.valueOf(muestra.getFecha());
 
@@ -97,6 +101,7 @@ public class ParameterRecyclerView extends RecyclerView.Adapter<ParameterRecycle
         private TextView textView;
         private TextView textView1;
         private TextView textView3;
+        private TextView textView4;
 
         public ParameterViewHolder(View itemView) {
             super(itemView);
@@ -105,6 +110,7 @@ public class ParameterRecyclerView extends RecyclerView.Adapter<ParameterRecycle
             textView=(TextView) itemView.findViewById(R.id.nombreParametro);
             textView1=(TextView) itemView.findViewById(R.id.cantidadParametro);
             textView3=(TextView) itemView.findViewById(R.id.fechaParametro);
+            textView4=(TextView) itemView.findViewById(R.id.nivelesParametro);
 
         }
     }

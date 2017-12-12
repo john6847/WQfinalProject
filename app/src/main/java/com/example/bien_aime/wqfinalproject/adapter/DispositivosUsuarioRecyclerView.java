@@ -75,7 +75,7 @@ public class DispositivosUsuarioRecyclerView extends RecyclerView.Adapter<Dispos
             });
         }else {
             holder.btnLocalizacion.setEnabled(false);
-//            holder.btnLocalizacion.setBackgroundColor(Color.CYAN);
+            holder.btnLocalizacion.setTextColor(Color.GRAY);
         }
 
 

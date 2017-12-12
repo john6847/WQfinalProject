@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.countryStr;
+import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.sector_Santiago;
 import static com.example.bien_aime.wqfinalproject.Servicios.ProveerPaises.states_RepublicaDominicana;
 
 public class EditDispositivoActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener{
@@ -39,7 +41,10 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
 
     private Spinner country;
     private Spinner city;
+    private Spinner sector;
+
     String GuardarCiudad;
+    String GuardarSector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +55,23 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
         mDialog = new ProgressDialog(this);
         dispositivo = (Dispositivo) i.getSerializableExtra("dispositivo");
 
-        final TextView sector=(TextView) findViewById(R.id.sectorEdit);
+//        final TextView sector=(TextView) findViewById(R.id.sectorEdit);
         final TextView calle=(TextView) findViewById(R.id.calleEdit);
 
-
         country = (Spinner) findViewById(R.id.spinnerCountryDispositivo);
-
         country.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
         ArrayAdapter <String> c = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,countryStr);
         c.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         country.setAdapter(c);
 
         city=(Spinner)findViewById(R.id.spinnerCityDispositivo);
-        city.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
+        city.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
         city.setEnabled(true);
+
+        sector=(Spinner)findViewById(R.id.spinnerSectorDispositivo);
+        sector.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        sector.setEnabled(true);
 
         if(dispositivo.getDireccion().getCalle()!=null || dispositivo.getDireccion().getSector()!=null) {
 
@@ -76,27 +83,23 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
                 SpinnerPostion = 0;
             }
 
-            sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
+//            sector.setText(dispositivo.getDireccion().getSector().getNombreSector());
             calle.setText(dispositivo.getDireccion().getCalle());
             GuardarCiudad= dispositivo.getDireccion().getSector().getCiudad().getNombreCiudad();
+            GuardarSector=dispositivo.getDireccion().getSector().getNombreSector();
         }
-
 
         final Button buttonGuardar = (Button) findViewById(R.id.guardarEditButton);
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if( sector.getText().toString().trim().equals("") ||
-                        city.getSelectedItem()==null || country.getSelectedItem().toString().equals("Seleccionar Pais") ||
-                        calle.getText().toString().trim().equals("")) {
-
-                    sector.setError("Debe completar todos los campos!!!");
-                    country.setPrompt("Debe Completar todos los campos");
-                    city.setPrompt("Debe Completar todos los campos");
-                    calle.setError("Debe completar todos los campos!!!");
+                if(
+                    city.getSelectedItem()==null || country.getSelectedItem().toString().equals("Seleccionar Pais") ||
+                    calle.getText().toString().trim().equals("")) {
+                        country.setPrompt("Debe Completar todos los campos");
+                        city.setPrompt("Debe Completar todos los campos");
+                        calle.setError("Debe completar todos los campos!!!");
                 }else {
-
                     Thread thread = new Thread(new Runnable() {
 
                         @Override
@@ -107,8 +110,9 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
                                 HttpPost httpPost = new HttpPost("https://waterquality.pionot.com/API/editarDispositivoDireccion/");
 
                                 String json = "{" + "id:" + dispositivo.getId()
-                                        + ",sector:" + sector.getText().toString() + ",ciudad:"
-                                        + city.getSelectedItem().toString() + ",pais:" + country.getSelectedItem().toString()
+                                        +",sector:"+sector.getSelectedItem().toString()
+//                                        + ",sector:" + sector.getText().toString() + ",ciudad:"
+                                        + ",ciudad:"+city.getSelectedItem().toString() + ",pais:" + country.getSelectedItem().toString()
                                         + ",calle:" + calle.getText().toString()
                                         + "}";
 
@@ -137,19 +141,12 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
 
                     thread.start();
 
-
                 Toast.makeText(EditDispositivoActivity.this, "Guardado", Toast.LENGTH_LONG).show();
-//                Snackbar.make(view, "If you edit your profile You will have to get back to the log Screen to notice the changes", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+
 
                 Intent loginScreen = new Intent(EditDispositivoActivity.this, DispositivoPersonaActivity.class);
                 loginScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                Toast.makeText(EditDispositivoActivity.this, "WELCOME TO LOGINSCREEN", Toast.LENGTH_SHORT).show();
-//                EditDispositivoActivity.this.finish();
-                mDialog.setMessage("Guardando los datos...");
-                mDialog.setCanceledOnTouchOutside(false);
-                mDialog.setProgress(7);
-                mDialog.show();
+
                 startActivity(loginScreen.putExtra("dispositivo", dispositivo.getNombreDispositivo()));
                 }
             }
@@ -162,29 +159,64 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
     }
 
 
-    public void onItemSelected(AdapterView<?> parent, View view, int position,long id)
+    public void onItemSelected(final AdapterView<?> parent, View view, int position, long id)
     {
         city.setEnabled(true);
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+        ((TextView) parent.getChildAt(0)).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
         ((TextView) parent.getChildAt(0)).setTextSize(18);
 
         switch(parent.getId())
         {
             case R.id.spinnerCountryDispositivo:
                 city.setEnabled(true);
-                if(country.getSelectedItem().equals("Republica Dominicana"))
-                {
-                    ArrayAdapter <String> s1 = new ArrayAdapter <String> (this,android.R.layout.simple_spinner_item,states_RepublicaDominicana);
+                if(country.getSelectedItem().equals("Republica Dominicana")) {
+                    ArrayAdapter<String> s1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, states_RepublicaDominicana);
                     s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     city.setAdapter(s1);
 
-                    String  CompareValue2= GuardarCiudad;
+                    String CompareValue2 = GuardarCiudad;
 
-                    if (!CompareValue2.equals(null)) {
-                        int SpinnerPostion = s1.getPosition(CompareValue2);
-                        city.setSelection(SpinnerPostion);
-                        SpinnerPostion = 0;
+                    if (GuardarCiudad != null) {
+                        if (!CompareValue2.equals(null)) {
+                            int SpinnerPostion = s1.getPosition(CompareValue2);
+                            city.setSelection(SpinnerPostion);
+                            SpinnerPostion = 0;
+                        }
                     }
+
+                    city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+                        @Override
+                        public void onItemSelected(AdapterView<?> arg0, View view,int position, long id) {
+
+
+                            ((TextView) parent.getChildAt(0)).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                            if (city.getSelectedItem().equals("Santiago de los Caballeros")) {
+                                ArrayAdapter<String> s11 = new ArrayAdapter<String>(EditDispositivoActivity.this, android.R.layout.simple_spinner_item, sector_Santiago);
+                                s11.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                sector.setAdapter(s11);
+
+                                String CompareValue3 = GuardarSector;
+
+                                if (GuardarSector != null) {
+                                    if (!CompareValue3.equals(null)) {
+                                        int SpinnerPostion = s11.getPosition(CompareValue3);
+                                        sector.setSelection(SpinnerPostion);
+                                        SpinnerPostion = 0;
+                                    }
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+
+                        }
+                    });
+
+
                 }
                 else  if(country.getSelectedItem().equals("Pakistan"))
                 {
@@ -210,4 +242,5 @@ public class EditDispositivoActivity extends AppCompatActivity implements View.O
         // TODO Auto-generated method stub
         city.setEnabled(true);
     }
+
 }

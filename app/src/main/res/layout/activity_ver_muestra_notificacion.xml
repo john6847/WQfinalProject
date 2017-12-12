@@ -7,41 +7,84 @@
     android:layout_height="match_parent"
     tools:context="com.example.bien_aime.wqfinalproject.verMuestraNotificacion">
 
-
         <include layout="@layout/activity_toolbar"/>
 
-        <RelativeLayout
-            android:id="@+id/abajo"
-            android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:padding="2dp"
+        android:layout_marginTop="60dp">
+
+        <TextView
+            android:id="@+id/mensaje"
             android:layout_width="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical"
-            >
+            android:layout_height="wrap_content"
+            android:text="Advertencia"
+            android:layout_margin="2dp"
+            android:padding="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/editTextColor"
+            android:textSize="15sp"
+            android:paddingBottom="30dp" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/abajo2"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical"
+        >
 
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/pictureRecycler"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginTop="120dp"
                     android:layout_width="match_parent"
                     >
-
                 </android.support.v7.widget.RecyclerView>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="500dp"
-                    android:text="Ver Localizacion"
-                    android:paddingTop="5dp"
-                    android:id="@+id/load_direction"
-                    android:layout_margin="5dp"
-                    />
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_marginTop="500dp"-->
+                    <!--android:paddingTop="50dp"-->
+                    <!--android:id="@+id/load_directionMonitoreo"-->
+                    <!--android:orientation="vertical">-->
 
+                        <Button
+                            android:id="@+id/load_fullMuestra"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/editTextColor"
+                            android:text="Ver muestra Completo"
+                            android:paddingTop="5dp"
+                            android:layout_marginTop="500dp"
+                            android:background="@drawable/btnlistardispo"
+                            android:layout_margin="0dp"
+                            android:layout_above="@+id/load_direction"
+                            android:layout_alignStart="@+id/load_direction" />
+
+                        <Button
+                            android:id="@+id/load_direction"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="500dp"
+                            android:textColor="@color/editTextColor"
+                            android:text="Ver Localizacion"
+                            android:paddingTop="0dp"
+                            android:background="@drawable/btnlistardispo"
+                            android:layout_margin="2dp"/>
         </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -24,7 +24,7 @@
             android:scrollbarSize="@dimen/cornerRadius"
             app:title="John Doe"
             app:titleEnabled="true"
-            app:expandedTitleTextAppearance="@color/common_google_signin_btn_text_dark"
+            app:expandedTitleTextAppearance="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,10 +30,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -45,11 +49,22 @@ public class verMuestraNotificacion extends AppCompatActivity {
 //    Muestra muestraLLegando;
     List<Muestra> muestrasLLegando;
     HashMap<String,Muestras> muestraLis = new HashMap<>();
+//    HashMap<String, Muestras> mapaMuestra = new HashMap<String, Muestras>();
+    List<Muestras> mapaMuestra = new ArrayList<>();
     Usuario usuario;
     Dispositivo dispositivo;
     String usuarioId;
     String dispositivoId;
+    Double phMin=6.5;
+    Double phMax=8.5;
+    Double turbiedadMin=0.0;
+    Double turbiedadMax=5.0;
+    Double conductividadMin=50.0;
+    Double conductividadMax=1500.0;
+    Double temperaturaMin=5.0;
+    Double getTemperaturaMax=25.0;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,6 +77,7 @@ public class verMuestraNotificacion extends AppCompatActivity {
 
         Intent i = getIntent();
         muestrasLLegando= (List<Muestra>) i.getSerializableExtra("muestras");
+
 
         for(Muestra muestra:muestrasLLegando){
             System.out.println("Hay "+muestra.getValor());
@@ -109,11 +125,19 @@ public class verMuestraNotificacion extends AppCompatActivity {
 
         System.out.println("El valor es: "+prefs.getBoolean("leido",false));
         Button btnLocalizacion=(Button) findViewById(R.id.load_direction);
+        Button btnFullMuestra=(Button) findViewById(R.id.load_fullMuestra);
+        TextView mensaje=(TextView) findViewById(R.id.mensaje);
 
-        show_toolbar("Muestra Notificada", false);
+        mensaje.setBackgroundColor(getColor(R.color.backgroundCardView));
+        mensaje.setElegantTextHeight(true);
+        mensaje.setText("Los siguientes parametros se encuentran fuera de su rango.\nFavor comunicarse con Water Quality Monitoring lo mas pronto posible(829-580-6847).");
+
+        //android:text="[6.5 - 8.5]"
+        show_toolbar("Notificacion", false);
 
         ApiService apiService=ApiService.retrofit.create(ApiService.class);
         final retrofit2.Call<List<Muestra>> call= apiService.getValores();
+
 
         btnLocalizacion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,17 +156,55 @@ public class verMuestraNotificacion extends AppCompatActivity {
         });
 
 
-
         for(Muestra muestra:muestrasLLegando){
-            muestraLis.put(String.valueOf(muestra.getId()),new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra()));
+            System.out.println("Muestra : "+muestra.getValor());
+            muestraLis.put(String.valueOf(muestra.getId()),new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra()," "));
+            if(muestra.getParametro().getNombreParametro().equalsIgnoreCase("Ph")){
+                if(muestra.getValor()<phMin|| muestra.getValor()>phMax){
+                    System.out.println("Mala ph");
+                    mapaMuestra.add(new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra(),"Nivel minimo:"+phMin+"\nNivel maximo: "+phMax));
+                }
+            }
+
+            else if(muestra.getParametro().getNombreParametro().equalsIgnoreCase("Turbiedad")){
+                if(muestra.getValor()<turbiedadMin|| muestra.getValor()>turbiedadMax){
+                    System.out.println("Mala turb");
+                    mapaMuestra.add(new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra(),"Nivel minimo:"+turbiedadMin+"\nNivel maximo: "+turbiedadMax));
+                }
+            }
+            else if(muestra.getParametro().getNombreParametro().equalsIgnoreCase("Conductividad")){
+                if(muestra.getValor()<conductividadMin|| muestra.getValor()>conductividadMax){
+                    System.out.println("Mala conduc");
+                    mapaMuestra.add(new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra(),"Nivel minimo:"+conductividadMin+"\nNivel maximo: "+conductividadMax));
+                }
+            }
+            else if(muestra.getParametro().getNombreParametro().equalsIgnoreCase("Temperatura")){
+                if(muestra.getValor()<temperaturaMin|| muestra.getValor()>getTemperaturaMax){
+                    System.out.println("Mala tmp");
+                    mapaMuestra.add(new Muestras("http://www.iotsens.com/wp-content/uploads/2016/04/ICON_Smart_waste_water.png", muestra.getParametro().getNombreParametro(),muestra.getValor(), muestra.getMuestra().getFechaMuestra(),"Nivel minimo:"+temperaturaMin+"\nNivel maximo: "+getTemperaturaMax));
+                }
+            }
         }
+
+        btnFullMuestra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(verMuestraNotificacion.this, verFullMuestra.class);
+
+                intent.putExtra("muestras", (Serializable) new ArrayList<>(muestraLis.values()));
+
+                startActivity(intent);
+            }
+        });
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pictureRecycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        ParameterRecyclerView parameterRecycler = new ParameterRecyclerView(new ArrayList<>(muestraLis.values()), verMuestraNotificacion.this);
+//        ParameterRecyclerView parameterRecycler = new ParameterRecyclerView(new ArrayList<>(muestraLis.values()), verMuestraNotificacion.this);
+        ParameterRecyclerView parameterRecycler = new ParameterRecyclerView(mapaMuestra, verMuestraNotificacion.this);
         recyclerView.setAdapter(parameterRecycler);
         recyclerView.setLayoutManager(linearLayoutManager);
 
